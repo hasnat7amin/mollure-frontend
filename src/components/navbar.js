@@ -73,9 +73,9 @@ export default function Navbar() {
                         }}
                     />
 
-                    {!(isUserLoggedIn() && getUserProfile) ? <button className="px-4 py-1 text-base font-medium text-white rounded-full bg-customGreen ">
+                    {!(isUserLoggedIn() && getUserProfile) ? <Link to="/"> <button className="px-4 py-1 text-base font-medium text-white rounded-full bg-customGreen ">
                         Login
-                    </button> :
+                    </button> </Link> :
                         <ClickAwayListener onClickAway={() => setShowProfileOptions(false)}>
                             <div className="flex items-center space-x-8 text-gray-500">
                                 <a
