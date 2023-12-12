@@ -19,6 +19,8 @@ import edit from "../../../images/professional/edit.svg";
 import Select from "../../../components/select";
 import Info from "../../../components/info";
 import { useCompanyContext } from "../../../contexts/CompanyContextProvider";
+import { useProvinceContext } from "../../../contexts/ProvincesContextProvider";
+import { useMunicipalityContext } from "../../../contexts/MunicipalityContextProvider";
 
 
 
@@ -34,6 +36,13 @@ export default function CompanyClientProfile() {
   const [documentation, setDocumentation] = useState([]);
   const [selectedDocumentFile, setSelectedDocumentFile] = useState(null);
   const [isUpdateButtonVisible, setUpdateButtonVisibility] = useState(false);
+
+  const { provinces,
+    getAllProvinces, } = useProvinceContext();
+  const { municipalities,
+    getAllMunicipalities, } = useMunicipalityContext();
+
+
   const [formData, setFormData] = useState({
     legalName: '',
     cocNumber: '',
@@ -60,9 +69,21 @@ export default function CompanyClientProfile() {
     { id: "female", label: "Female", value: "female" },
     { id: "other", label: "Other", value: "other" }
   ];
+  const [provinceOptions, setProvinceOptions] = useState([
+    { id: "loading", label: "Loading ...", value: "Loading ..." },
+  ]);
+
+  const [municipalityOptions, setMunicipalityOptions] = useState([
+    { id: "loading", label: "Loading ...", value: "Loading ..." },
+  ]);
 
 
+  const [currentProvinceSelected, setCurrentProvinceSelected] = useState(
+    null
+  );
 
+  const [currentMunicipalitySelected, setCurrentMunicipalitySelected] =
+    useState(null);
 
   const { token } = useAuthContext();
   const [currentGenderSelected, setCurrentGenderSelected] = useState(null);
@@ -144,10 +165,63 @@ export default function CompanyClientProfile() {
 
 
 
+    companyInfo && companyInfo.professional && setCurrentProvinceSelected(
+      companyInfo.professional.province_id ? provinceOptions ? provinceOptions.find(item => item.id == companyInfo.professional.province_id) : null : null
+    )
+
+    companyInfo && companyInfo.professional && companyInfo.professional.province_id && setCurrentMunicipalitySelected(
+      companyInfo.professional.municipality_id ? municipalityOptions ? municipalityOptions.find(item => item.id == companyInfo.professional.municipality_id
+      ) : null : null
+    )
     companyInfo && companyInfo.professional && setCurrentGenderSelected(
       companyInfo.professional.gender ? genderOptions ? genderOptions.find(item => item.value == companyInfo.professional.gender) : null : null
     )
 
+
+  }
+
+  const getProvinces = async () => {
+    await getAllProvinces();
+  }
+
+  const setProvinces = async () => {
+    if (provinces && (provinces !== null || provinces != [])) {
+      setProvinceOptions(
+        provinces.map((item) => (
+          { id: item.id, value: item.name, label: item.name }
+        ))
+      )
+    }
+    if (provinces == []) {
+      setProvinceOptions(
+        { id: "loading", value: "No Provinces Found", label: "No Provinces Found" }
+
+      )
+    }
+  }
+
+  const setMunicipalities = async () => {
+    if (municipalities && (municipalities !== null || municipalities != [])) {
+      setMunicipalityOptions(
+        municipalities.map((item) => (
+          { id: item.id, value: item.name, label: item.name }
+        ))
+      )
+    }
+    if (municipalities == []) {
+      setMunicipalityOptions(
+        { id: "loading", value: "No Municipalities Found", label: "No Municipalities Found" }
+
+      )
+    }
+  }
+
+  const getMunicipalities = async () => {
+    if (currentProvinceSelected) {
+      const data = "province_id=" + currentProvinceSelected.id.toString()
+      await getAllMunicipalities(data);
+
+    }
 
   }
 
@@ -205,7 +279,7 @@ export default function CompanyClientProfile() {
       data.append('contact_number', formData.contactNumber);
 
     }
-    if(contactPerson){
+    if (contactPerson) {
       data.append('contact_person', formData.contactPerson);
     }
     if (
@@ -218,6 +292,16 @@ export default function CompanyClientProfile() {
       password && repeatPassword && password == repeatPassword
     ) {
       data.append('password', formData.password);
+    }
+    if (
+      currentMunicipalitySelected
+    ) {
+      data.append('municipality_id', currentMunicipalitySelected.id);
+    }
+    if (
+      currentProvinceSelected
+    ) {
+      data.append('province_id', currentProvinceSelected.id);
     }
 
 
@@ -238,12 +322,30 @@ export default function CompanyClientProfile() {
   };
 
   useEffect(() => {
+    getProvinces();
+  }, [])
+
+  useEffect(() => {
+    setProvinces();
+  }, [provinces])
+
+
+  useEffect(() => {
+    console.log(currentProvinceSelected)
+    getMunicipalities();
+  }, [currentProvinceSelected])
+
+  useEffect(() => {
+    setMunicipalities();
+  }, [municipalities])
+
+  useEffect(() => {
     fetchCompanyInfo();
   }, [])
 
   useEffect(() => {
     setCompanyInfoValues();
-  }, [companyInfo])
+  }, [companyInfo, municipalityOptions, provinceOptions])
 
 
   return (
@@ -395,19 +497,76 @@ export default function CompanyClientProfile() {
                     htmlFor="address"
                     className="flex items-end gap-1 text-sm font-normal text-gray-500"
                   >
-                    <span> Address </span>{" "}
-                    <Info title={"Enter your full address."} />
+
+                    <span> Address </span> <Info title={"Enter your full address."} />
                   </label>
-                  <input
-                    type="text"
-                    id="address"
-                    disabled
-                    value={formData.address}
-                    name="address"
-                    onChange={handleChange}
-                    placeholder="Enter Address"
-                    className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
-                  />
+                  <div className="grid grid-cols-1 gap-2 md:grid-cols-2 ">
+                    <div className="w-full ">
+                      <input
+                        type="text"
+                        value={formData.street}
+                        name="street"
+                        disabled
+                        onChange={handleChange}
+                        placeholder="Enter Street"
+                        className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                      />
+                    </div>
+                    <div className="w-full ">
+                      <input
+                        type="text"
+                        value={formData.number}
+                        name="number"
+                        disabled
+                        onChange={handleChange}
+                        placeholder="Enter Number"
+                        className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                      />
+                    </div>
+                    <div className="w-full ">
+                      <input
+                        type="text"
+                        value={formData.postalCode}
+                        name="postalCode"
+                        disabled
+                        onChange={handleChange}
+                        placeholder="Enter Postal Code"
+                        className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                      />
+                    </div>
+                    <div className="w-full ">
+                      <div className="w-full">
+                        <Select
+                          options={provinceOptions}
+                          placeholder={"Select Province"}
+                          disabled={true}
+                          selectedOption={currentProvinceSelected}
+                          handelChange={(event) => {
+                            if (event.value !== "selectProvince" && event.id != "loading") {
+                              console.log("Province", event);
+                              setCurrentProvinceSelected(event);
+                            }
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="w-full ">
+                      <div className="w-full">
+                        <Select
+                          disabled={true}
+                          options={municipalityOptions}
+                          placeholder={"Select Municipality"}
+                          selectedOption={currentMunicipalitySelected}
+                          handelChange={(event) => {
+                            if (event.value !== "selectMunicipality" && event.id != "loading") {
+                              console.log("Municipality", event);
+                              setCurrentMunicipalitySelected(event);
+                            }
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div>
                   <label

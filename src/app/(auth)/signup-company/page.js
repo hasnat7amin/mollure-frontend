@@ -1,5 +1,5 @@
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Navbar from "../../../components/navbar";
 import {
   AiOutlineEye,
@@ -21,6 +21,8 @@ import ErrorPopUp from "../../../components/error_popup";
 import spinner from "../../../images/spinner.svg";
 import { useAuthContext } from "../../../contexts/AuthContextProvider";
 import { useNavigate } from 'react-router-dom';
+import { useProvinceContext } from "../../../contexts/ProvincesContextProvider";
+import { useMunicipalityContext } from "../../../contexts/MunicipalityContextProvider";
 
 export default function SignupCompany() {
   const navigate = useNavigate();
@@ -36,13 +38,34 @@ export default function SignupCompany() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [showErrorModel, setShowErrorModel] = useState(false)
-  const { signUpProfessionalAndCompany,  } = useAuthContext();
+  const { signUpProfessionalAndCompany, } = useAuthContext();
+  const { provinces,
+    getAllProvinces, } = useProvinceContext();
+  const { municipalities,
+    getAllMunicipalities, } = useMunicipalityContext();
+
+  const [provinceOptions, setProvinceOptions] = useState([
+    { id: "loading", label: "Loading ...", value: "Loading ..." },
+  ]);
+
+  const [municipalityOptions, setMunicipalityOptions] = useState([
+    { id: "loading", label: "Loading ...", value: "Loading ..." },
+  ]);
+  const [currentProvinceSelected, setCurrentProvinceSelected] = useState(
+    null
+  );
+
+  const [currentMunicipalitySelected, setCurrentMunicipalitySelected] =
+    useState(null);
 
   const [formData, setFormData] = useState({
     legalName: '',
     cocNumber: '',
     vatNumber: '',
     address: '',
+    street: '',
+    number: '',
+    postalCode: '',
     contactPerson: '',
     contactNumber: '',
     email: '',
@@ -69,7 +92,7 @@ export default function SignupCompany() {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setSelectedImage({file:file,base64:e.target.result});
+        setSelectedImage({ file: file, base64: e.target.result });
       };
       reader.readAsDataURL(file);
     }
@@ -86,6 +109,71 @@ export default function SignupCompany() {
     setRestShowPassword(!showRestPassword);
   };
 
+  const getProvinces = async () => {
+    await getAllProvinces();
+  }
+
+  const setProvinces = async () => {
+    if (provinces && (provinces !== null || provinces != [])) {
+      setProvinceOptions(
+        provinces.map((item) => (
+          { id: item.id, value: item.name, label: item.name }
+        ))
+      )
+    }
+    if (provinces == []) {
+      setProvinceOptions(
+        { id: "loading", value: "No Provinces Found", label: "No Provinces Found" }
+
+      )
+    }
+  }
+
+  const setMunicipalities = async () => {
+    if (municipalities && (municipalities !== null || municipalities != [])) {
+      setMunicipalityOptions(
+        municipalities.map((item) => (
+          { id: item.id, value: item.name, label: item.name }
+        ))
+      )
+    }
+    if (municipalities == []) {
+      setMunicipalityOptions(
+        { id: "loading", value: "No Municipalities Found", label: "No Municipalities Found" }
+
+      )
+    }
+  }
+
+  const getMunicipalities = async () => {
+    if (currentProvinceSelected) {
+      const data = "province_id=" + currentProvinceSelected.id.toString()
+      await getAllMunicipalities(data);
+    }
+
+  }
+
+
+  useEffect(() => {
+    getProvinces();
+  }, [])
+
+  useEffect(() => {
+    setProvinces();
+  }, [provinces])
+
+
+  useEffect(() => {
+    console.log(currentProvinceSelected)
+    getMunicipalities();
+  }, [currentProvinceSelected])
+
+  useEffect(() => {
+    setMunicipalities();
+  }, [municipalities])
+
+
+
   const handleSignUp = async () => {
     setError('');
 
@@ -95,6 +183,9 @@ export default function SignupCompany() {
       cocNumber,
       vatNumber,
       address,
+      street,
+      number,
+      postalCode,
       contactPerson,
       contactNumber,
       email,
@@ -108,13 +199,18 @@ export default function SignupCompany() {
       !legalName ||
       !cocNumber ||
       !vatNumber ||
-      !address ||
+
+      !street ||
+      !number ||
+      !postalCode ||
       !contactPerson ||
       !currentGenderSelected ||
       !contactNumber ||
       !email ||
       !password ||
       !repeatPassword ||
+      !currentMunicipalitySelected ||
+      !currentProvinceSelected ||
       !acceptTerms
     ) {
       setError('All fields are required');
@@ -122,14 +218,14 @@ export default function SignupCompany() {
       setShowErrorModel(true);
       return;
     }
-    if(password !== repeatPassword ){
+    if (password !== repeatPassword) {
       setError('Password and reperat password should be same.');
       setLoading(false);
       setShowErrorModel(true);
       return;
     }
 
-    console.log(formData,selectedImage,currentGenderSelected)
+    console.log(formData, selectedImage, currentGenderSelected)
 
     const data = new FormData();
     data.append('email', formData.email);
@@ -140,17 +236,21 @@ export default function SignupCompany() {
     data.append('contact_person', formData.contactPerson);
     data.append('coc', formData.cocNumber);
     data.append('vat', formData.vatNumber);
-    data.append('address', formData.address);
     data.append('legal_name', formData.legalName);
     data.append('name_for_rating', formData.legalName);
     data.append('profile_pic', selectedImage.file);
-    data.append("user_type","company")
+    data.append('street', formData.street);
+    data.append('street_number', formData.number);
+    data.append('postal_code', formData.postalCode);
+    data.append('province_id', currentProvinceSelected.id);
+    data.append('municipality_id', currentMunicipalitySelected.id);
+    data.append("user_type", "company")
 
     const response = await signUpProfessionalAndCompany(data);
     if (!response) {
       setError("Please check your credentials again.");
     }
-    else{
+    else {
       navigate('/');
 
     }
@@ -294,16 +394,69 @@ export default function SignupCompany() {
 
                     <span> Address </span> <Info title={"Enter your full address."} />
                   </label>
+                  <div className="grid grid-cols-1 gap-2 md:grid-cols-2 ">
+                    <div className="w-full ">
+                      <input
+                        type="text"
+                        value={formData.street}
+                        name="street"
+                        onChange={handleChange}
+                        placeholder="Enter Street"
+                        className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                      />
+                    </div>
+                    <div className="w-full ">
+                      <input
+                        type="text"
+                        value={formData.number}
+                        name="number"
+                        onChange={handleChange}
+                        placeholder="Enter Number"
+                        className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                      />
+                    </div>
+                    <div className="w-full ">
+                      <input
+                        type="text"
+                        value={formData.postalCode}
+                        name="postalCode"
+                        onChange={handleChange}
+                        placeholder="Enter Postal Code"
+                        className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                      />
+                    </div>
+                    <div className="w-full ">
+                      <div className="w-full">
+                        <Select
+                          options={provinceOptions}
+                          placeholder={"Select Province"}
 
-                  <input
-                    type="text"
-                    id="address"
-                    placeholder="Enter Address"
-                    value={formData.address}
-                    name="address"
-                    onChange={handleChange}
-                    className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
-                  />
+                          selectedOption={currentProvinceSelected}
+                          handelChange={(event) => {
+                            if (event.value !== "selectProvince" && event.id != "loading") {
+                              console.log("Province", event);
+                              setCurrentProvinceSelected(event);
+                            }
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="w-full ">
+                      <div className="w-full">
+                        <Select
+                          options={municipalityOptions}
+                          placeholder={"Select Municipality"}
+                          selectedOption={currentMunicipalitySelected}
+                          handelChange={(event) => {
+                            if (event.value !== "selectMunicipality" && event.id != "loading") {
+                              console.log("Municipality", event);
+                              setCurrentMunicipalitySelected(event);
+                            }
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div>
                   <label
@@ -471,7 +624,7 @@ export default function SignupCompany() {
                     Subscribe to Blog
                   </label>
                 </div>
-                <button disabled={loading} onClick={handleSignUp} className={`${loading?"bg-gray-100 flex items-center justify-center":"bg-customGreen"} text-white w-full py-3  mb-4  rounded-md text-base font-medium`} >
+                <button disabled={loading} onClick={handleSignUp} className={`${loading ? "bg-gray-100 flex items-center justify-center" : "bg-customGreen"} text-white w-full py-3  mb-4  rounded-md text-base font-medium`} >
                   {
                     loading ?
                       <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Sign Up"
