@@ -28,10 +28,10 @@ export const AuthContextProvider = ({ children }) => {
       );
       if (response && response["status"] === true) {
         console.log(response["user"]);
-        if (credentials.rememberMe) {
-          await localStorage.setItem("token", JSON.stringify(response["token"]));
-          await localStorage.setItem("user", JSON.stringify(response["user"]));
-        }
+
+        await localStorage.setItem("token", JSON.stringify(response["token"]));
+        await localStorage.setItem("user", JSON.stringify(response["user"]));
+
         setToken(response["token"]);
         setIsLoggedIn(true);
         setUserProfile(response["user"]);
@@ -120,7 +120,7 @@ export const AuthContextProvider = ({ children }) => {
       const token = JSON.parse(await localStorage.getItem("token"));
       const user = JSON.parse(await localStorage.getItem("user"));
       // Implement the logic to check if the user is still authenticated (e.g., token validation)
-      
+
       if (token !== null && user !== null) {
         setToken(token);
         setIsLoggedIn(true);
