@@ -44,8 +44,8 @@ function App() {
           <>
             { isLoggedIn && <Route path="/" element={<Navigate to={`/${userProfile.user_type}`} />} />}
             <Route path="/professional" element={<Professional />} />
-            <Route path="/individual-client" element={<IndividualClient />} />
-            <Route path="/company-client" element={<CompanyClient />} />
+            <Route path="/individual" element={<IndividualClient />} />
+            <Route path="/company" element={<CompanyClient />} />
           </>
         ) : (
           <>
