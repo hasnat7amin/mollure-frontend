@@ -55,7 +55,7 @@ export default function ForgotPassword() {
                   </div>
 
                   <div className="py-5">
-                    <Link href="/verify-token">
+                    <Link to="/verify-token">
                       <button className="w-full py-3 mb-4 text-base font-medium text-white rounded-md bg-customGreen ">
                         Submit
                       </button>
@@ -64,7 +64,7 @@ export default function ForgotPassword() {
                     <p className="text-sm font-normal text-center text-gray-500">
                       Not a member?{" "}
                       <Link
-                        href="/select-user-type"
+                        to="/select-user-type"
                         className="font-medium text-customGreen"
                       >
                         Register

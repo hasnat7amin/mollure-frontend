@@ -143,7 +143,7 @@ export default function Login() {
                       </label>
                     </div>
                     <Link
-                      href="/forgot-password"
+                      to="/forgot-password"
                       className="text-gray-500 underline"
                     >
                       Forgot Password?
@@ -160,7 +160,7 @@ export default function Login() {
                     <p className="text-sm font-normal text-center text-gray-500">
                       Not a member?{" "}
                       <Link
-                        href="/select-user-type"
+                        to="/select-user-type"
                         className="font-medium text-customGreen"
                       >
                         Register

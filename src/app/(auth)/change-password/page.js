@@ -103,7 +103,7 @@ export default function ChangePassword() {
                     <p className="text-sm font-normal text-center text-gray-500">
                       Not a member?{" "}
                       <Link
-                        href="/select-user-type"
+                        to="/select-user-type"
                         className="font-medium text-customGreen"
                       >
                         Register

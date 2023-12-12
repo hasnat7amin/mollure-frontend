@@ -65,7 +65,7 @@ export default function VerifyToken() {
                   </div>
 
                   <div className="py-5">
-                    <Link href="/change-password">
+                    <Link to="/change-password">
                       <button className="w-full py-3 mb-4 text-base font-medium text-white rounded-md bg-customGreen ">
                         Submit
                       </button>

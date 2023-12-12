@@ -26,7 +26,7 @@ export default function SelectUserType() {
           <div className="flex items-start justify-center w-full h-full ">
             {/* login form */}
             <div className="w-full md:w-[32rem] flex flex-col space-y-4  my-10 md:mt-10  z-30">
-              <Link href="/signup-individual">
+              <Link to="/signup-individual">
                 <div className="px-3 py-12 bg-white border shadow-sm cursor-pointer md:px-6 rounded-3xl">
                   <h2 className="mb-2 text-2xl font-semibold md:text-3xl ">
                     For Individual client
@@ -36,7 +36,7 @@ export default function SelectUserType() {
                   </p> */}
                 </div>
               </Link>
-              <Link href="/signup-company">
+              <Link to="/signup-company">
                 <div className="px-3 py-12 text-white shadow-sm cursor-pointer md:px-6 bg-customGreen rounded-3xl">
                   <h2 className="mb-2 text-2xl font-semibold md:text-3xl ">
                     For Company client
@@ -46,7 +46,7 @@ export default function SelectUserType() {
                   </p> */}
                 </div>
               </Link>
-              <Link href="/signup-professional">
+              <Link to="/signup-professional">
                 {" "}
                 <div className="px-3 py-12 bg-white border shadow-sm cursor-pointer md:px-6 rounded-3xl">
                   <h2 className="mb-2 text-2xl font-semibold md:text-3xl ">
