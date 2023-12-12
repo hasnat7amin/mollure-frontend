@@ -179,7 +179,7 @@ export default function SignupIC() {
       setError("Please check your credentials again.");
     }
     else {
-      navigate.push('/');
+      navigate('/');
 
     }
 

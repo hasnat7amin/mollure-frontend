@@ -17,7 +17,7 @@ import ChangePassword from './app/(auth)/change-password/page';
 import VerifyToken from './app/(auth)/verify-token/page';
 
 function App() {
-  const { checkUser, isUserLoggedIn, getUserProfile } = useAuthContext();
+  const { checkUser, isUserLoggedIn, getUserProfile ,isLoggedIn} = useAuthContext();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -40,9 +40,9 @@ function App() {
   return (
     <Router>
       <Routes>
-        {(isUserLoggedIn() && userProfile) ? (
+        {isLoggedIn ? (
           <>
-            <Route path="/" element={<Navigate to={`/${userProfile.user_type}`} />} />
+            { isLoggedIn && <Route path="/" element={<Navigate to={`/${userProfile.user_type}`} />} />}
             <Route path="/professional" element={<Professional />} />
             <Route path="/individual-client" element={<IndividualClient />} />
             <Route path="/company-client" element={<CompanyClient />} />

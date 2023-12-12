@@ -36,7 +36,7 @@ export default function SuccessPopUp({
           <div className="relative z-50 w-[95%] md:w-[22rem] mx-auto my-6">
             <div className="relative px-2 py-4 bg-white rounded-lg shadow-lg">
               <div className="flex flex-col items-center justify-center gap-2 px-5 py-8 rounded-t">
-                <img src={correct} alt="Correct" />
+                <img src={correct} className="w-[6rem] h-[6rem]" alt="Correct" />
                 <h3 className="w-full px-5 mt-2 text-lg font-bold text-center text-softblue">
                   {title}
                 </h3>

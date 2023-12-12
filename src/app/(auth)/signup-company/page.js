@@ -151,7 +151,7 @@ export default function SignupCompany() {
       setError("Please check your credentials again.");
     }
     else{
-      navigate.push('/');
+      navigate('/');
 
     }
     setLoading(false);

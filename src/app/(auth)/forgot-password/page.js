@@ -1,13 +1,11 @@
 
 import { useState } from "react";
 import Navbar from "../../../components/navbar";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import leftLines from "../../../images/auth/lines_left.svg";
 import rightLines from "../../../images/auth/lines_right.svg";
 import greenCircle from "../../../images/auth/blur_circle.svg";
 import greenCircleLeft from "../../../images/auth/blur_circle_left.svg";
-import hideEye from "../../../images/auth/hide_eye.svg";
-import eye from "../../../images/auth/eye.svg";
+
 
 import { Link } from 'react-router-dom';
 

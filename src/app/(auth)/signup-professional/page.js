@@ -323,7 +323,7 @@ export default function SignupProfessional() {
       setLoading(false);
       setShowErrorModel(true);
     } else {
-      navigate.push('/');
+      navigate('/');
 
     }
     setLoading(false);

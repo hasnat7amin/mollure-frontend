@@ -151,7 +151,8 @@ export const AuthContextProvider = ({ children }) => {
         signUpProfessionalAndCompany,
         signUpIndividual,
         setError,
-        token
+        token,
+        isLoggedIn
       }}
     >
       {children}

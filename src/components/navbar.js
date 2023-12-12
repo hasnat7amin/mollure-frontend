@@ -17,13 +17,19 @@ import profile from "../images/professional/profile.jpg";
 import ConfirmationDeletePopUp from "./confirmation_delete_popup";
 import MessagePopUp from "./message_popup";
 import { useAuthContext } from "../contexts/AuthContextProvider";
-
+import { useNavigate } from "react-router-dom"
 
 export default function Navbar() {
-    const { logout, isUserLoggedIn, getUserProfile } = useAuthContext();
+    const { logout, isUserLoggedIn, getUserProfile, isLoggedIn } = useAuthContext();
+    const navigate = useNavigate();
     const [showProfileOptions, setShowProfileOptions] = useState(false);
     const [showConfirmDeleteAccountModel, setShowConfirmDeleteAccountModel] = useState(false);
     const [showSuccessDeleteAccountModel, setShowSuccessDeleteAccountModel] = useState(false);
+
+    const handleLogout = async () => {
+        await logout();
+        navigate("/");
+    }
 
     const handleConfirmDelete = () => {
         setShowConfirmDeleteAccountModel(false);
@@ -88,7 +94,7 @@ export default function Navbar() {
                                             <ul>
 
                                                 <li>
-                                                    <div onClick={() => logout()} className="flex items-center w-full gap-2 py-1 pl-3 rounded-md hover:bg-green-50">
+                                                    <div onClick={handleLogout} className="flex items-center w-full gap-2 py-1 pl-3 rounded-md hover:bg-green-50">
                                                         {/* <FaSignOutAlt color="black" /> */}
                                                         <span className="m-1 text-black">Logout</span>
                                                     </div>
