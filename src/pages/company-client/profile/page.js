@@ -156,7 +156,7 @@ export default function CompanyClientProfile() {
 
     setLoading(true);
     const {
-
+      contactPerson,
       firstName,
       lastName,
       contactNumber,
@@ -204,6 +204,9 @@ export default function CompanyClientProfile() {
     ) {
       data.append('contact_number', formData.contactNumber);
 
+    }
+    if(contactPerson){
+      data.append('contact_person', formData.contactPerson);
     }
     if (
       email
