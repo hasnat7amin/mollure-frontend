@@ -1,0 +1,15 @@
+<svg width="67" height="100" viewBox="0 0 67 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g opacity="0.2" clip-path="url(#clip0_1_19208)">
+<g clip-path="url(#clip1_1_19208)">
+<circle opacity="0.1" cx="17" cy="50" r="50" transform="rotate(90 17 50)" fill="black"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_1_19208">
+<rect width="100" height="67" fill="white" transform="translate(67) rotate(90)"/>
+</clipPath>
+<clipPath id="clip1_1_19208">
+<rect width="100" height="67" fill="white" transform="translate(67) rotate(90)"/>
+</clipPath>
+</defs>
+</svg>

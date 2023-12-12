@@ -1,38 +1,144 @@
-.App {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* <style> */
+/* @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap'); */
+/* </style> */
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('../public/fonts/PlayfairDisplay.ttf');
+}
+
+
+* {
+  font-family: 'Playfair Display', sans-serif;
+}
+
+/* input[type="checkbox"]:checked:before {
+  content: "✔";
+  font-size: 18px; 
+  display: flex !important;
+  color: #66C68F;
+  width: 18px; 
+  height: 18px !important;
   text-align: center;
+  margin-top: 3px;
+    margin-left: 4px;
+  
+} */
+
+input[type="checkbox"]:checked {
+  background-color: white;
+  border: 2px solid #66C68F;
+  /* CustomGreen color for the border */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Style the checkmark (tick) */
+input[type="checkbox"]:checked::before {
+  content: "";
+  display: block;
+  width: 11px;
+  height: 11px;
+  background-image: url(./images/tick.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-top: 1.5px;
+  margin-left: 1px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+select {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  background-image: url(./images/arrow_down.svg);
+  background-position: calc(100% - 10px) center;
+  background-repeat: no-repeat;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
 }
 
-.App-link {
-  color: #61dafb;
+
+.selectDropdown::-webkit-scrollbar {
+  /* Customize the scrollbar width */
+  width: 4px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.selectDropdown::-webkit-scrollbar-track {
+  /* Customize the scrollbar track */
+  background-color: white;
+}
+
+.selectDropdown::-webkit-scrollbar-thumb {
+  /* Customize the scrollbar thumb */
+  background-color: #E4E4E4;
+  margin-left: 12px;
+  border-radius: 20px;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.react-datepicker__header {
+  border-bottom: none !important;
+}
+
+.react-datepicker {
+  padding: 8px !important;
+  border-radius: 12px !important;
+  border: none !important;
+  box-shadow: 0px 0px 7px gray !important;
+}
+
+.react-datepicker__navigation--previous, .react-datepicker__navigation--next {
+  top: 1.1rem !important;
+}
+
+.react-datepicker__header {
+  background-color: white !important;
+  border: none;
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: #66C68F !important;
+}
+
+.react-datepicker__current-month {
+  color: #66C68F !important;
+
+}
+
+
+.react-datepicker__day-names .react-datepicker__day-name {
+  color: #66C68F !important;
+
+}
+
+.react-datepicker__day--keyboard-selected, .react-datepicker__day--selected {
+  border-radius: 50% !important;
+  background-color: #66C68F !important;
+  color: white !important;
+}
+
+.react-datepicker__day:hover{
+  border-radius: 50% !important;
+}
+
+.react-datepicker__input-container,.react-datepicker-wrapper{
+  width: 100%;
 }

@@ -3,11 +3,29 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { AuthContextProvider } from './contexts/AuthContextProvider';
+import { ProvinceContextProvider } from './contexts/ProvincesContextProvider';
+import { MunicipalityContextProvider } from './contexts/MunicipalityContextProvider';
+import { ProfessionalContextProvider } from './contexts/ProfessionalContextProvider';
+import { CompanyContextProvider } from './contexts/CompanyContextProvider';
+import { IndividualClientContextProvider } from './contexts/IndividualClientContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <AuthContextProvider>
+      <ProvinceContextProvider>
+        <MunicipalityContextProvider>
+          <ProfessionalContextProvider>
+            <CompanyContextProvider>
+              <IndividualClientContextProvider>
+                <App />
+              </IndividualClientContextProvider>
+            </CompanyContextProvider>
+          </ProfessionalContextProvider>
+        </MunicipalityContextProvider>
+      </ProvinceContextProvider>
+    </AuthContextProvider>
   </React.StrictMode>
 );
 
