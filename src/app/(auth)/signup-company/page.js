@@ -201,7 +201,7 @@ export default function SignupCompany() {
     } = formData;
 
     if (
-      !selectedImage ||
+      // !selectedImage ||
       !legalName ||
       !cocNumber ||
       !vatNumber ||
@@ -246,7 +246,9 @@ export default function SignupCompany() {
     data.append('vat', formData.vatNumber);
     data.append('legal_name', formData.legalName);
     data.append('name_for_rating', formData.legalName);
-    data.append('profile_pic', selectedImage.file);
+    if(selectedImage){
+      data.append('profile_pic', selectedImage.file);
+    }
     data.append('street', formData.street);
     data.append('street_number', formData.number);
     data.append('postal_code', formData.postalCode);
@@ -353,7 +355,7 @@ export default function SignupCompany() {
                     className="flex items-end gap-1 text-sm font-normal text-gray-500"
                   >
 
-                    <span className="pt-[1px]"> Legal Name </span> <Info title={"Enter your full name."} />
+                    <span > Legal Name </span> <Info title={"Enter your full name."} />
                   </label>
                   <input
                     type="text"

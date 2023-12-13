@@ -536,11 +536,16 @@ export default function SignupProfessional() {
                 </div>
                 <div>
                   <label
-                    htmlFor="documentation"
-                    className="block text-sm font-normal text-gray-500"
+                    // htmlFor="documentation"
+                    className="inline-block   items-center gap-1 text-sm font-normal text-gray-500"
+                    style={{ whiteSpace: 'wrap',  }}
                   >
-                    Provide documentation for the registration in the chamber of
-                    e-commerce:
+                    <span>
+                      Provide documentation for the registration in the chamber of e-commerce
+                    </span>
+                    <span className="ps-1" style={{ display: 'inline-block',  }}>
+                      <Info pb={"pb-0"} title={"Please enter your doc in pdf format."} />
+                    </span>
                   </label>
                   <div>
                     <div
@@ -591,9 +596,9 @@ export default function SignupProfessional() {
                 <div>
                   <label
                     htmlFor="pastWork1"
-                    className="block text-sm font-normal text-gray-500"
+                    className="flex items-end gap-1 text-sm font-normal text-gray-500"
                   >
-                    Provide examples of past work
+                    <span>Provide examples of past work</span> <Info title={"Please enter your previous work."} />
                   </label>
                   <div className="relative">
                     <input
@@ -608,7 +613,7 @@ export default function SignupProfessional() {
                   </div>
                 </div>
                 <div>
-                  
+
                   <div className="relative">
                     <input
                       type="text"
@@ -622,7 +627,7 @@ export default function SignupProfessional() {
                   </div>
                 </div>
                 <div>
-                 
+
                   <div className="relative">
                     <input
                       type="text"
