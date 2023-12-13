@@ -25,10 +25,11 @@ import Select from "../../../components/select";
 import Info from "../../../components/info";
 import ErrorPopUp from "../../../components/error_popup";
 import { useAuthContext } from "../../../contexts/AuthContextProvider";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 import { useProvinceContext } from "../../../contexts/ProvincesContextProvider";
 import { useMunicipalityContext } from "../../../contexts/MunicipalityContextProvider";
+import SuccessPopUp from "../../../components/success_popup";
 
 export default function SignupProfessional() {
   const navigate = useNavigate();
@@ -73,6 +74,7 @@ export default function SignupProfessional() {
   const [error, setError] = useState(false);
   const [showErrorModel, setShowErrorModel] = useState(false)
   const { signUpProfessionalAndCompany, } = useAuthContext();
+  const [showSuccessModel, setShowSuccessModel] = useState(false)
 
 
 
@@ -266,8 +268,6 @@ export default function SignupProfessional() {
       !number ||
       !postalCode ||
       !worklink1 ||
-      !worklink2 ||
-      !worklink3 ||
       !password ||
       !repeatPassword ||
       !acceptTerms ||
@@ -323,7 +323,7 @@ export default function SignupProfessional() {
       setLoading(false);
       setShowErrorModel(true);
     } else {
-      navigate('/');
+      setShowSuccessModel(true);
 
     }
     setLoading(false);
@@ -350,9 +350,11 @@ export default function SignupProfessional() {
                   <h2 className="text-[28px] mb-2 font-semibold">Sign Up</h2>
                   <p className="text-sm font-normal text-gray-500">
                     By hitting Register, You are Accepting our{" "}
-                    <span className="text-sm font-semibold text-black underline">
-                      Terms & conditions
-                    </span>
+                    <Link to="/terms-and-conditions">
+                      <span className="text-sm font-semibold text-black underline">
+                        Terms & conditions.
+                      </span>
+                    </Link>
                   </p>
                 </div>
                 {/* image */}
@@ -554,7 +556,7 @@ export default function SignupProfessional() {
                       type="file"
                       id="documentation"
                       ref={docInputRef}
-                      accept=".pdf, .doc, .docx, .jpg, .jpeg, .png"
+                      accept=".pdf"
                       onChange={handleDocumentFileChange}
                       className="hidden"
                     />
@@ -606,12 +608,7 @@ export default function SignupProfessional() {
                   </div>
                 </div>
                 <div>
-                  <label
-                    htmlFor="pastWork2"
-                    className="block text-sm font-normal text-gray-500"
-                  >
-                    Work Link 2
-                  </label>
+                  
                   <div className="relative">
                     <input
                       type="text"
@@ -625,12 +622,7 @@ export default function SignupProfessional() {
                   </div>
                 </div>
                 <div>
-                  <label
-                    htmlFor="pastWork3"
-                    className="block text-sm font-normal text-gray-500"
-                  >
-                    Work Link 3
-                  </label>
+                 
                   <div className="relative">
                     <input
                       type="text"
@@ -800,13 +792,15 @@ export default function SignupProfessional() {
                     className="w-4 h-4 border-2 rounded-sm appearance-none cursor-pointer"
                   />
                   <label
-                    htmlFor="acceptTerms"
+                    // htmlFor="acceptTerms"
                     className="text-sm font-normal text-gray-500 cursor-pointer ms-2"
                   >
                     Accept our{" "}
-                    <span className="text-black underline">
-                      "Terms & conditions"
-                    </span>
+                    <Link to="/terms-and-conditions">
+                      <span className="text-black underline">
+                        "Terms & conditions"
+                      </span>
+                    </Link>
                   </label>
                 </div>
                 <div className="flex items-center">
@@ -819,7 +813,7 @@ export default function SignupProfessional() {
                     className="w-4 h-4 border-2 rounded-sm appearance-none cursor-pointer"
                   />
                   <label
-                    htmlFor="subscribeToBlog"
+                    // htmlFor="subscribeToBlog"
                     className="text-sm font-normal text-gray-500 cursor-pointer ms-2"
                   >
                     Subscribe to Blog
@@ -837,6 +831,8 @@ export default function SignupProfessional() {
         </main>
         {/* error popup */}
         <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
+        {/* success popup */}
+        <SuccessPopUp to={"/"} title={"Thank you for registration. Please verify your email first."} showModel={showSuccessModel} setShowModel={setShowSuccessModel} />
 
       </div>
       {/* left images */}

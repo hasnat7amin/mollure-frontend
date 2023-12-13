@@ -21,7 +21,8 @@ import Select from "../../../components/select";
 import CustomDatePicker from "../../../components/custom_date_picker";
 import ErrorPopUp from "../../../components/error_popup";
 import { useAuthContext } from "../../../contexts/AuthContextProvider";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
+import SuccessPopUp from "../../../components/success_popup";
 
 export default function SignupIC() {
   const navigate = useNavigate();
@@ -45,6 +46,7 @@ export default function SignupIC() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [showErrorModel, setShowErrorModel] = useState(false)
+  const [showSuccessModel, setShowSuccessModel] = useState(false)
   const { signUpIndividual, } = useAuthContext();
 
   const [formData, setFormData] = useState({
@@ -52,6 +54,7 @@ export default function SignupIC() {
     lastName: '',
     address: '',
     contactNumber: '',
+    dob: null,
     email: '',
     password: '',
     repeatPassword: '',
@@ -128,6 +131,7 @@ export default function SignupIC() {
       password,
       repeatPassword,
       acceptTerms,
+      dob,
     } = formData;
 
     if (
@@ -141,7 +145,7 @@ export default function SignupIC() {
       !repeatPassword ||
       !acceptTerms ||
       !currentNameForRating ||
-      !selectedDate
+      !dob
     ) {
       setError('All fields are required');
       setLoading(false);
@@ -156,7 +160,7 @@ export default function SignupIC() {
       return;
     }
 
-    console.log(formData, selectedImage, currentGenderSelected)
+    console.log(dob, selectedImage, currentGenderSelected)
 
     const data = new FormData();
     data.append('email', formData.email);
@@ -168,7 +172,7 @@ export default function SignupIC() {
     data.append('first_name', formData.firstName);
     data.append('last_name', formData.lastName);
     data.append('name_for_rating', currentNameForRating.value);
-    data.append('dob', JSON.stringify(selectedDate).toString().slice(1, -1));
+    data.append('dob', dob);
     if(selectedImage){
       data.append('profile_pic', selectedImage.file);
     }
@@ -177,10 +181,12 @@ export default function SignupIC() {
     const response = await signUpIndividual(data);
     if (!response) {
       setError("Please check your credentials again.");
+      setLoading(false);
+      setShowErrorModel(true);
     }
     else {
-      navigate('/');
-
+      // navigate('/');
+      setShowSuccessModel(true);
     }
 
     setLoading(false);
@@ -205,9 +211,11 @@ export default function SignupIC() {
                   <h2 className="text-[28px] mb-2 font-semibold">Sign Up</h2>
                   <p className="text-sm font-normal text-gray-500">
                     By hitting Register, You are Accepting our{" "}
-                    <span className="text-sm font-semibold text-black underline">
-                      Terms & conditions
-                    </span>
+                    <Link to="/terms-and-conditions">
+                      <span className="text-sm font-semibold text-black underline">
+                        Terms & conditions.
+                      </span>
+                    </Link>
                   </p>
                 </div>
                 {/* image */}
@@ -326,9 +334,15 @@ export default function SignupIC() {
                   >
                     Date of Birth
                   </label>
-                  <div className="w-full">
-                    <CustomDatePicker placeholder="Date of Birth" value={selectedDate} onDateChange={handleDateChange} />
-                  </div>
+                  <input
+                      type="date"
+                      id="firstName"
+                      value={formData.dob}
+                      name="dob"
+                      onChange={handleChange}
+                      placeholder="Enter Date of Birth"
+                      className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                    />
                 </div>
 
                 <div>
@@ -457,13 +471,15 @@ export default function SignupIC() {
                   />
 
                   <label
-                    htmlFor="acceptTerms"
+                    // htmlFor="acceptTerms"
                     className="text-sm font-normal text-gray-500 cursor-pointer ms-2"
                   >
                     Accept our{" "}
-                    <span className="text-black underline">
-                      "Terms & conditions."
-                    </span>
+                    <Link to="/terms-and-conditions">
+                      <span className="text-sm font-semibold text-black underline">
+                        Terms & conditions.
+                      </span>
+                    </Link>
                   </label>
                 </div>
                 <div className="flex items-center">
@@ -476,7 +492,7 @@ export default function SignupIC() {
                     className="w-4 h-4 border-2 rounded-sm appearance-none cursor-pointer"
                   />
                   <label
-                    htmlFor="subscribeToBlog"
+                    // htmlFor="subscribeToBlog"
                     className="text-sm font-normal text-gray-500 cursor-pointer ms-2"
                   >
                     Subscribe to Blog
@@ -494,7 +510,9 @@ export default function SignupIC() {
         </main>
         {/* error popup */}
         <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
-
+        {/* success popup */}
+        <SuccessPopUp to={"/"} title={"Thank you for registration. Please verify your email first."} showModel={showSuccessModel} setShowModel={setShowSuccessModel}  />
+        
       </div>
       {/* left images */}
       <div className="absolute top-[31%] left-[0%]">

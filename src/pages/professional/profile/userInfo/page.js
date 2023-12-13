@@ -614,7 +614,7 @@ export default function UserInfo() {
                       id="documentation"
                       disabled={true}
                       ref={docInputRef}
-                      accept=".pdf, .doc, .docx, .jpg, .jpeg, .png"
+                      accept=".pdf"
                       // onChange={handleDocumentFileChange}
                       className="hidden"
                     />
@@ -631,7 +631,7 @@ export default function UserInfo() {
                             href={imageUrl + doc.doc} // Replace 'doc.url' with the actual URL of the document
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-[97%] line-clamp-1 m-0 cursor-pointer "
+                            className="w-[97%] line-clamp-1 m-0 cursor-pointer underline"
                           >
                             {doc.doc}
                           </a>

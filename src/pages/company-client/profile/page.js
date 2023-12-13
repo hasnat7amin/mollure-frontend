@@ -21,6 +21,7 @@ import Info from "../../../components/info";
 import { useCompanyContext } from "../../../contexts/CompanyContextProvider";
 import { useProvinceContext } from "../../../contexts/ProvincesContextProvider";
 import { useMunicipalityContext } from "../../../contexts/MunicipalityContextProvider";
+import SuccessPopUp from "../../../components/success_popup";
 
 
 
@@ -94,6 +95,7 @@ export default function CompanyClientProfile() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [showErrorModel, setShowErrorModel] = useState(false)
+  const [showSuccessModel, setShowSuccessModel] = useState(false)
 
 
 
@@ -575,16 +577,32 @@ export default function CompanyClientProfile() {
                   >
                     Contact Person
                   </label>
-                  <input
-                    type="text"
-                    disabled={!isUpdateButtonVisible}
-                    value={formData.contactPerson}
-                    name="contactPerson"
-                    onChange={handleChange}
-                    id="contactPerson"
-                    placeholder="Enter Contact Person"
-                    className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
-                  />
+                  <div className="flex flex-col space-y-5 md:space-x-2 md:space-y-0 md:flex-row">
+                    <div className="w-full md:w-1/2">
+                      <input
+                        type="text"
+                        id="firstName"
+                        disabled={!isUpdateButtonVisible}
+                        value={formData.firstName}
+                        name="firstName"
+                        onChange={handleChange}
+                        placeholder="Enter First Name"
+                        className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                      />
+                    </div>
+                    <div className="w-full md:w-1/2">
+                      <input
+                        type="text"
+                        id="lastName"
+                        disabled={!isUpdateButtonVisible}
+                        value={formData.lastName}
+                        name="lastName"
+                        onChange={handleChange}
+                        placeholder="Enter Last Name"
+                        className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div>
                   <label
@@ -683,6 +701,8 @@ export default function CompanyClientProfile() {
         </main>
         {/* error popup */}
         <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
+        {/* success popup */}
+        <SuccessPopUp to={"/"} title={"Thank you for registration. Please verify your email first."} showModel={showSuccessModel} setShowModel={setShowSuccessModel} />
 
       </div>
     </section>

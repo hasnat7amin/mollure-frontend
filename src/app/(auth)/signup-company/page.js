@@ -11,7 +11,6 @@ import rightLines from "../../../images/auth/lines_right.svg";
 import greenCircle from "../../../images/auth/blur_circle.svg";
 import greenCircleLeft from "../../../images/auth/blur_circle_left.svg";
 import { BsCamera } from "react-icons/bs";
-
 import TitleBar from "../../../components/titleBar";
 import hideEye from "../../../images/auth/hide_eye.svg";
 import eye from "../../../images/auth/eye.svg";
@@ -20,9 +19,10 @@ import Info from "../../../components/info";
 import ErrorPopUp from "../../../components/error_popup";
 import spinner from "../../../images/spinner.svg";
 import { useAuthContext } from "../../../contexts/AuthContextProvider";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useProvinceContext } from "../../../contexts/ProvincesContextProvider";
 import { useMunicipalityContext } from "../../../contexts/MunicipalityContextProvider";
+import SuccessPopUp from "../../../components/success_popup";
 
 export default function SignupCompany() {
   const navigate = useNavigate();
@@ -38,6 +38,8 @@ export default function SignupCompany() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [showErrorModel, setShowErrorModel] = useState(false)
+  const [showSuccessModel, setShowSuccessModel] = useState(false)
+
   const { signUpProfessionalAndCompany, } = useAuthContext();
   const { provinces,
     getAllProvinces, } = useProvinceContext();
@@ -62,6 +64,8 @@ export default function SignupCompany() {
     legalName: '',
     cocNumber: '',
     vatNumber: '',
+    firstName: '',
+    lastName: '',
     address: '',
     street: '',
     number: '',
@@ -182,6 +186,8 @@ export default function SignupCompany() {
       legalName,
       cocNumber,
       vatNumber,
+      firstName,
+      lastName,
       address,
       street,
       number,
@@ -199,11 +205,11 @@ export default function SignupCompany() {
       !legalName ||
       !cocNumber ||
       !vatNumber ||
-
+      !firstName ||
+      !lastName ||
       !street ||
       !number ||
       !postalCode ||
-      !contactPerson ||
       !currentGenderSelected ||
       !contactNumber ||
       !email ||
@@ -234,6 +240,8 @@ export default function SignupCompany() {
     data.append('gender', currentGenderSelected.value);
     data.append('contact_number', formData.contactNumber);
     data.append('contact_person', formData.contactPerson);
+    data.append('first_name', formData.firstName);
+    data.append('last_name', formData.lastName);
     data.append('coc', formData.cocNumber);
     data.append('vat', formData.vatNumber);
     data.append('legal_name', formData.legalName);
@@ -249,9 +257,12 @@ export default function SignupCompany() {
     const response = await signUpProfessionalAndCompany(data);
     if (!response) {
       setError("Please check your credentials again.");
+      setLoading(false);
+      setShowErrorModel(true);
     }
     else {
-      navigate('/');
+      // navigate('/');
+      setShowSuccessModel(true);
 
     }
     setLoading(false);
@@ -277,9 +288,11 @@ export default function SignupCompany() {
                   <h2 className="text-[28px] mb-2 font-semibold">Sign Up</h2>
                   <p className="text-sm font-normal text-gray-500">
                     By hitting Register, You are Accepting our{" "}
-                    <span className="text-sm font-semibold text-black underline">
-                      Terms & conditions.
-                    </span>
+                    <Link to="/terms-and-conditions">
+                      <span className="text-sm font-semibold text-black underline">
+                        Terms & conditions.
+                      </span>
+                    </Link>
                   </p>
                 </div>
                 {/* image */}
@@ -340,7 +353,7 @@ export default function SignupCompany() {
                     className="flex items-end gap-1 text-sm font-normal text-gray-500"
                   >
 
-                    <span> Legal Name </span> <Info title={"Enter your full name."} />
+                    <span className="pt-[1px]"> Legal Name </span> <Info title={"Enter your full name."} />
                   </label>
                   <input
                     type="text"
@@ -392,7 +405,7 @@ export default function SignupCompany() {
                     className="flex items-end gap-1 text-sm font-normal text-gray-500"
                   >
 
-                    <span> Address </span> <Info title={"Enter your full address."} />
+                    <span className="pt-[1px]"> Address </span> <Info title={"Enter your full address."} />
                   </label>
                   <div className="grid grid-cols-1 gap-2 md:grid-cols-2 ">
                     <div className="w-full ">
@@ -465,15 +478,30 @@ export default function SignupCompany() {
                   >
                     Contact Person
                   </label>
-                  <input
-                    type="text"
-                    id="contactPerson"
-                    placeholder="Enter Contact Person"
-                    value={formData.contactPerson}
-                    name="contactPerson"
-                    onChange={handleChange}
-                    className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
-                  />
+                  <div className="flex flex-col space-y-5 md:space-x-2 md:space-y-0 md:flex-row">
+                    <div className="w-full md:w-1/2">
+                      <input
+                        type="text"
+                        id="firstName"
+                        value={formData.firstName}
+                        name="firstName"
+                        onChange={handleChange}
+                        placeholder="Enter First Name"
+                        className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                      />
+                    </div>
+                    <div className="w-full md:w-1/2">
+                      <input
+                        type="text"
+                        id="lastName"
+                        value={formData.lastName}
+                        name="lastName"
+                        onChange={handleChange}
+                        placeholder="Enter Last Name"
+                        className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div>
                   <label
@@ -593,32 +621,34 @@ export default function SignupCompany() {
                   <input
                     type="checkbox"
                     id="acceptTerms"
-                    value={formData.acceptTerms}
+                    checked={formData.acceptTerms}
                     name="acceptTerms"
                     onChange={handleChange}
                     className="w-4 h-4 border-2 rounded-sm appearance-none cursor-pointer"
                   />
                   <label
-                    htmlFor="acceptTerms"
+                    // htmlFor="acceptTerms"
                     className="text-sm font-normal text-gray-500 cursor-pointer ms-2"
                   >
                     Accept our{" "}
-                    <span className="text-black underline">
-                      "Terms & conditions."
-                    </span>
+                    <Link to="/terms-and-conditions">
+                      <span className="text-black underline">
+                        "Terms & conditions."
+                      </span>
+                    </Link>
                   </label>
                 </div>
                 <div className="flex items-center">
                   <input
                     type="checkbox"
                     id="subscribeToBlog"
-                    value={formData.subscribeToBlog}
+                    checked={formData.subscribeToBlog}
                     name="subscribeToBlog"
                     onChange={handleChange}
                     className="w-4 h-4 border-2 rounded-sm appearance-none cursor-pointer"
                   />
                   <label
-                    htmlFor="subscribeToBlog"
+                    // htmlFor="subscribeToBlog"
                     className="text-sm font-normal text-gray-500 cursor-pointer ms-2"
                   >
                     Subscribe to Blog
@@ -636,6 +666,8 @@ export default function SignupCompany() {
         </main>
         {/* error popup */}
         <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
+        {/* success popup */}
+        <SuccessPopUp to={"/"} title={"Thank you for registration. Please verify your email first."} showModel={showSuccessModel} setShowModel={setShowSuccessModel} />
 
       </div>
       {/* left images */}

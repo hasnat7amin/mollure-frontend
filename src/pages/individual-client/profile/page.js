@@ -129,6 +129,7 @@ export default function IndividualClientProfile() {
       lastName: clientInfo.client.last_name ? clientInfo.client.last_name : "",
       contactNumber: clientInfo.client.contact_number ? clientInfo.client.contact_number : "",
       contactPerson: clientInfo.client.contact_person ? clientInfo.client.contact_person : "",
+      dob: clientInfo.client.dob ? clientInfo.client.dob : "",
       email: clientInfo.email ? clientInfo.email : "",
       // email: clientInfo.email ? clientInfo.email : "",
       subscribeToBlog: clientInfo.subscribe_to_newsletter || false
@@ -169,6 +170,7 @@ export default function IndividualClientProfile() {
       lastName,
       contactNumber,
       email,
+      dob,
       password,
       repeatPassword,
     } = formData;
@@ -232,9 +234,9 @@ export default function IndividualClientProfile() {
     }
 
     if (
-      selectedDate
+      dob
     ) {
-      data.append('dob', JSON.stringify(selectedDate).toString().slice(1,-1));
+      data.append('dob', dob);
     }
     data.append('subscribe_to_newsletter', formData.subscribeToBlog);
     
@@ -435,8 +437,15 @@ export default function IndividualClientProfile() {
                     Date of Birth
                   </label>
 
-                  <CustomDatePicker disabled={!isUpdateButtonVisible} value={selectedDate} placeholder="Date of Birth" onDateChange={handleDateChange} />
-
+                  <input
+                      type="date"
+                      id="firstName"
+                      value={formData.dob}
+                      name="dob"
+                      onChange={handleChange}
+                      placeholder="Enter Date of Birth"
+                      className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                    />
                 </div>
 
                 <div>

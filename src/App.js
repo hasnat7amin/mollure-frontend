@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Professional from './app/professional/page';
 import IndividualClient from './app/individual-client/page';
 import CompanyClient from './app/company-client/page';
+import TermsAndConditions from './app/terms-and-conditions/page';
 import Login from './app/(auth)/login/page';
 import { useAuthContext } from './contexts/AuthContextProvider';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
@@ -58,6 +59,7 @@ function App() {
             <Route path="/signup-company" element={<SignupCompany />} />
             <Route path="/signup-professional" element={<SignupProfessional />} />
             <Route path="/signup-individual" element={<SignupIC />} />
+            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
           </>
         )}
       </Routes>
