@@ -295,7 +295,7 @@ export default function SignupProfessional() {
     data.append('subscribe_to_newsletter', formData.subscribeToBlog?1:0);
     data.append('gender', currentGenderSelected.value);
     data.append('contact_number', formData.contactNumber);
-    data.append('contact_person', formData.contactPerson);
+    // data.append('contact_person', formData.contactPerson);
     data.append('coc', formData.cocNumber);
     data.append('vat', formData.vatNumber);
     data.append('legal_name', formData.legalName);
