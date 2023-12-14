@@ -138,6 +138,33 @@ export const AuthContextProvider = ({ children }) => {
     return userProfile;
   };
 
+  const forgotPassword = async (credentials) => {
+    try {
+
+      const headers = jsonHeaderWithoutToken();
+
+      const response = await ApiTemplate(
+        "post",
+        "/api/forget-password",
+        credentials,
+        headers,
+
+      );
+      if (response && response["status"] === true) {
+        return true;
+        // window.location.href="/" ;
+      } else {
+        console.log("error response",response)
+        return false
+      }
+
+    } catch (error) {
+      console.log("error.message message: ", error)
+      return false;
+    }
+  };
+
+
   return (
     <AuthContext.Provider
       value={{
@@ -152,7 +179,8 @@ export const AuthContextProvider = ({ children }) => {
         signUpIndividual,
         setError,
         token,
-        isLoggedIn
+        isLoggedIn,
+        forgotPassword
       }}
     >
       {children}

@@ -17,8 +17,8 @@ export const ProfessionalContextProvider = ({ children }) => {
   const [servicesById, setServicesById] = useState(null);
   const [categoryAndServiceForTeam, setCategoryAndServiceForTeam] = useState(null);
   const [teamMembers, setTeamMembers] = useState(null)
-  const [provincesAndMunicipalities, setProvincesAndMunicipalities]= useState(null);
-  const [desiredLocation,setDesiredLocation] = useState(null);
+  const [provincesAndMunicipalities, setProvincesAndMunicipalities] = useState(null);
+  const [desiredLocation, setDesiredLocation] = useState(null);
 
 
   const getUserInfo = async (token) => {
@@ -468,7 +468,7 @@ export const ProfessionalContextProvider = ({ children }) => {
       const headers = jsonHeader(token);
       const response = await ApiTemplate("get", "/api/desired_location", {}, headers);
 
-      if (response && response["success"] ) {
+      if (response && response["success"]) {
         setDesiredLocation(response.data[0]);
       } else {
         setDesiredLocation(null);
@@ -483,16 +483,32 @@ export const ProfessionalContextProvider = ({ children }) => {
       const headers = multiFormHeader(token);
       const response = await ApiTemplate("post", "/api/desired_location", data, headers);
 
-      if (response && response["success"] ) {
+      if (response && response["success"]) {
         await getDesiredLocation(token);
         return true;
       } else {
-       
+
         return false;
 
       }
     } catch (error) {
       console.error("Error fetching user information:", error);
+      return false;
+    }
+  };
+
+
+  const copyTemplate = async (token, id) => {
+    try {
+      const headers = jsonHeader(token);
+      const response = await ApiTemplate("post", "/api//copyTemplate/" + id, {}, headers);
+
+      if (response && response["success"]) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
       return false;
     }
   };
@@ -537,7 +553,9 @@ export const ProfessionalContextProvider = ({ children }) => {
         getProvincesAndMunicipalities,
         desiredLocation,
         updateDesiredLocation,
-        getDesiredLocation
+        getDesiredLocation,
+        copyTemplate,
+
 
       }}
     >

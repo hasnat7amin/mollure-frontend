@@ -292,7 +292,7 @@ export default function SignupProfessional() {
     const data = new FormData();
     data.append('email', formData.email);
     data.append('password', formData.password);
-    data.append('subscribe_to_newsletter', formData.subscribeToBlog.toString());
+    data.append('subscribe_to_newsletter', formData.subscribeToBlog?1:0);
     data.append('gender', currentGenderSelected.value);
     data.append('contact_number', formData.contactNumber);
     data.append('contact_person', formData.contactPerson);
@@ -363,7 +363,7 @@ export default function SignupProfessional() {
                     htmlFor="image"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Upload img
+                    Upload Image
                   </label>
                   <div
                     className={

@@ -18,7 +18,7 @@ async function ApiTemplate(method,url,data,headers) {
       return data;
     })
     .catch(function (error) {
-      console.log("alert error: " + error)
+      return error;
     });
 
     return response;

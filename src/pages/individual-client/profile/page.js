@@ -95,7 +95,7 @@ export default function IndividualClientProfile() {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setSelectedImage({file:file,base64:e.target.result});
+        setSelectedImage({ file: file, base64: e.target.result });
       };
       reader.readAsDataURL(file);
     }
@@ -132,12 +132,12 @@ export default function IndividualClientProfile() {
       dob: clientInfo.client.dob ? clientInfo.client.dob : "",
       email: clientInfo.email ? clientInfo.email : "",
       // email: clientInfo.email ? clientInfo.email : "",
-      subscribeToBlog: clientInfo.subscribe_to_newsletter || false
+      subscribeToBlog: clientInfo.subscribe_to_newsletter===1?true:false
     })
 
     // clientInfo  && setFormData({
     //   ...formData,
-    
+
     // })
 
     if (clientInfo && clientInfo.client && clientInfo.client.first_name != "" && clientInfo.client.last_name != "") {
@@ -238,8 +238,8 @@ export default function IndividualClientProfile() {
     ) {
       data.append('dob', dob);
     }
-    data.append('subscribe_to_newsletter', formData.subscribeToBlog);
-    
+    data.append('subscribe_to_newsletter', formData.subscribeToBlog?1:0);
+
 
 
 
@@ -300,7 +300,7 @@ export default function IndividualClientProfile() {
                     htmlFor="image"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Upload img
+                    Upload Image
                   </label>
                   <div
                     className={
@@ -438,14 +438,16 @@ export default function IndividualClientProfile() {
                   </label>
 
                   <input
-                      type="date"
-                      id="firstName"
-                      value={formData.dob}
-                      name="dob"
-                      onChange={handleChange}
-                      placeholder="Enter Date of Birth"
-                      className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
-                    />
+                    type="date"
+                    id="firstName"
+                    value={formData.dob}
+                    disabled={!isUpdateButtonVisible}
+
+                    name="dob"
+                    onChange={handleChange}
+                    placeholder="Enter Date of Birth"
+                    className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                  />
                 </div>
 
                 <div>
@@ -511,7 +513,7 @@ export default function IndividualClientProfile() {
                 </div>
                 <div className="flex items-center">
                   <input
-                   disabled={!isUpdateButtonVisible}
+                    disabled={!isUpdateButtonVisible}
                     type="checkbox"
                     id="subscribeToBlog"
                     checked={formData.subscribeToBlog}

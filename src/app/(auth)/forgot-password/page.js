@@ -5,17 +5,62 @@ import leftLines from "../../../images/auth/lines_left.svg";
 import rightLines from "../../../images/auth/lines_right.svg";
 import greenCircle from "../../../images/auth/blur_circle.svg";
 import greenCircleLeft from "../../../images/auth/blur_circle_left.svg";
+import spinner from "../../../images/spinner.svg";
 
 
 import { Link } from 'react-router-dom';
+import { useAuthContext } from "../../../contexts/AuthContextProvider";
+import ErrorPopUp from "../../../components/error_popup";
+import SuccessPopUp from "../../../components/success_popup";
 
 
 export default function ForgotPassword() {
-  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [showErrorModel, setShowErrorModel] = useState(false)
+  const [showSuccessModel, setShowSuccessModel] = useState(false)
+  const { forgotPassword, } = useAuthContext();
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+  const [email, setEmail] = useState("")
+
+  const handleSubmit = async () => {
+    setError('');
+
+    setLoading(true);
+
+    if (
+      // !selectedImage ||
+      !email
+
+    ) {
+      setError('Please enter your email address.');
+      setLoading(false);
+      setShowErrorModel(true);
+      return;
+    }
+
+
+    const data = new FormData();
+    data.append('email', email);
+
+    const response = await forgotPassword(data);
+    if (!response) {
+      setError("Please check your email again.");
+      setLoading(false);
+      setShowErrorModel(true);
+    }
+    else {
+      // navigate('/');
+      setShowSuccessModel(true);
+
+    }
+    setLoading(false);
+
+    // Set user as logged in (you can replace this with actual login logic)
+    // setIsUserLoggedIn(true);
   };
+
+
   return (
     <section className="relative px-3 md:p-0">
       <div className="md:w-[85%] mx-auto w-full">
@@ -46,6 +91,8 @@ export default function ForgotPassword() {
                       <input
                         type="email"
                         id="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         placeholder="Enter Email"
                         className="w-full px-3 py-3 mt-1 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
                       />
@@ -53,11 +100,13 @@ export default function ForgotPassword() {
                   </div>
 
                   <div className="py-5">
-                    <Link to="/verify-token">
-                      <button className="w-full py-3 mb-4 text-base font-medium text-white rounded-md bg-customGreen ">
-                        Submit
-                      </button>
-                    </Link>
+
+                    <button disabled={loading} onClick={handleSubmit} className={`${loading ? "bg-gray-100 flex items-center justify-center" : "bg-customGreen"} text-white w-full py-3  mb-4  rounded-md text-base font-medium`} >
+                      {
+                        loading ?
+                          <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Submit"
+                      }
+                    </button>
 
                     <p className="text-sm font-normal text-center text-gray-500">
                       Not a member?{" "}
@@ -74,6 +123,11 @@ export default function ForgotPassword() {
             </div>
           </div>
         </main>
+        {/* error popup */}
+        <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
+        {/* success popup */}
+        <SuccessPopUp to={"/"} title={"Please check your inbox to proceed with resetting your password."} showModel={showSuccessModel} setShowModel={setShowSuccessModel} />
+
       </div>
       {/* left images */}
       <div className="absolute bottom-0 left-0 ">

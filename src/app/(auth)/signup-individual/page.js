@@ -166,7 +166,7 @@ export default function SignupIC() {
     data.append('email', formData.email);
     data.append('password', formData.password);
     data.append('user_type', 'individual');
-    data.append('subscribe_to_newsletter', formData.subscribeToBlog);
+    data.append('subscribe_to_newsletter', formData.subscribeToBlog?1:0);
     data.append('gender', currentGenderSelected.label);
     data.append('contact_number', formData.contactNumber);
     data.append('first_name', formData.firstName);
@@ -224,7 +224,7 @@ export default function SignupIC() {
                     htmlFor="image"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Upload img
+                    Upload Image
                   </label>
                   <div
                     className={

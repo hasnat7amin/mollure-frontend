@@ -144,7 +144,7 @@ export default function CompanyClientProfile() {
     console.log(" user Info: ", companyInfo)
     companyInfo && companyInfo.professional && setFormData({
 
-      subscribeToBlog: companyInfo["subscribe_to_newsletter"],
+      subscribeToBlog: companyInfo["subscribe_to_newsletter"]===1?true:false,
       email: companyInfo["email"],
       profileImage: companyInfo.professional.profile_pic ? imageUrl + companyInfo.professional.profile_pic : null,
       documents: companyInfo.professional.professional_docs ? companyInfo.professional.professional_docs : null,
@@ -307,7 +307,7 @@ export default function CompanyClientProfile() {
     }
 
 
-    data.append('subscribe_to_newsletter', formData.subscribeToBlog);
+    data.append('subscribe_to_newsletter', formData.subscribeToBlog?1:0);
 
 
 
@@ -371,7 +371,7 @@ export default function CompanyClientProfile() {
                     htmlFor="image"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Upload img
+                    Upload Image
                   </label>
                   <div
                     className={

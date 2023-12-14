@@ -74,7 +74,7 @@ export default function TermsAndConditions() {
     <section className="relative md:p-0 px-3 min-h-[97.7vh] md:min-h-[97vh]">
       <div className="md:w-[85%] mx-auto w-full">
         <Navbar />
-        <main className="my-10">
+        <main className="my-20">
         <div className="inset-0 flex items-center justify-center ">
             <h1 className="text-4xl font-bold text-center text-black">
               Terms and Conditions

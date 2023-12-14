@@ -160,7 +160,7 @@ export default function UserInfo() {
     console.log(" user Info: ", userInfo)
     userInfo && userInfo.professional && setFormData({
       profileImage: userInfo.professional.profile_pic ? imageUrl + userInfo.professional.profile_pic : null,
-      documents: userInfo.professional.professional_docs ? userInfo.professional.professional_docs : null,
+      documents: userInfo.professional_docs ? userInfo.professional_docs : null,
       legalName: userInfo.professional.legal_name ? userInfo.professional.legal_name : "",
       cocNumber: userInfo.professional.coc ? userInfo.professional.coc : "",
       vatNumber: userInfo.professional.vat ? userInfo.professional.vat : "",
@@ -169,7 +169,7 @@ export default function UserInfo() {
       address: userInfo.professional.address ? userInfo.professional.address : "",
       contactNumber: userInfo.professional.contact_number ? userInfo.professional.contact_number : "",
       email: userInfo.email ? userInfo.email : "",
-      subscribeToBlog: userInfo.subscribe_to_newsletter || false,
+      subscribeToBlog: userInfo.subscribe_to_newsletter===1?true:false,
       street: userInfo.professional.street ? userInfo.professional.street : "",
       number: userInfo.professional.street_number ? userInfo.professional.street_number : "",
       postalCode: userInfo.professional.postal_code ? userInfo.professional.postal_code : "",
@@ -317,7 +317,7 @@ export default function UserInfo() {
     ) {
       data.append('province_id', currentProvinceSelected.id);
     }
-    data.append('subscribe_to_newsletter', formData.subscribeToBlog);
+    data.append('subscribe_to_newsletter', formData.subscribeToBlog?1:0);
 
 
 
@@ -390,7 +390,7 @@ export default function UserInfo() {
                     htmlFor="image"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Upload img
+                    Upload Image
                   </label>
                   <div
                     className={
