@@ -131,7 +131,7 @@ export default function Login() {
                   </div>
                   <div className="flex items-center justify-between text-sm font-normal">
                     <div className="flex items-center">
-                      <input
+                      {/* <input
                         type="checkbox"
                         id="rememberMe"
                         checked={rememberMe}
@@ -143,7 +143,7 @@ export default function Login() {
                         className="text-gray-500 cursor-pointer ms-2"
                       >
                         Remember Me
-                      </label>
+                      </label> */}
                     </div>
                     <Link
                       to="/forgot-password"
