@@ -18,22 +18,70 @@ import ConfirmationDeletePopUp from "./confirmation_delete_popup";
 import MessagePopUp from "./message_popup";
 import { useAuthContext } from "../contexts/AuthContextProvider";
 import { useNavigate } from "react-router-dom"
+import  ErrorPopUp from "./error_popup"
+import  SuccessPopUp from "./success_popup"
 
 export default function Navbar() {
-    const { logout, isUserLoggedIn, getUserProfile, isLoggedIn } = useAuthContext();
+    const { logout, token, isUserLoggedIn, getUserProfile, isLoggedIn, deleteAcount } = useAuthContext();
     const navigate = useNavigate();
     const [showProfileOptions, setShowProfileOptions] = useState(false);
     const [showConfirmDeleteAccountModel, setShowConfirmDeleteAccountModel] = useState(false);
     const [showSuccessDeleteAccountModel, setShowSuccessDeleteAccountModel] = useState(false);
+    const [error, setError] = useState(false);
+    const [title, setTitle] = useState("");
+
+    const [showErrorModel, setShowErrorModel] = useState(false)
+    const [showSuccessModel, setShowSuccessModel] = useState(false)
 
     const handleLogout = async () => {
         await logout();
         navigate("/");
     }
 
-    const handleConfirmDelete = () => {
-        setShowConfirmDeleteAccountModel(false);
-        setShowSuccessDeleteAccountModel(true)
+    const handleConfirmDelete = async (e) => {
+        e.preventDefault();
+        setError('');
+
+        // setLoading(true);
+        setTitle("");
+
+
+
+        if (
+            // !selectedImage ||
+            !token
+
+        ) {
+            setError('Token in invalid.');
+            // setLoading(false);
+            setTitle("");
+            setShowErrorModel(true);
+            return;
+        }
+
+
+        // const data = new FormData();
+        // data.append('email', email);
+
+        const response = await deleteAcount(token);
+        if (!response) {
+            setError("Please check your token again.");
+
+            // setLoading(false);
+            setShowErrorModel(true);
+        }
+        else {
+            // navigate('/');
+            setShowConfirmDeleteAccountModel(false)
+            setTitle("Congratulation! Your account is deleted.")
+            setShowSuccessModel(true);
+            return;
+            // setShowConfirmDeleteAccountModel(false);
+
+        }
+        // setLoading(false);
+
+        
     }
     const handleCancelDelete = () => {
         setShowConfirmDeleteAccountModel(false);
@@ -114,7 +162,12 @@ export default function Navbar() {
                     }
 
                     <ConfirmationDeletePopUp showModel={showConfirmDeleteAccountModel} setShowModel={setShowConfirmDeleteAccountModel} handleDelete={handleConfirmDelete} title={"Are you sure you want to delete your acount?"} handleCancel={handleCancelDelete} />
-                    <MessagePopUp showModel={showSuccessDeleteAccountModel} setShowModel={setShowSuccessDeleteAccountModel} title={"Your account will be deleted by admin with in 3 business days?"} />
+                    {/* <MessagePopUp showModel={showSuccessDeleteAccountModel} setShowModel={setShowSuccessDeleteAccountModel} title={"Your account will be deleted by admin with in 3 business days?"} /> */}
+                    {/* error popup */}
+                    <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
+                    {/* success popup */}
+                    <SuccessPopUp isLogout={true} to={"/"}title={title} showModel={showSuccessModel} setShowModel={setShowSuccessModel} />
+
                 </div>
             </div>
         </section>

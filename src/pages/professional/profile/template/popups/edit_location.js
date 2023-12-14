@@ -113,11 +113,11 @@ export default function AddLocation({
         address: fixedLocation.address ? fixedLocation.address : "",
         postalCode: fixedLocation.postal_code ? fixedLocation.postal_code : ""
       })
-      
-      if (fixedLocation.provinces) {
+
+      if (fixedLocation.provinces && fixedLocation.provinces.length > 0) {
         setCurrentProvinceSelected({ id: fixedLocation.provinces[0].id, label: fixedLocation.provinces[0].name, name: fixedLocation.provinces[0].name })
       }
-      if (fixedLocation.municipalities) {
+      if (fixedLocation.municipalities && fixedLocation.municipalities.length > 0) {
         setCurrentMunicipalitySelected({ id: fixedLocation.municipalities[0].id, label: fixedLocation.municipalities[0].name, name: fixedLocation.municipalities[0].name })
       }
     }

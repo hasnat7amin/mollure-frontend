@@ -6,6 +6,7 @@ import spinner from "../../../images/spinner.svg";
 import { useAuthContext } from "../../../contexts/AuthContextProvider";
 import { baseUrl, imageUrl } from "../../../apis/base_url";
 import ErrorPopUp from "../../../components/error_popup";
+import SuccessPopUp from "../../../components/success_popup";
 
 
 import TitleBar from "../../../components/titleBar";
@@ -21,7 +22,6 @@ import Info from "../../../components/info";
 import { useCompanyContext } from "../../../contexts/CompanyContextProvider";
 import { useProvinceContext } from "../../../contexts/ProvincesContextProvider";
 import { useMunicipalityContext } from "../../../contexts/MunicipalityContextProvider";
-import SuccessPopUp from "../../../components/success_popup";
 
 
 
@@ -144,7 +144,7 @@ export default function CompanyClientProfile() {
     console.log(" user Info: ", companyInfo)
     companyInfo && companyInfo.professional && setFormData({
 
-      subscribeToBlog: companyInfo["subscribe_to_newsletter"]===1?true:false,
+      subscribeToBlog: companyInfo["subscribe_to_newsletter"] === 1 ? true : false,
       email: companyInfo["email"],
       profileImage: companyInfo.professional.profile_pic ? imageUrl + companyInfo.professional.profile_pic : null,
       documents: companyInfo.professional.professional_docs ? companyInfo.professional.professional_docs : null,
@@ -307,7 +307,7 @@ export default function CompanyClientProfile() {
     }
 
 
-    data.append('subscribe_to_newsletter', formData.subscribeToBlog?1:0);
+    data.append('subscribe_to_newsletter', formData.subscribeToBlog ? 1 : 0);
 
 
 
@@ -316,6 +316,7 @@ export default function CompanyClientProfile() {
       setError("Please check your credentials again.");
     } else {
       setUpdateButtonVisibility(false)
+      setShowSuccessModel(true);
     }
     setLoading(false);
 
@@ -702,7 +703,7 @@ export default function CompanyClientProfile() {
         {/* error popup */}
         <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
         {/* success popup */}
-        <SuccessPopUp to={"/"} title={"Thank you for registration. Please verify your email first."} showModel={showSuccessModel} setShowModel={setShowSuccessModel} />
+        <SuccessPopUp title={"Congratulation! Your data uploaded successfully."} showModel={showSuccessModel} setShowModel={setShowSuccessModel} />
 
       </div>
     </section>

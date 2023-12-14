@@ -38,6 +38,7 @@ import VisualsSection from './visual_section';
 import DesiredLocationService from './desired_location_section';
 import CategoryAndSubCategorySection from './categories_and_subcategory_section';
 import TeamMemberSection from './team_member_section';
+import PublishSection from "./publish_section";
 
 export default function DesiredLocation() {
   const provinceOptions = [
@@ -149,19 +150,7 @@ export default function DesiredLocation() {
 
   return (
     <section className="w-full">
-      {/* copy template and clear all buttons */}
-      <div className="flex items-center justify-end w-full space-x-2">
-        <button
-          onClick={() => setShowPublishPagePopUp(true)}
-          className="px-3 py-2 text-base font-normal rounded-md bg-customBlue bg-opacity-10 text-customBlue focus:ring-0 "
-        >
-          Publish Update
-        </button>
-        <button className="px-6 py-2 text-base font-normal text-black border rounded-md">
-          Copy Template
-        </button>
-      </div>
-
+      <PublishSection id={2} type={"desired"} />
       <ConfirmationProcessPopUp
         showModel={showPublishPagePopUp}
         setShowModel={setShowPublishPagePopUp}

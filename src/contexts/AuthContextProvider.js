@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useState } from "react";
 import ApiTemplate from "../apis/api_template";
-import { jsonHeaderWithoutToken, multiFormHeaderWithoutToken } from "../apis/header";
+import { jsonHeaderWithoutToken, multiFormHeaderWithoutToken,jsonHeader } from "../apis/header";
 
 const AuthContext = createContext();
 
@@ -164,6 +164,32 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
+  const deleteAcount = async (token) => {
+    try {
+
+      const headers = jsonHeader(token);
+
+      const response = await ApiTemplate(
+        "delete",
+        "/api/profile/delete_account",
+        {},
+        headers,
+
+      );
+      if (response && response["success"] === true) {
+        return true;
+        
+      } else {
+        console.log("error response",response)
+        return false
+      }
+
+    } catch (error) {
+      console.log("error.message message: ", error)
+      return false;
+    }
+  };
+
 
   return (
     <AuthContext.Provider
@@ -180,7 +206,9 @@ export const AuthContextProvider = ({ children }) => {
         setError,
         token,
         isLoggedIn,
-        forgotPassword
+        forgotPassword,
+
+        deleteAcount
       }}
     >
       {children}

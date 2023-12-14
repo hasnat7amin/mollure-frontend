@@ -62,6 +62,7 @@ function App() {
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
           </>
         )}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );

@@ -1,5 +1,7 @@
 
 import { AiOutlineClose } from "react-icons/ai";
+import { useState } from "react"
+import spinner from "../images/spinner.svg";
 
 export default function ConfirmationProcessPopUp({
   showModel,
@@ -8,6 +10,7 @@ export default function ConfirmationProcessPopUp({
   title,
   handleNo
 }) {
+  const [loading, setLoading] = useState(false);
   return (
     <div>
       {showModel &&
@@ -24,21 +27,28 @@ export default function ConfirmationProcessPopUp({
                 </h3>
               </div>
               <div className="px-5 pb-2 pt-7">
-                <form className="flex flex-row gap-2">
+                <div className="flex flex-row gap-2 mt-6">
                   <button
-                    onClick={handleYes}
-                    className="w-full gap-20 py-3 mt-8 mb-4 text-base font-medium text-white rounded-md bg-customGreen "
+                    disabled={loading} onClick={async () => {
+                      setLoading(true);
+                      await handleYes();
+                      setLoading(false);
+                    }}
+                    className={`${loading ? "bg-gray-100 flex items-center justify-center" : "bg-customGreen"} text-white w-full py-3  mb-4  rounded-md text-base font-medium`}
                   >
-                    Yes
+                    {
+                      loading ?
+                        <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Yes"
+                    }
                   </button>
 
                   <button
                     onClick={handleNo}
-                    className="w-full gap-20 py-3 mt-8 mb-4 text-base font-medium text-black bg-gray-300 rounded-md "
+                    className="w-full gap-20 py-3  mb-4 text-base font-medium text-black bg-gray-300 rounded-md "
                   >
                     No
                   </button>
-                </form>
+                </div>
               </div>
               <AiOutlineClose
                 onClick={() => setShowModel(false)}

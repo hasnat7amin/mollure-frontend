@@ -23,14 +23,15 @@ export default function ConfirmationDeletePopUp({ showModel, setShowModel, handl
                 </h3>
               </div>
               <div className="px-5 pb-2 pt-7">
-                <form className="flex flex-row gap-2">
+                <div className="flex flex-row gap-2">
                   <button onClick={handleCancel} className="w-full gap-20 py-3 mt-8 mb-4 text-base font-medium text-black bg-gray-300 rounded-md ">
                     Cancel
                   </button>
 
-                  <button disabled={loading} onClick={async () => {
+                  <button disabled={loading} onClick={async (e) => {
+                    e.preventDefault();
                     setLoading(true);
-                    await handleDelete();
+                    await handleDelete(e);
                     console.log("delete function excuted ")
                     setLoading(false);
                    
@@ -41,7 +42,7 @@ export default function ConfirmationDeletePopUp({ showModel, setShowModel, handl
                         <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Delete"
                     }
                   </button>
-                </form>
+                </div>
               </div>
               <AiOutlineClose
                 onClick={() => setShowModel(false)}

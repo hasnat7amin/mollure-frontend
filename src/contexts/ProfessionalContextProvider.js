@@ -501,7 +501,22 @@ export const ProfessionalContextProvider = ({ children }) => {
   const copyTemplate = async (token, id) => {
     try {
       const headers = jsonHeader(token);
-      const response = await ApiTemplate("post", "/api//copyTemplate/" + id, {}, headers);
+      const response = await ApiTemplate("post", "/api/copyTemplate/" + id, {}, headers);
+
+      if (response && response["success"]) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
+  };
+
+  const publishTemplate = async (token, id, data) => {
+    try {
+      const headers = jsonHeader(token);
+      const response = await ApiTemplate("post", "/api/templetes/publish/" + id, data, headers);
 
       if (response && response["success"]) {
         return true;
@@ -555,7 +570,7 @@ export const ProfessionalContextProvider = ({ children }) => {
         updateDesiredLocation,
         getDesiredLocation,
         copyTemplate,
-
+        publishTemplate
 
       }}
     >

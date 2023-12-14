@@ -292,18 +292,15 @@ export default function SignupProfessional() {
     const data = new FormData();
     data.append('email', formData.email);
     data.append('password', formData.password);
-    data.append('subscribe_to_newsletter', formData.subscribeToBlog?1:0);
+    data.append('subscribe_to_newsletter', formData.subscribeToBlog ? 1 : 0);
     data.append('gender', currentGenderSelected.value);
     data.append('contact_number', formData.contactNumber);
-    // data.append('contact_person', formData.contactPerson);
     data.append('coc', formData.cocNumber);
     data.append('vat', formData.vatNumber);
     data.append('legal_name', formData.legalName);
     data.append('first_name', formData.firstName);
     data.append('last_name', formData.lastName);
     data.append('work_link1', formData.worklink1);
-    data.append('work_link2', formData.worklink2);
-    data.append('work_link3', formData.worklink3);
     data.append('street', formData.street);
     data.append('street_number', formData.number);
     data.append('postal_code', formData.postalCode);
@@ -316,6 +313,11 @@ export default function SignupProfessional() {
     documentation.map((file) => {
       data.append("registration_docs[]", file)
     })
+
+    formData.worklink2 && data.append('work_link2', formData.worklink2);
+    formData.worklink3 && data.append('work_link3', formData.worklink3);
+
+
 
     const response = await signUpProfessionalAndCompany(data);
     if (!response) {
@@ -350,7 +352,8 @@ export default function SignupProfessional() {
                   <h2 className="text-[28px] mb-2 font-semibold">Sign Up</h2>
                   <p className="text-sm font-normal text-gray-500">
                     By hitting Register, You are Accepting our{" "}
-                    <Link to="/terms-and-conditions">
+                    <Link target="_blank"
+                      rel="noopener noreferrer" to="/terms-and-conditions">
                       <span className="text-sm font-semibold text-black underline">
                         Terms & conditions.
                       </span>
@@ -538,12 +541,12 @@ export default function SignupProfessional() {
                   <label
                     // htmlFor="documentation"
                     className="inline-block   items-center gap-1 text-sm font-normal text-gray-500"
-                    style={{ whiteSpace: 'wrap',  }}
+                    style={{ whiteSpace: 'wrap', }}
                   >
                     <span>
                       Provide documentation for the registration in the chamber of e-commerce
                     </span>
-                    <span className="ps-1" style={{ display: 'inline-block',  }}>
+                    <span className="ps-1" style={{ display: "inline-block", marginTop: "4px", position: "absolute", }} >
                       <Info pb={"pb-0"} title={"Please enter your doc in pdf format."} />
                     </span>
                   </label>
@@ -801,7 +804,8 @@ export default function SignupProfessional() {
                     className="text-sm font-normal text-gray-500 cursor-pointer ms-2"
                   >
                     Accept our{" "}
-                    <Link to="/terms-and-conditions">
+                    <Link target="_blank"
+                      rel="noopener noreferrer" to="/terms-and-conditions">
                       <span className="text-black underline">
                         "Terms & conditions"
                       </span>

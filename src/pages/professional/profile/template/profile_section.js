@@ -70,7 +70,7 @@ export default function ProfileSection({ id,type}) {
                             height={300}
                             src={imageUrl + templateBio.profile_picture}
                             alt="Profile"
-                            className="  rounded-full object-contain object-center  cursor-pointer w-[7.9rem]  h-[7.9rem] "
+                            className="  rounded-full object-cover object-center  cursor-pointer w-[7.9rem]  h-[7.9rem] "
                         />:
                         <div className="bg-gray-200  rounded-full object-contain object-center  cursor-pointer w-[8.9rem]  h-[7.9rem] "
                               ></div>

@@ -236,7 +236,7 @@ export default function SignupCompany() {
     const data = new FormData();
     data.append('email', formData.email);
     data.append('password', formData.password);
-    data.append('subscribe_to_newsletter', formData.subscribeToBlog?1:0);
+    data.append('subscribe_to_newsletter', formData.subscribeToBlog ? 1 : 0);
     data.append('gender', currentGenderSelected.value);
     data.append('contact_number', formData.contactNumber);
     data.append('contact_person', formData.contactPerson);
@@ -246,7 +246,7 @@ export default function SignupCompany() {
     data.append('vat', formData.vatNumber);
     data.append('legal_name', formData.legalName);
     data.append('name_for_rating', formData.legalName);
-    if(selectedImage){
+    if (selectedImage) {
       data.append('profile_pic', selectedImage.file);
     }
     data.append('street', formData.street);
@@ -290,7 +290,8 @@ export default function SignupCompany() {
                   <h2 className="text-[28px] mb-2 font-semibold">Sign Up</h2>
                   <p className="text-sm font-normal text-gray-500">
                     By hitting Register, You are Accepting our{" "}
-                    <Link to="/terms-and-conditions">
+                    <Link target="_blank"
+                      rel="noopener noreferrer" to="/terms-and-conditions">
                       <span className="text-sm font-semibold text-black underline">
                         Terms & conditions.
                       </span>
@@ -633,7 +634,8 @@ export default function SignupCompany() {
                     className="text-sm font-normal text-gray-500 cursor-pointer ms-2"
                   >
                     Accept our{" "}
-                    <Link to="/terms-and-conditions">
+                    <Link target="_blank"
+                      rel="noopener noreferrer" to="/terms-and-conditions">
                       <span className="text-black underline">
                         "Terms & conditions."
                       </span>

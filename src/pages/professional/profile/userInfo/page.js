@@ -21,6 +21,7 @@ import { useMunicipalityContext } from "../../../../contexts/MunicipalityContext
 import { useProfessionalContext } from "../../../../contexts/ProfessionalContextProvider";
 import { baseUrl, imageUrl } from "../../../../apis/base_url";
 import ErrorPopUp from "../../../../components/error_popup";
+import SuccessPopUp from "../../../../components/success_popup";
 
 export default function UserInfo() {
   const {
@@ -38,6 +39,7 @@ export default function UserInfo() {
   const [documentation, setDocumentation] = useState([]);
   const [selectedDocumentFile, setSelectedDocumentFile] = useState(null);
   const [isUpdateButtonVisible, setUpdateButtonVisibility] = useState(false);
+  const [showSuccessModel, setShowSuccessModel] = useState(false)
 
   const { provinces,
     getAllProvinces, } = useProvinceContext();
@@ -169,7 +171,7 @@ export default function UserInfo() {
       address: userInfo.professional.address ? userInfo.professional.address : "",
       contactNumber: userInfo.professional.contact_number ? userInfo.professional.contact_number : "",
       email: userInfo.email ? userInfo.email : "",
-      subscribeToBlog: userInfo.subscribe_to_newsletter===1?true:false,
+      subscribeToBlog: userInfo.subscribe_to_newsletter === 1 ? true : false,
       street: userInfo.professional.street ? userInfo.professional.street : "",
       number: userInfo.professional.street_number ? userInfo.professional.street_number : "",
       postalCode: userInfo.professional.postal_code ? userInfo.professional.postal_code : "",
@@ -178,7 +180,7 @@ export default function UserInfo() {
       worklink3: userInfo.professional.work_link3 ? userInfo.professional.work_link3 : "",
     })
 
-  
+
 
     userInfo && userInfo.professional && setCurrentProvinceSelected(
       userInfo.professional.province_id ? provinceOptions ? provinceOptions.find(item => item.id == userInfo.professional.province_id) : null : null
@@ -317,7 +319,7 @@ export default function UserInfo() {
     ) {
       data.append('province_id', currentProvinceSelected.id);
     }
-    data.append('subscribe_to_newsletter', formData.subscribeToBlog?1:0);
+    data.append('subscribe_to_newsletter', formData.subscribeToBlog ? 1 : 0);
 
 
 
@@ -332,6 +334,7 @@ export default function UserInfo() {
       return
     } else {
       setUpdateButtonVisibility(false)
+      setShowSuccessModel(true);
     }
     setLoading(false);
 
@@ -593,32 +596,18 @@ export default function UserInfo() {
                 </div>
                 <div>
                   <label
-                    htmlFor="documentation"
-                    className="block text-sm font-normal text-gray-500"
+                    // htmlFor="documentation"
+                    className="inline-block   items-center gap-1 text-sm font-normal text-gray-500"
+                    style={{ whiteSpace: 'wrap', }}
                   >
-                    Provide documentation for the registration in the chamber of
-                    e-commerce:
+                    <span>
+                      Provide documentation for the registration in the chamber of e-commerce
+                    </span>
+                    <span className="ps-1" style={{ display: "inline-block", marginTop: "4px", position: "absolute", }} >
+                      <Info pb={"pb-0"} title={"Please enter your doc in pdf format."} />
+                    </span>
                   </label>
-                  <div>
-                    <div
-                      // onClick={handleDocUploadClick}
-                      className="right-0 z-50 flex items-center justify-center px-6 py-4 mt-2 bg-gray-200 rounded-md shadow-md cursor-pointer bottom-3 w-min h-min"
-                    >
-                      <FaUpload
-                        size={18}
-                        className="text-gray-400 cursor-pointer"
-                      />
-                    </div>
-                    <input
-                      type="file"
-                      id="documentation"
-                      disabled={true}
-                      ref={docInputRef}
-                      accept=".pdf"
-                      // onChange={handleDocumentFileChange}
-                      className="hidden"
-                    />
-                  </div>
+
                   <div className="flex flex-col mt-3 space-y-2">
                     {formData && formData.documents && formData.documents.map((doc, index) => {
                       console.log(doc)
@@ -643,9 +632,9 @@ export default function UserInfo() {
                 <div>
                   <label
                     htmlFor="pastWork1"
-                    className="block text-sm font-normal text-gray-500"
+                    className="flex items-end gap-1 text-sm font-normal text-gray-500"
                   >
-                    Provide examples of past work
+                    <span>Provide examples of past work</span> <Info title={"Please enter your previous work."} />
                   </label>
                   <div className="relative">
                     <input
@@ -838,6 +827,8 @@ export default function UserInfo() {
         </main>
         {/* error popup */}
         <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
+        {/* success popup */}
+        <SuccessPopUp  title={"Congratulation! Your data uploaded successfully."} showModel={showSuccessModel} setShowModel={setShowSuccessModel} />
 
       </div >
     </section >

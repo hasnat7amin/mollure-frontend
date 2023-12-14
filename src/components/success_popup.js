@@ -3,14 +3,17 @@ import { AiOutlineClose } from "react-icons/ai";
 import correct from "../images/correct.svg";
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react";
+import { useAuthContext } from "../contexts/AuthContextProvider"
 
 export default function SuccessPopUp({
   showModel,
   setShowModel,
   title,
-  to = null
+  to = null,
+  isLogout = false,
 }) {
   const navigate = useNavigate();
+  const { logout } = useAuthContext()
   useEffect(
     () => {
       let timeoutId;
@@ -18,7 +21,12 @@ export default function SuccessPopUp({
       if (showModel) {
         timeoutId = setTimeout(() => {
           setShowModel(false);
-          to && navigate(to);
+          if (isLogout) {
+            logout(); // Perform logout if isLogout is true
+          }
+          if (to) {
+            navigate(to);
+          }
         }, 3000); // Hides the popup after 30 seconds
       }
 
@@ -28,12 +36,23 @@ export default function SuccessPopUp({
     },
     [showModel]
   );
+
+  const handleClose = async () => {
+    setShowModel(false);
+    if (isLogout) {
+      logout(); // Perform logout if isLogout is true
+    }
+    if (to) {
+      navigate(to);
+    }
+
+  }
   return (
     <div>
       {showModel &&
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div
-            onClick={() => { setShowModel(false); to && navigate(to); }}
+            onClick={handleClose}
             className="fixed inset-0 bg-black opacity-[66%]"
           />
           <div className="relative z-50 w-[95%] md:w-[22rem] mx-auto my-6">
@@ -46,7 +65,7 @@ export default function SuccessPopUp({
               </div>
 
               <AiOutlineClose
-                onClick={() => { setShowModel(false); to && navigate(to); }}
+                onClick={handleClose}
                 className="absolute cursor-pointer top-5 right-5"
               />
             </div>

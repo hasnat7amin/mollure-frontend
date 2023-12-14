@@ -16,6 +16,7 @@ import Select from "../../../components/select";
 import CustomDatePicker from "../../../components/custom_date_picker";
 import { baseUrl, imageUrl } from "../../../apis/base_url";
 import ErrorPopUp from "../../../components/error_popup";
+import SuccessPopUp from "../../../components/success_popup";
 import spinner from "../../../images/spinner.svg";
 import { useIndividualClientContext } from "../../../contexts/IndividualClientContext";
 import { useAuthContext } from "../../../contexts/AuthContextProvider";
@@ -71,6 +72,8 @@ export default function IndividualClientProfile() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [showErrorModel, setShowErrorModel] = useState(false)
+  const [showSuccessModel, setShowSuccessModel] = useState(false)
+
   const {
     clientInfo,
     getClientInfo,
@@ -132,7 +135,7 @@ export default function IndividualClientProfile() {
       dob: clientInfo.client.dob ? clientInfo.client.dob : "",
       email: clientInfo.email ? clientInfo.email : "",
       // email: clientInfo.email ? clientInfo.email : "",
-      subscribeToBlog: clientInfo.subscribe_to_newsletter===1?true:false
+      subscribeToBlog: clientInfo.subscribe_to_newsletter === 1 ? true : false
     })
 
     // clientInfo  && setFormData({
@@ -238,7 +241,7 @@ export default function IndividualClientProfile() {
     ) {
       data.append('dob', dob);
     }
-    data.append('subscribe_to_newsletter', formData.subscribeToBlog?1:0);
+    data.append('subscribe_to_newsletter', formData.subscribeToBlog ? 1 : 0);
 
 
 
@@ -249,6 +252,7 @@ export default function IndividualClientProfile() {
       setError("Please check your credentials again.");
     } else {
       setUpdateButtonVisibility(false)
+      setShowSuccessModel(true);
     }
     setLoading(false);
 
@@ -551,6 +555,8 @@ export default function IndividualClientProfile() {
         </main>
         {/* error popup */}
         <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
+        {/* success popup */}
+        <SuccessPopUp  title={"Congratulation! Your data uploaded successfully."} showModel={showSuccessModel} setShowModel={setShowSuccessModel} />
 
       </div>
     </section>

@@ -21,7 +21,7 @@ import Select from "../../../components/select";
 import CustomDatePicker from "../../../components/custom_date_picker";
 import ErrorPopUp from "../../../components/error_popup";
 import { useAuthContext } from "../../../contexts/AuthContextProvider";
-import { useNavigate,Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import SuccessPopUp from "../../../components/success_popup";
 
 export default function SignupIC() {
@@ -74,7 +74,7 @@ export default function SignupIC() {
         { id: "suggestion1", label: `${formData.firstName}${formData.lastName}`, value: `${formData.firstName} ${formData.lastName}` },
         { id: "suggestion2", label: `${formData.firstName}`, value: `${formData.firstName}` },
         { id: "suggestion3", label: `${formData.firstName[0]}${formData.lastName[0]}`, value: `${formData.firstName[0]} ${formData.lastName[0]}` },
-        ])
+      ])
     }
   }
 
@@ -135,7 +135,7 @@ export default function SignupIC() {
     } = formData;
 
     if (
-      
+
       !firstName ||
       !lastName ||
       !currentGenderSelected ||
@@ -166,14 +166,14 @@ export default function SignupIC() {
     data.append('email', formData.email);
     data.append('password', formData.password);
     data.append('user_type', 'individual');
-    data.append('subscribe_to_newsletter', formData.subscribeToBlog?1:0);
+    data.append('subscribe_to_newsletter', formData.subscribeToBlog ? 1 : 0);
     data.append('gender', currentGenderSelected.label);
     data.append('contact_number', formData.contactNumber);
     data.append('first_name', formData.firstName);
     data.append('last_name', formData.lastName);
     data.append('name_for_rating', currentNameForRating.value);
     data.append('dob', dob);
-    if(selectedImage){
+    if (selectedImage) {
       data.append('profile_pic', selectedImage.file);
     }
 
@@ -211,7 +211,8 @@ export default function SignupIC() {
                   <h2 className="text-[28px] mb-2 font-semibold">Sign Up</h2>
                   <p className="text-sm font-normal text-gray-500">
                     By hitting Register, You are Accepting our{" "}
-                    <Link to="/terms-and-conditions">
+                    <Link target="_blank"
+                      rel="noopener noreferrer" to="/terms-and-conditions">
                       <span className="text-sm font-semibold text-black underline">
                         Terms & conditions.
                       </span>
@@ -335,14 +336,14 @@ export default function SignupIC() {
                     Date of Birth
                   </label>
                   <input
-                      type="date"
-                      id="firstName"
-                      value={formData.dob}
-                      name="dob"
-                      onChange={handleChange}
-                      placeholder="Enter Date of Birth"
-                      className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
-                    />
+                    type="date"
+                    id="firstName"
+                    value={formData.dob}
+                    name="dob"
+                    onChange={handleChange}
+                    placeholder="Enter Date of Birth"
+                    className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                  />
                 </div>
 
                 <div>
@@ -475,7 +476,8 @@ export default function SignupIC() {
                     className="text-sm font-normal text-gray-500 cursor-pointer ms-2"
                   >
                     Accept our{" "}
-                    <Link to="/terms-and-conditions">
+                    <Link target="_blank"
+                      rel="noopener noreferrer" to="/terms-and-conditions">
                       <span className="text-sm font-semibold text-black underline">
                         Terms & conditions.
                       </span>
@@ -511,8 +513,8 @@ export default function SignupIC() {
         {/* error popup */}
         <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
         {/* success popup */}
-        <SuccessPopUp to={"/"} title={"Thank you for registration. Please verify your email first."} showModel={showSuccessModel} setShowModel={setShowSuccessModel}  />
-        
+        <SuccessPopUp to={"/"} title={"Thank you for registration. Please verify your email first."} showModel={showSuccessModel} setShowModel={setShowSuccessModel} />
+
       </div>
       {/* left images */}
       <div className="absolute top-[31%] left-[0%]">

@@ -25,21 +25,21 @@ export default function Login() {
   const { login, error, setError } = useAuthContext();
   const [showErrorModel, setShowErrorModel] = useState(false)
 
-  
+
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
   useEffect(() => {
-      if(error && error!== ""){
-        setShowErrorModel(true)
-      }
+    if (error && error !== "") {
+      setShowErrorModel(true)
+    }
   }, [error])
 
   const handleLogin = async () => {
     setError('');
-    
+
     setLoading(true);
     if (!email || !password) {
       setError('Email and password are required');
@@ -90,6 +90,7 @@ export default function Login() {
                       <input
                         type="email"
                         id="email"
+                        autocomplete="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Enter Email"
@@ -108,6 +109,8 @@ export default function Login() {
                         <input
                           type={showPassword ? "text" : "password"}
                           id="password"
+                          autocomplete="current-password"
+
                           placeholder="Enter Password"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
@@ -132,7 +135,7 @@ export default function Login() {
                         type="checkbox"
                         id="rememberMe"
                         checked={rememberMe}
-                        onChange={(e)=>setRememberMe(e.target.checked)}
+                        onChange={(e) => setRememberMe(e.target.checked)}
                         className="w-4 h-4 border-2 rounded-sm appearance-none cursor-pointer"
                       />
                       <label
@@ -150,7 +153,7 @@ export default function Login() {
                     </Link>
                   </div>
                   <div className="py-5">
-                    <button disabled={loading} onClick={handleLogin} className={`${loading?"bg-gray-100 flex items-center justify-center":"bg-customGreen"} text-white w-full py-3  mb-4  rounded-md text-base font-medium`} >
+                    <button disabled={loading} onClick={handleLogin} className={`${loading ? "bg-gray-100 flex items-center justify-center" : "bg-customGreen"} text-white w-full py-3  mb-4  rounded-md text-base font-medium`} >
                       {
                         loading ?
                           <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Login"
@@ -175,7 +178,7 @@ export default function Login() {
 
         {/* error popup */}
         <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
-        
+
       </div>
       {/* left images */}
       <div className="absolute bottom-0 left-0 ">
