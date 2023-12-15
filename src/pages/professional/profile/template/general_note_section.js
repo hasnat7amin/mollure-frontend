@@ -59,15 +59,16 @@ export default function GeneralNoteSection({ id, type }) {
                             className="mt-5 mr-5 cursor-pointer"
                         />
                     </div>
-                    <div className="px-3">
+                    {generalNote && <div className="px-3">
                         <div className="p-5 mt-3  w-full min-h-[15rem] text-base font-normal border border-gray-300 rounded-md flex flex-col space-y-5">
-                            {generalNote ?
+                            {generalNote &&
                                 <p>
                                     {generalNote}
-                                </p> : <p>No General Note</p>
+                                </p>
                             }
                         </div>
                     </div>
+                    }
                 </div>
             </div>
             {/* general Note */}

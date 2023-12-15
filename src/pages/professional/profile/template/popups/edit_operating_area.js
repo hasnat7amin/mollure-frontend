@@ -170,7 +170,7 @@ export default function EditOperatingArea({ showModel, setShowModel, data,id = 2
             setShowErrorModel(true);
         }
         else {
-            setShowModel(false)
+            // setShowModel(false)
             setLoading(false);
             setShowSuccessPopUp(true)
         }
@@ -302,7 +302,7 @@ export default function EditOperatingArea({ showModel, setShowModel, data,id = 2
                                 </button>
                                 {/* error popup */}
                                 <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
-                                <SuccessPopUp title={"Your Location is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+                                <SuccessPopUp closeAction={()=>setShowModel(false)}  title={"Your Location is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
                   
 
                                 {/* </form> */}

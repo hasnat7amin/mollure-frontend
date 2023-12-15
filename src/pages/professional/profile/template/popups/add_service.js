@@ -52,6 +52,7 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
   const [showSuccessPopUp, setShowSuccessPopUp] = useState(false)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+
   const [showErrorModel, setShowErrorModel] = useState(false)
   const {
     addServiceAndSubService
@@ -122,8 +123,7 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
         setToDuration(null);
         setFromSelectedDate(null);
         setToSelectedDate(null);
-
-        setShowModel(false);
+        setShowSuccessPopUp(true)
       }
 
       setLoading(false);
@@ -319,7 +319,7 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
                       <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Save"
                   }
                 </button>
-                <SuccessPopUp title={"Your Data is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+                <SuccessPopUp closeAction={()=>setShowModel(false)} title={"Your Service is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
                 {/* error popup */}
                 <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 

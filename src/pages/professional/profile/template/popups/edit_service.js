@@ -107,7 +107,7 @@ export default function EditService({ id, type, showModel, setShowModel }) {
       setShowErrorModel(true);
     }
     else {
-      setShowModel(false);
+      // setShowModel(false);
       setLoading(false);
       setShowSuccessPopUp(true)
 
@@ -211,7 +211,7 @@ export default function EditService({ id, type, showModel, setShowModel }) {
                         <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Update"
                     }
                   </button>
-                  <SuccessPopUp title={"Your Data is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+                  <SuccessPopUp closeAction={()=>setShowModel(false)}  title={"Your Data is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
                   {/* error popup */}
                   <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 

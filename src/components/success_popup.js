@@ -11,6 +11,7 @@ export default function SuccessPopUp({
   title,
   to = null,
   isLogout = false,
+  closeAction = () => {},
 }) {
   const navigate = useNavigate();
   const { logout } = useAuthContext()
@@ -21,13 +22,14 @@ export default function SuccessPopUp({
       if (showModel) {
         timeoutId = setTimeout(() => {
           setShowModel(false);
+          closeAction();
           if (isLogout) {
             logout(); // Perform logout if isLogout is true
           }
           if (to) {
             navigate(to);
           }
-        }, 3000); // Hides the popup after 30 seconds
+        }, 500); // Hides the popup after 30 seconds
       }
 
       return () => {

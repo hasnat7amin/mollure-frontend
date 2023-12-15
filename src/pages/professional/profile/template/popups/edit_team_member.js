@@ -33,6 +33,7 @@ export default function EditTeamMember({ id, type, showModel, setShowModel, data
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [showErrorModel, setShowErrorModel] = useState(false)
+  const [showSuccessPopUp, setShowSuccessPopUp] = useState(false)
   const [teamId,setTeamId] = useState(null);
   const [rows, setRows] = useState([{
     categoryId: null,
@@ -166,8 +167,8 @@ export default function EditTeamMember({ id, type, showModel, setShowModel, data
       setShowErrorModel(true);
     }
     else {
-      setShowModel(false)
       setLoading(false);
+      setShowSuccessPopUp(true)
     }
 
     setLoading(false);
@@ -395,7 +396,7 @@ export default function EditTeamMember({ id, type, showModel, setShowModel, data
                       <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Save"
                   }
                 </button>
-                {/* <SuccessPopUp title={"Team Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} /> */}
+                <SuccessPopUp closeAction={()=>setShowModel(false)} title={"Team Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
                 {/* error popup */}
                 <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 

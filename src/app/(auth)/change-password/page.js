@@ -45,7 +45,7 @@ export default function ChangePassword() {
       return;
     }
 
-    if (confirmPassword.trim() === password.trim()) {
+    if (!(confirmPassword.trim() === password.trim())) {
       setError('Password and Confirm Password should be same');
       setLoading(false);
       setShowErrorModel(true);

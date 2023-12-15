@@ -170,7 +170,7 @@ export default function UpdateService({ categoryId, type, templateId, parentId, 
                 setFromSelectedDate(null);
                 setToSelectedDate(null);
 
-                setShowModel(false);
+                setShowSuccessPopUp(true);
             }
 
             setLoading(false);
@@ -371,7 +371,7 @@ export default function UpdateService({ categoryId, type, templateId, parentId, 
                                             <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Save"
                                     }
                                 </button>
-                                <SuccessPopUp title={"Your Data is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+                                <SuccessPopUp closeAction={()=>setShowModel(false)} title={"Your Service is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
                                 {/* error popup */}
                                 <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 

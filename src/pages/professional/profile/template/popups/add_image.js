@@ -61,13 +61,14 @@ export default function AddImage({ showModel, setShowModel, id, type }) {
       setError("Please check your credentials again.");
       setLoading(false);
       setShowErrorModel(true);
+      return
     }
     else {
-      setShowModel(false)
+      
       setSelectedImage([])
       setLoading(false);
       setShowSuccessPopUp(true)
-
+      return
     }
 
     setLoading(false);
@@ -141,7 +142,7 @@ export default function AddImage({ showModel, setShowModel, id, type }) {
           </div>
         </div>}
 
-      <SuccessPopUp title={"Image added Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+      <SuccessPopUp closeAction={()=>setShowModel(false)} title={"Image added Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
       {/* error popup */}
       <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 

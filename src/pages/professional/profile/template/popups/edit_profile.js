@@ -149,10 +149,11 @@ export default function EditProfile({
       setError("Please check your credentials again.");
       setLoading(false);
       setShowErrorModel(true);
+      return;
     }
     else {
-      setShowEditProfieModel(false)
       setShowSuccessPopUp(true)
+      return
     }
 
     setLoading(false);
@@ -311,7 +312,7 @@ export default function EditProfile({
                       <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Save"
                   }
                 </button>
-                  <SuccessPopUp title={"Your Data is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+                  <SuccessPopUp closeAction={()=>setShowEditProfieModel(false)} title={"Your Data is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
                   {/* error popup */}
                   <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 
