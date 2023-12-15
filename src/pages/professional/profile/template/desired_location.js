@@ -39,6 +39,7 @@ import DesiredLocationService from './desired_location_section';
 import CategoryAndSubCategorySection from './categories_and_subcategory_section';
 import TeamMemberSection from './team_member_section';
 import PublishSection from "./publish_section";
+import SaveTemplateSection from './save_template_section';
 
 export default function DesiredLocation() {
   const provinceOptions = [
@@ -178,6 +179,7 @@ export default function DesiredLocation() {
 
       {/* visuals */}
       <VisualsSection id={2} type={"desired"} /> 
+      <SaveTemplateSection id={2} type={"desired"} /> 
 
      
      

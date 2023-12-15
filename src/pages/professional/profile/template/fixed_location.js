@@ -7,6 +7,7 @@ import addIcon from "../../../../images/professional/Add_Plus.svg";
 import profile from "../../../../images/professional/profile.jpg";
 import cardFrameTopLeft from "../../../../images/professional/Frame20.svg";
 import cardFrameBottomRight from "../../../../images/professional/Frame19.svg";
+import spinner from "../../../../images/spinner.svg";
 
 import Info from "../../../../components/info";
 import ReactStars from "react-rating-stars-component";
@@ -36,6 +37,7 @@ import CategoryAndSubCategorySection from "./categories_and_subcategory_section"
 import VisualsSection from "./visual_section";
 import TeamMemberSection from "./team_member_section";
 import PublishSection from "./publish_section";
+import SaveTemplateSection from "./save_template_section";
 
 export default function FixedLocation() {
   const provinceOptions = [
@@ -61,6 +63,7 @@ export default function FixedLocation() {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [showSubServices, setShowSubServices] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const toggleSubServices = () => {
     setShowSubServices(prevState => !prevState); // Toggle the visibility of sub-services
@@ -96,7 +99,7 @@ export default function FixedLocation() {
     setShowPublishPagePopUp(false);
   };
 
- const handleMouseDown = e => {
+  const handleMouseDown = e => {
     setIsDragging(true);
     setStartX(e.pageX - containerRef.current.offsetLeft);
     e.preventDefault(); // Prevent text selection
@@ -114,17 +117,21 @@ export default function FixedLocation() {
     setScrollLeft(scrollLeft - dragDistance);
     setStartX(x);
   };
- 
+
 
   const handleCardClick = () => {
     console.log("Card clicked");
   };
 
+  const handleSave = () => {
+    console.log("Card Saved");
+  };
+
   return (
     <section className="w-full">
-      
+
       {/* copy template and clear all buttons */}
-     
+
       <PublishSection id={1} type={"fixed"} />
       <ConfirmationProcessPopUp
         showModel={showPublishPagePopUp}
@@ -140,11 +147,14 @@ export default function FixedLocation() {
       <ServiceForSection id={1} type={"fixed"} />
       <GeneralNoteSection id={1} type={"fixed"} />
       <CategoryAndSubCategorySection id={1} type={"fixed"} />
-      <TeamMemberSection id={1} type={"fixed"} />  
-      <VisualsSection id={1} type={"fixed"} />  
+      <TeamMemberSection id={1} type={"fixed"} />
+      <VisualsSection id={1} type={"fixed"} />
+      <SaveTemplateSection id={1} type={"fixed"} />
 
-        
-      
+
+
+
+
       {/* add image */}
       <AddImage
         showModel={showAddImageModel}
@@ -161,7 +171,7 @@ export default function FixedLocation() {
         showModel={showAddSubServiceModel}
         setShowModel={setShowAddSubServiceModel}
       />
-     
+
     </section>
   );
 }
