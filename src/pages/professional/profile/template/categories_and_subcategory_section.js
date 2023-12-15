@@ -1,6 +1,6 @@
 import CustomAddButton from "../../../../components/custom_add_button";
 
-import TitleBar from "../../../../components/titleBar";
+import TitleBar, { LightTitleBar } from "../../../../components/titleBar";
 import { useEffect, useRef, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 
@@ -215,8 +215,8 @@ function Category({ category, templateId }) {
 
 
     return <section>
-        <div className="mx-4">
-            <TitleBar title={category.name_en + "'s Subservices"} />
+        <div className="">
+            <LightTitleBar title={category.name_en + "'s Subservices"} />
 
             {/* table */}
             {servicesById && <div className="overflow-x-scroll md:overflow-hidden">
