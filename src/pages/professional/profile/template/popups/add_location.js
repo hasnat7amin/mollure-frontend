@@ -174,7 +174,7 @@ export default function AddLocation({ showModel, setShowModel }) {
       setShowErrorModel(true);
     }
     else {
-
+      setShowModel(false);
       setLoading(false);
       setShowSuccessPopUp(true)
 
@@ -222,7 +222,7 @@ export default function AddLocation({ showModel, setShowModel }) {
                       value={formData.address}
                       name="address"
                       onChange={handleChange}
-                      placeholder="Address"
+                      placeholder="Street"
                       className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
                     />
                   </div>

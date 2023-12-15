@@ -7,13 +7,25 @@ import greenCircle from "../../../images/auth/blur_circle.svg";
 import greenCircleLeft from "../../../images/auth/blur_circle_left.svg";
 import hideEye from "../../../images/auth/hide_eye.svg";
 import eye from "../../../images/auth/eye.svg";
+import spinner from "../../../images/spinner.svg";
 
 import { Link } from 'react-router-dom';
-
+import { useAuthContext } from "../../../contexts/AuthContextProvider";
+import ErrorPopUp from "../../../components/error_popup";
+import SuccessPopUp from "../../../components/success_popup";
+import { useParams } from 'react-router-dom';
 
 export default function ChangePassword() {
+  const {token} = useParams()
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setNewShowPassword] = useState(false);
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const { resetPassword } = useAuthContext();
+  const [showErrorModel, setShowErrorModel] = useState(false)
+  const [showSuccessPopUp, setShowSuccessPopUp] = useState(false)
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -21,6 +33,50 @@ export default function ChangePassword() {
   const toggleNewPasswordVisibility = () => {
     setNewShowPassword(!showNewPassword);
   };
+
+  const handleSave = async () => {
+    setError('');
+
+    setLoading(true);
+    if (!confirmPassword || !password) {
+      setError('Password and Confirm Password are required');
+      setLoading(false);
+      setShowErrorModel(true);
+      return;
+    }
+
+    if (confirmPassword.trim() === password.trim()) {
+      setError('Password and Confirm Password should be same');
+      setLoading(false);
+      setShowErrorModel(true);
+      return;
+    }
+
+    const data = {
+      token: token,
+      password_confirmation: confirmPassword,
+      password: password,
+    }
+
+    const response = await resetPassword(JSON.stringify(data));
+    if (!response) {
+      setError("Something went wrong please try again.");
+      setLoading(false);
+      setShowErrorModel(true);
+      return 
+    }
+    else {
+      setLoading(false);
+      setPassword("");
+      setConfirmPassword("");
+      setShowSuccessPopUp(true);
+      return;
+    }
+
+    // Set user as logged in (you can replace this with actual login logic)
+    // setIsUserLoggedIn(true);
+  };
+
   return (
     <section className="relative px-3 md:p-0">
       <div className="md:w-[85%] mx-auto w-full">
@@ -39,7 +95,7 @@ export default function ChangePassword() {
                     </p>
                   </div>
                   <div className="flex flex-col space-y-2">
-                   
+
                     <div>
                       <label
                         htmlFor="password"
@@ -51,6 +107,9 @@ export default function ChangePassword() {
                         <input
                           type={showPassword ? "text" : "password"}
                           id="password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+
                           placeholder="Enter Password"
                           className="w-full px-3 py-3 mt-1 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 "
                         />
@@ -75,6 +134,9 @@ export default function ChangePassword() {
                       </label>
                       <div className="relative">
                         <input
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+
                           type={showNewPassword ? "text" : "password"}
                           id="password"
                           placeholder="Enter Confirm Password"
@@ -93,10 +155,13 @@ export default function ChangePassword() {
                       </div>
                     </div>
                   </div>
-                
+
                   <div className="py-5">
-                    <button className="w-full py-3 mb-4 text-base font-medium text-white rounded-md bg-customGreen ">
-                      Save
+                    <button disabled={loading} onClick={handleSave} className={`${loading ? "bg-gray-100 flex items-center justify-center" : "bg-customGreen"} text-white w-full py-3  mb-4  rounded-md text-base font-medium`} >
+                      {
+                        loading ?
+                          <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Save"
+                      }
                     </button>
 
                     <p className="text-sm font-normal text-center text-gray-500">
@@ -114,6 +179,10 @@ export default function ChangePassword() {
             </div>
           </div>
         </main>
+        {/* error popup */}
+        <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
+        <SuccessPopUp to={"/"} title={"Congratulations! Password Changed Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+      
       </div>
       {/* left images */}
       <div className="absolute bottom-0 left-0 ">

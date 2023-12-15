@@ -235,7 +235,7 @@ export const ProfessionalContextProvider = ({ children }) => {
       const headers = multiFormHeader(token); // Assuming you need authentication for editing user info
       const response = await ApiTemplate(
         "post",
-        "/api/add_visual_image",
+        "/api/add_visual_image/"+id,
         data,
         headers
       );
@@ -280,13 +280,13 @@ export const ProfessionalContextProvider = ({ children }) => {
     }
   };
 
-  const addServiceAndSubService = async (token, categoryId, data) => {
+  const addServiceAndSubService = async (token, categoryId,templateId, data) => {
     try {
       const headers = jsonHeader(token);
       const response = await ApiTemplate("post", "/api/services", data, headers);
 
       if (response && response["success"]) {
-        await getServicesByCategoryId(token, categoryId);
+        await getServicesByCategoryId(token, categoryId,templateId);
         return true;
       } else {
         return false;
@@ -297,13 +297,13 @@ export const ProfessionalContextProvider = ({ children }) => {
     }
   };
 
-  const deleteServiceAndSubService = async (token, id, categoryId) => {
+  const deleteServiceAndSubService = async (token, id, categoryId,templateId) => {
     try {
       const headers = jsonHeader(token);
       const response = await ApiTemplate("delete", "/api/services/delete/" + id, {}, headers);
 
       if (response && response["success"]) {
-        await getServicesByCategoryId(token, categoryId);
+        await getServicesByCategoryId(token, categoryId,templateId);
         return true;
       } else {
         return false;
@@ -314,13 +314,13 @@ export const ProfessionalContextProvider = ({ children }) => {
     }
   };
 
-  const updateServiceAndSubService = async (token, id, categoryId, data) => {
+  const updateServiceAndSubService = async (token, id, categoryId,templateId, data) => {
     try {
       const headers = jsonHeader(token);
       const response = await ApiTemplate("post", "/api/services/update/" + id, data, headers);
 
       if (response && response["success"]) {
-        await getServicesByCategoryId(token, categoryId);
+        await getServicesByCategoryId(token, categoryId,templateId);
         return true;
       } else {
         return false;
@@ -341,15 +341,15 @@ export const ProfessionalContextProvider = ({ children }) => {
         const updatedData = response.data.map(item => {
           return {
             id: item.id,
-            "label_en": item?.name_en,
-            "label_nl": item?.name_nl,
-            "value_en": item?.name_en,
-            "value_nl": item?.name_nl,
-            services: item?.services?.map(service => {
+            "label_en": item.name_en,
+            "label_nl": item.name_nl,
+            "value_en": item.name_en,
+            "value_nl": item.name_nl,
+            services: item.services.map(service => {
               return {
-                id: service?.id,
-                label: service?.service_name,
-                value: service?.service_name,
+                id: service.id,
+                label: service.service_name,
+                value: service.service_name,
               }
             })
           }

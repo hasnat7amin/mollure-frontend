@@ -34,6 +34,7 @@ export default function AddTeamMember({ id, type, showModel, setShowModel }) {
   const [rows, setRows] = useState([{
     categoryId: null,
     serviceIds: [],
+    services: []
   }]);
   const [disabledCategories, setDisabledCategories] = useState([]);
   const fileInputRef = useRef(null);
@@ -152,13 +153,11 @@ export default function AddTeamMember({ id, type, showModel, setShowModel }) {
     try {
       if (selectedOption) {
         const selectedCategoryId = selectedOption.id;
-        const selectedCategoryData = categoryAndServiceForTeam && categoryAndServiceForTeam.find(
-          (category) => category.id == selectedCategoryId
+        const selectedCategoryData = categoryAndServiceForTeam.find(
+          (category) => category.id === selectedCategoryId
         );
-        console.log(selectedCategoryData)
 
         if (selectedCategoryData) {
-          // Update the selected category for the specific row
           const updatedRows = rows.map((row, index) => {
             if (index === rowIndex) {
               return {
@@ -166,20 +165,16 @@ export default function AddTeamMember({ id, type, showModel, setShowModel }) {
                 categoryId: selectedOption,
                 serviceIds: [], // Reset serviceIds when category changes
                 services: selectedCategoryData.services || []
-                // Reset serviceIds when category changes
               };
             }
             return row;
           });
           setRows(updatedRows);
 
-          // Update disabled categories to prevent selection in other rows
-          // const updatedDisabledCategories = disabledCategories.push(selectedCategoryId);
-          setDisabledCategories([...disabledCategories, selectedCategoryId]);
-
           // Update servicesOptions for the particular row
-          const selectedCategoryServices = selectedCategoryData.services || [];
-          setServicesOptions(selectedCategoryServices);
+          const updatedServiceOptions = [...servicesOptions];
+          updatedServiceOptions[rowIndex] = selectedCategoryData.services || [];
+          setServicesOptions(updatedServiceOptions);
         }
       }
     } catch (error) {
@@ -187,6 +182,8 @@ export default function AddTeamMember({ id, type, showModel, setShowModel }) {
       console.error('Error fetching services:', error);
     }
   };
+
+
 
   const handleSelectService = (selectedIds, rowIndex) => {
     // Update the serviceIds for the specific row
@@ -286,30 +283,37 @@ export default function AddTeamMember({ id, type, showModel, setShowModel }) {
                 </div>
 
                 {/* Rows for Category and Services */}
-                {rows.map((row, index) => (
-                  <div key={index} className="flex items-center gap-2 ">
+                {rows.map((row, index) => {
+                  return <div key={index} className="flex items-center gap-2 ">
                     <div className="w-full">
                       <Select
                         placeholder="Select Category"
-                        options={categoryAndServiceForTeam ? categoryAndServiceForTeam.map((category) => ({
-                          id: category.id,
-                          value: category.label_en,
-                          label: category.label_en
-                        })).filter((category) => !disabledCategories.includes(category.id)) : []}
+                        options={categoryAndServiceForTeam ? categoryAndServiceForTeam
+                          .filter(category => !rows.find(row => row.categoryId && row.categoryId.id === category.id))
+                          .map((category) => ({
+                            id: category.id,
+                            value: category.label_en,
+                            label: category.label_en
+                          })) : []}
                         selectedOption={row.categoryId ? row.categoryId : null}
                         handelChange={(selectedOption) => handleCategoryChange(selectedOption, index)}
                       />
                     </div>
+                    {/* <div>{row.services.toString()}</div> */}
                     <div className="w-full ">
-
                       <MultiSelect
                         placeholder={"Select Services"}
-                        options={rows[index].services}
-                        selectedOptions={row.serviceIds || []}
+                        options={row.services}
+                        // options={row.categoryId ? categoryAndServiceForTeam ? categoryAndServiceForTeam.find(
+                        //   (category) => category.id === row.categoryId.id
+                        // ).services.map((category) => ({
+                        //   id: category.id,
+                        //   value: category.label_en,
+                        //   label: category.label_en
+                        // })) : [] : []}
+                        selectedOptions={row.serviceIds}
                         handleSelect={(selectedIds) => handleSelectService(selectedIds, index)}
-
                       />
-
                     </div>
                     {/* Delete row button */}
                     {index == 0 ? <div className="mt-0 h-14 w-14 "></div> :
@@ -324,22 +328,25 @@ export default function AddTeamMember({ id, type, showModel, setShowModel }) {
                     }
 
                   </div>
-                ))}
+                })}
 
 
                 {/* copy template and clear all buttons */}
-                {
-                  categoryAndServiceForTeam && categoryAndServiceForTeam.map((category) => ({
+                {categoryAndServiceForTeam && categoryAndServiceForTeam
+                  .filter(category => !rows.find(row => row.categoryId && row.categoryId.id === category.id))
+                  .map((category) => ({
                     id: category.id,
                     value: category.label_en,
                     label: category.label_en
-                  })).filter((category) => !disabledCategories.includes(category.id)).length > 0 && <div className="flex items-center justify-end w-full mt-2 space-x-2">
-                    <button onClick={addRow} className="flex items-center gap-2 px-3 py-2 text-base font-normal rounded-full bg-customBlue bg-opacity-10 text-customBlue focus:ring-0 ">
-                      <AiOutlinePlus /> <span>Category </span>
-                    </button>
-
-                  </div>
+                  })).length > 0 && (
+                    <div className="flex items-center justify-end w-full mt-2 space-x-2">
+                      <button onClick={addRow} className="flex items-center gap-2 px-3 py-2 text-base font-normal rounded-full bg-customBlue bg-opacity-10 text-customBlue focus:ring-0 ">
+                        <AiOutlinePlus /> <span>Category </span>
+                      </button>
+                    </div>
+                  )
                 }
+
 
                 <button disabled={loading} onClick={handleSubmit} className={`${loading ? "bg-gray-100  flex items-center justify-center" : "bg-customGreen"} text-white mt-4 w-full py-3  mb-4  rounded-md text-base font-medium`} >
                   {

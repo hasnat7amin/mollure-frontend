@@ -77,12 +77,12 @@ export default function ServiceForSection({ id,type }) {
                                 kids
                             </p>
                         }
-                        {
+                        {/* {
                             serviceFor && serviceFor.all_gender == 0 && serviceFor.kids == 0  && serviceFor.men == 0 && serviceFor.women == 0 && <p className="px-3 py-3 text-base font-normal border border-gray-300 rounded-md flex-nowrap">
                                 No service is selected
                             </p>
                         }
-                      
+                       */}
                     </div>
                 </div>
             </div>

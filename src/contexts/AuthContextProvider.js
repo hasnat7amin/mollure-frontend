@@ -164,6 +164,32 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
+  const resetPassword = async (credentials) => {
+    try {
+
+      const headers = jsonHeaderWithoutToken();
+
+      const response = await ApiTemplate(
+        "post",
+        "/api/reset-password",
+        credentials,
+        headers,
+
+      );
+      if (response && response["success"] === true) {
+        return true;
+        // window.location.href="/" ;
+      } else {
+        console.log("error response",response)
+        return false
+      }
+
+    } catch (error) {
+      console.log("error.message message: ", error)
+      return false;
+    }
+  };
+
   const deleteAcount = async (token) => {
     try {
 
@@ -207,7 +233,7 @@ export const AuthContextProvider = ({ children }) => {
         token,
         isLoggedIn,
         forgotPassword,
-
+        resetPassword,
         deleteAcount
       }}
     >

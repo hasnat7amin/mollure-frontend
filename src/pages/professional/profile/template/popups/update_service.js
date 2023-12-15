@@ -151,7 +151,7 @@ export default function UpdateService({ categoryId, type, templateId, parentId, 
                 data['discount_valid_to'] = new Date(toselectedDate.toString().slice(1, -1));
             }
 
-            const response = await updateServiceAndSubService(token, serviceId, categoryId, JSON.stringify(data));
+            const response = await updateServiceAndSubService(token, serviceId, categoryId,templateId ,JSON.stringify(data));
             if (!response) {
                 setError("Please check your credentials again.");
                 setLoading(false);

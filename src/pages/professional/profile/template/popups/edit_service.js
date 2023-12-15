@@ -77,7 +77,15 @@ export default function EditService({ id, type, showModel, setShowModel }) {
 
     setLoading(true);
 
-
+    if (!(allChecked || onlyMenChecked || onlyWomenChecked || kidsChecked)) {
+      // Return an error or handle the lack of selection as needed
+      setError('At least one field should be true.');
+      // setError("Please check your credentials again.");
+      setLoading(false);
+      setShowErrorModel(true);
+      return;
+      // You can throw an error, return from the function, or handle the situation accordingly.
+    }
 
     const data = new FormData();
 
@@ -99,7 +107,7 @@ export default function EditService({ id, type, showModel, setShowModel }) {
       setShowErrorModel(true);
     }
     else {
-
+      setShowModel(false);
       setLoading(false);
       setShowSuccessPopUp(true)
 
@@ -134,7 +142,7 @@ export default function EditService({ id, type, showModel, setShowModel }) {
                       htmlFor="onlyWomen"
                       className="text-base font-normal cursor-pointer ms-2"
                     >
-                      All
+                      Women & Men
                     </label>
                     <input
                       type="checkbox"

@@ -49,7 +49,7 @@ const cardData = [
 export default function CategoryAndSubCategorySection({ id, type }) {
     const containerRef = useRef(null);
     const [isDragging, setIsDragging] = useState(false);
-    const [showAddSubServiceModel, setShowAddSubServiceModel] = useState(false);
+    const [templateId, setTemplateId] = useState(null);
     const [showSubServices, setShowSubServices] = useState(true);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [showCategoriesSection, setShowCategoriesSection] = useState(true);
@@ -174,7 +174,7 @@ export default function CategoryAndSubCategorySection({ id, type }) {
                     </div>
 
                     {/* sub categories */}
-                    {selectedCategory && <Category category={selectedCategory} templateId={id} />}
+                    {categories && selectedCategory && <Category category={selectedCategory} templateId={id} />}
 
 
                 </div>
@@ -219,7 +219,7 @@ function Category({ category, templateId }) {
             <TitleBar title={category.name_en + "'s Subservices"} />
 
             {/* table */}
-            {servicesById ? <div className="overflow-x-scroll md:overflow-hidden">
+            {servicesById && <div className="overflow-x-scroll md:overflow-hidden">
                 <div className="md:w-full w-[60rem]">
                     {/* titles  */}
                     <div className="flex items-center justify-between my-4">
@@ -246,9 +246,7 @@ function Category({ category, templateId }) {
 
                     </div>
                 </div>
-            </div> : <p className="w-full py-2 text-lg font-semibold text-center border-r">
-                No Service Found
-            </p>
+            </div> 
 
             }
 
@@ -290,10 +288,10 @@ function Services({ data, templateId, categoryId }) {
     const { token } = useAuthContext();
 
 
-    const handleServiceDeleteConfirm = async (id, categoryId) => {
+    const handleServiceDeleteConfirm = async (id, categoryId,templateId) => {
         setError('');
 
-        const response = await deleteServiceAndSubService(token, id, categoryId);
+        const response = await deleteServiceAndSubService(token, id, categoryId,templateId);
         if (!response) {
             setError("Please check your credentials again.");
 
@@ -411,7 +409,7 @@ function Services({ data, templateId, categoryId }) {
             setShowModel={setShowDeleteVisualPopUp}
             title={"Are you sure you want to delete this Service?"}
             handleCancel={() => { setShowDeleteVisualPopUp(false); }}
-            handleDelete={() => handleServiceDeleteConfirm(data?.id, categoryId)}
+            handleDelete={() => handleServiceDeleteConfirm(data?.id, categoryId,templateId)}
         />
 
         {/* error popup */}
@@ -439,10 +437,10 @@ function SubServices({ data, templateId, categoryId, parentId }) {
     const { token } = useAuthContext();
 
 
-    const handleServiceDeleteConfirm = async (id, categoryId) => {
+    const handleServiceDeleteConfirm = async (id, categoryId,templateId) => {
         setError('');
 
-        const response = await deleteServiceAndSubService(token, id, categoryId);
+        const response = await deleteServiceAndSubService(token, id, categoryId,templateId);
         if (!response) {
             setError("Please check your credentials again.");
 
@@ -501,7 +499,7 @@ function SubServices({ data, templateId, categoryId, parentId }) {
             setShowModel={setShowDeleteVisualPopUp}
             title={"Are you sure you want to delete this Service?"}
             handleCancel={() => { setShowDeleteVisualPopUp(false); }}
-            handleDelete={() => handleServiceDeleteConfirm(data?.id, categoryId)}
+            handleDelete={() => handleServiceDeleteConfirm(data?.id, categoryId,templateId)}
         />
 
           {/* add  service */}

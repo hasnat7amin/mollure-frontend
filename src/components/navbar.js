@@ -166,7 +166,7 @@ export default function Navbar() {
                     {/* error popup */}
                     <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
                     {/* success popup */}
-                    <SuccessPopUp isLogout={true} to={"/"}title={title} showModel={showSuccessModel} setShowModel={setShowSuccessModel} />
+                    <SuccessPopUp isLogout={true} to={"/"} title={title} showModel={showSuccessModel} setShowModel={setShowSuccessModel} />
 
                 </div>
             </div>

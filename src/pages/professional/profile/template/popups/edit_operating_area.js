@@ -9,6 +9,7 @@ import MultiSelect from "../../../../../components/multi_select";
 import { useProfessionalContext } from "../../../../../contexts/ProfessionalContextProvider";
 import { useAuthContext } from "../../../../../contexts/AuthContextProvider";
 import ErrorPopUp from "../../../../../components/error_popup";
+import SuccessPopUp from "../../../../../components/success_popup";
 
 export default function EditOperatingArea({ showModel, setShowModel, data,id = 2, type = "desired", }) {
 
@@ -31,6 +32,7 @@ export default function EditOperatingArea({ showModel, setShowModel, data,id = 2
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [showErrorModel, setShowErrorModel] = useState(false)
+    const [showSuccessPopUp, setShowSuccessPopUp] = useState(false)
 
     const [everyWhere, setEveryWhere] = useState(false);
     const [specificArea, setSpecificArea] = useState(false);
@@ -170,6 +172,7 @@ export default function EditOperatingArea({ showModel, setShowModel, data,id = 2
         else {
             setShowModel(false)
             setLoading(false);
+            setShowSuccessPopUp(true)
         }
 
         setLoading(false);
@@ -299,7 +302,8 @@ export default function EditOperatingArea({ showModel, setShowModel, data,id = 2
                                 </button>
                                 {/* error popup */}
                                 <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
-
+                                <SuccessPopUp title={"Your Location is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+                  
 
                                 {/* </form> */}
                             </div>

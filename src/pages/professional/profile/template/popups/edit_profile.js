@@ -151,6 +151,7 @@ export default function EditProfile({
       setShowErrorModel(true);
     }
     else {
+      setShowEditProfieModel(false)
       setShowSuccessPopUp(true)
     }
 

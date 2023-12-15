@@ -46,11 +46,13 @@ export default function AddImage({ showModel, setShowModel, id, type }) {
 
     const data = new FormData();
 
-    data.append('template_id', id);
+    // data.append('template_id', id);
     console.log(selectedImage)
+
+    let imagesList = [];
    
     selectedImage&&selectedImage.length > 0 && selectedImage.map(file => {
-      data.append('images', file);
+      data.append('images[]', file);
     })
 
 
@@ -61,7 +63,8 @@ export default function AddImage({ showModel, setShowModel, id, type }) {
       setShowErrorModel(true);
     }
     else {
-
+      setShowModel(false)
+      setSelectedImage([])
       setLoading(false);
       setShowSuccessPopUp(true)
 
@@ -85,7 +88,7 @@ export default function AddImage({ showModel, setShowModel, id, type }) {
             <div className="relative px-2 py-4 bg-white rounded-lg shadow-lg">
               <div className="flex flex-col items-start gap-2 px-5 rounded-t">
                 <h3 className="w-full text-lg font-bold text-center text-softblue">
-                  Add img
+                  Add Image
                 </h3>
               </div>
               <div className="px-5 pt-9">
@@ -138,7 +141,7 @@ export default function AddImage({ showModel, setShowModel, id, type }) {
           </div>
         </div>}
 
-      <SuccessPopUp title={"img added Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+      <SuccessPopUp title={"Image added Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
       {/* error popup */}
       <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 

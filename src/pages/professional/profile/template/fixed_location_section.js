@@ -99,7 +99,7 @@ export default function FixedLocationSection() {
                                     <p className="text-base font-normal text-black ">{fixedLocation.salon_name}</p>
                                 </div>
                                 <div className="flex w-full space-x-2">
-                                    <p className="text-base font-normal text-black ">Address:</p>
+                                    <p className="text-base font-normal text-black ">Street:</p>
                                     <p className="text-base font-normal text-black ">
                                         {fixedLocation.address}
                                     </p>
