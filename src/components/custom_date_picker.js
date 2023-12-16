@@ -3,22 +3,23 @@ import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const CustomDatePicker = ({ placeholder, onDateChange,value, disabled }) => {
-  const [startDate, setStartDate] =  useState(value);
-  
+const CustomDatePicker = ({ placeholder, onDateChange, value, disabled }) => {
+  const [startDate, setStartDate] = useState(value);
+
   const handleChange = date => {
     console.log(JSON.stringify(date).toString())
     setStartDate(date);
     onDateChange(date); // Pass the selected date to the parent component
   };
 
+  const updateStartDate = () => {
+    setStartDate(value)
+  }
 
   useEffect(() => {
-    return () => {
-      setStartDate(value)
-    }
+    updateStartDate();
   }, [value])
- 
+
 
 
   return (

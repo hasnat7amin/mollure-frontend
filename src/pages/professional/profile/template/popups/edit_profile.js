@@ -152,6 +152,7 @@ export default function EditProfile({
       return;
     }
     else {
+      setLoading(false);
       setShowSuccessPopUp(true)
       return
     }

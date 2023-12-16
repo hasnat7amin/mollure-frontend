@@ -141,8 +141,15 @@ export default function AddTeamMember({ id, type, showModel, setShowModel }) {
       setShowErrorModel(true);
     }
     else {
-     
       setLoading(false);
+      setSelectedImage(null)
+      setTeamMemberName("")
+      setBio("")
+      setRows([{
+        categoryId: null,
+        serviceIds: [],
+        services: []
+      }]);
       setShowSuccessPopUp(true)
     }
 

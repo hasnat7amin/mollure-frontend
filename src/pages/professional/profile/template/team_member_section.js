@@ -41,7 +41,10 @@ export default function TeamMemberSection({ id, type }) {
     const {
         teamMembers,
         getTeamMembers,
-        deleteTeamMembers
+        deleteTeamMembers,
+        postTeamMemberOnPublicPage,
+        templateBio
+
     } = useProfessionalContext();
     const { token } = useAuthContext();
 
@@ -71,10 +74,10 @@ export default function TeamMemberSection({ id, type }) {
 
     return <section>
         {/* team members */}
-        <div className="relative">
+        <div className="relative ">
             <div
                 onClick={() => setShowTeamMemberSection(!showTeamMemberSection)}
-                className="absolute top-1.5 right-3 p-2 rounded-full bg-gray-50 bg-opacity-10 cursor-pointer"
+                className="absolute top-1.5 right-3 p-2  rounded-full bg-gray-50 bg-opacity-10 cursor-pointer"
             >
                 <IoIosArrowDown
                     size={18}
@@ -87,101 +90,16 @@ export default function TeamMemberSection({ id, type }) {
                 className={`${showTeamMemberSection ? "flex flex-col" : "hidden"}`}
             >
                 {/* add service button  */}
-                <div className="flex items-center justify-end w-full py-5 border-b">
+                <div className="flex items-center justify-end py-5 border-b">
                     <CustomAddButton title={"Add Team Member"} handleClick={() => setShowAddTeamMemberModel(true)} />
 
                 </div>
                 {/* team cards */}
-                <div className="flex flex-wrap items-center gap-2 px-3 py-5">
+                <div className="flex  flex-wrap items-center gap-2 px-3 py-5">
                     {/* card */}
                     {
                         teamMembers && teamMembers.map((team, index) => {
-                            return <section key={index}>
-                                <div className="md:min-w-[21rem] p-5 rounded-md shadow-md ">
-                                    <div className="flex items-center justify-around gap-3">
-                                        {/* image */}
-                                        <div className="flex items-center justify-around gap-3">
-                                            <img
-                                                src={imageUrl + team?.image}
-                                                width={300}
-                                                height={300}
-                                                alt="Profile"
-                                                className="rounded-full object-cover object-center  cursor-pointer w-[3.7rem]  h-[3.7rem] "
-                                            />
-                                            <div className="flex flex-col items-start justify-center space-y-2">
-                                                <p className="text-base font-normal">{team?.member}</p>
-                                                <p className="text-sm font-normal text-gray-400">
-                                                    {team?.bio}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col items-center justify-center space-y-1">
-                                            <ReactStars
-                                                classNames={"flex space-x-2"}
-                                                size={18}
-                                                value={2.5}
-                                                edit={false}
-                                                isHalf={true}
-                                                activeColor="#ffd700"
-                                            // emptyIcon={<i className="far fa-star" />}
-                                            // halfIcon={<i className="fa fa-star-half-alt" />}
-                                            // filledIcon={<i className="fa fa-star" />}
-                                            />
-                                            <p className="text-xs font-normal text-gray-400">
-                                                120 reviews
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-3 mt-3">
-                                        {
-                                            JSON.parse(team?.service) && JSON.parse(team?.service).map((item, index) => {
-                                                if (item.serviceIds.length == item.services.length) {
-                                                    return <div key={index} className="w-full py-2 text-xs font-medium text-center text-white rounded-md bg-gradient-to-b from-customBlue to-customGreen">
-                                                        {item.categoryId.value}
-                                                    </div>
-                                                }
-                                                else {
-                                                    return <CategoryCard title={item.categoryId.value} options={item.serviceIds} />
-                                                }
-                                            })
-                                        }
-
-                                    </div>
-
-                                    <div className="flex items-center justify-end w-full gap-2">
-                                        {/* edit image */}
-                                        <img
-                                            src={edit}
-                                            alt="Edit"
-                                            onClick={() => setShowEditTeamMemberModel(true)}
-                                            className="mt-5 cursor-pointer "
-                                        // onClick={toggleUpdateButtonVisibility}
-                                        />
-                                        <img
-                                            src={deleteIcon}
-                                            alt="deleteIcon"
-                                            className="mt-5 cursor-pointer "
-                                            onClick={() => setShowDeleteVisualPopUp(true)}
-                                        />
-                                    </div>
-                                </div>
-                                {/* confirm delete popup */}
-                                <ConfirmationDeletePopUp
-                                    showModel={showDeleteVisualPopUp}
-                                    setShowModel={setShowDeleteVisualPopUp}
-                                    title={"Are you sure you want to delete this Team Member?"}
-                                    handleCancel={() => { setShowDeleteVisualPopUp(false); }}
-                                    handleDelete={() => handleTeamMemberDeleteConfirm(id, team.id)}
-                                />
-                                {/* edit team members */}
-                                <EditTeamMember
-                                    id={id}
-                                    type={type}
-                                    showModel={showEditTeamMemberModel}
-                                    setShowModel={setShowEditTeamMemberModel}
-                                    data={team}
-                                />
-                            </section>
+                            return <TeamCard index={index} team={team} id={id} type={type} />
                         })
                     }
 
@@ -199,7 +117,7 @@ export default function TeamMemberSection({ id, type }) {
                             type="checkbox"
                             id="onlyWomen"
                             disabled={true}
-                            checked={false}
+                            checked={templateBio && templateBio?.team_member_on_public_page === 1 ? true : false}
                             className="w-4 h-4 border-2 rounded-sm appearance-none cursor-pointer"
                         />
                     </div>
@@ -228,6 +146,8 @@ export default function TeamMemberSection({ id, type }) {
 
         {/* feature team member */}
         <FeatureTeamMember
+            id={id}
+            type={type}
             showModel={showFeatureTeamMemberModel}
             setShowModel={setShowFeatureTeamMemberModel}
         />
@@ -288,4 +208,128 @@ function CategoryCard({ title, options }) {
             </ClickAwayListener>
         </div>
     )
+}
+
+
+
+function TeamCard({ index, team, id, type }) {
+    const [showTeamMemberSection, setShowTeamMemberSection] = useState(true);
+    const [showEditTeamMemberModel, setShowEditTeamMemberModel] = useState(false);
+    const [showAddTeamMemberModel, setShowAddTeamMemberModel] = useState(false);
+    const [showFeatureTeamMemberModel, setShowFeatureTeamMemberModel] = useState(false);
+    const [showDeleteVisualPopUp, setShowDeleteVisualPopUp] = useState(false);
+    const [showErrorModel, setShowErrorModel] = useState(false)
+    const [error, setError] = useState(false);
+    const [showSuccessPopUp, setShowSuccessPopUp] = useState(false)
+
+    const {
+        teamMembers,
+        getTeamMembers,
+        deleteTeamMembers
+    } = useProfessionalContext();
+    const { token } = useAuthContext();
+
+
+
+
+    const handleTeamMemberDeleteConfirm = async (templateId, teamId) => {
+        setError('');
+
+        const response = await deleteTeamMembers(token, templateId, teamId);
+        if (!response) {
+            setError("Please check your credentials again.");
+            setShowErrorModel(true);
+        }
+
+
+        setShowDeleteVisualPopUp(false);
+
+
+    }
+    return <section className="md:w-[21rem] " key={index}>
+        <div className="md:w-[21rem] h-[14rem] flex flex-col justify-between p-5 rounded-md shadow-md ">
+            <div className="flex items-center justify-around gap-3">
+                {/* image */}
+                <div className="flex items-center justify-around gap-3">
+                    <img
+                        src={imageUrl + team?.image}
+                        width={300}
+                        height={300}
+                        alt="Profile"
+                        className="rounded-full object-cover object-center  cursor-pointer w-[3.7rem]  h-[3.7rem] "
+                    />
+                    <div className="flex flex-col items-start justify-center space-y-2">
+                        <p className="text-base font-normal">{team?.member}</p>
+                        <p className="text-sm font-normal text-gray-400 line-clamp-1">
+                            {team?.bio}
+                        </p>
+                    </div>
+                </div>
+                <div className="flex flex-col items-center justify-center space-y-1">
+                    <ReactStars
+                        classNames={"flex space-x-2"}
+                        size={18}
+                        value={2.5}
+                        edit={false}
+                        isHalf={true}
+                        activeColor="#ffd700"
+                    // emptyIcon={<i className="far fa-star" />}
+                    // halfIcon={<i className="fa fa-star-half-alt" />}
+                    // filledIcon={<i className="fa fa-star" />}
+                    />
+                    <p className="text-xs font-normal text-gray-400">
+                        120 reviews
+                    </p>
+                </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3 mt-3">
+                {
+                    JSON.parse(team?.service) && JSON.parse(team?.service).map((item, index) => {
+                        if (item.serviceIds.length == item.services.length) {
+                            return <div key={index} className="w-full py-2 text-xs font-medium text-center text-white rounded-md bg-gradient-to-b from-customBlue to-customGreen">
+                                {item.categoryId.value}
+                            </div>
+                        }
+                        else {
+                            return <CategoryCard title={item.categoryId.value} options={item.serviceIds} />
+                        }
+                    })
+                }
+
+            </div>
+
+            <div className="flex items-center justify-end w-full gap-2">
+                {/* edit image */}
+                <img
+                    src={edit}
+                    alt="Edit"
+                    onClick={() => setShowEditTeamMemberModel(true)}
+                    className="mt-5 cursor-pointer "
+                // onClick={toggleUpdateButtonVisibility}
+                />
+                <img
+                    src={deleteIcon}
+                    alt="deleteIcon"
+                    className="mt-5 cursor-pointer "
+                    onClick={() => setShowDeleteVisualPopUp(true)}
+                />
+            </div>
+        </div>
+        {/* confirm delete popup */}
+        <ConfirmationDeletePopUp
+            showModel={showDeleteVisualPopUp}
+            setShowModel={setShowDeleteVisualPopUp}
+            title={"Are you sure you want to delete this Team Member?"}
+            handleCancel={() => { setShowDeleteVisualPopUp(false); }}
+            handleDelete={() => handleTeamMemberDeleteConfirm(id, team.id)}
+        />
+        {/* edit team members */}
+        <EditTeamMember
+            id={id}
+            type={type}
+            showModel={showEditTeamMemberModel}
+            setShowModel={setShowEditTeamMemberModel}
+            data={team}
+        />
+    </section>
 }

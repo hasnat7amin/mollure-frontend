@@ -172,7 +172,7 @@ export default function AddLocation({ showModel, setShowModel }) {
       setError("Please check your credentials again.");
       setLoading(false);
       setShowErrorModel(true);
-      return 
+      return
     }
     else {
       setLoading(false);
@@ -218,6 +218,12 @@ export default function AddLocation({ showModel, setShowModel }) {
 
                   {/* bio */}
                   <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-sm mt-3 font-normal text-gray-500"
+                    >
+                      Address
+                    </label>
                     <input
                       type="text"
                       value={formData.address}
@@ -278,7 +284,7 @@ export default function AddLocation({ showModel, setShowModel }) {
                         <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Save"
                     }
                   </button>
-                  <SuccessPopUp closeAction={()=>setShowModel(false)} title={"Your Data is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+                  <SuccessPopUp closeAction={() => setShowModel(false)} title={"Your Data is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
                   {/* error popup */}
                   <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 

@@ -135,7 +135,7 @@ export default function EditService({ id, type, showModel, setShowModel }) {
                 </h3>
               </div>
               <div className="pt-5 px-14">
-                <form className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2">
                   {/* only womens checkbox */}
                   <div className="flex items-center justify-between px-6">
                     <label
@@ -215,7 +215,7 @@ export default function EditService({ id, type, showModel, setShowModel }) {
                   {/* error popup */}
                   <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 
-                </form>
+                </div>
               </div>
               <AiOutlineClose
                 onClick={() => setShowModel(false)}

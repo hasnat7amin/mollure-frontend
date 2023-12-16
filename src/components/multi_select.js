@@ -12,7 +12,7 @@ const MultiSelect = ({
 }) => {
 
   const [showDropDown, setShowDropDown] = useState(false)
- 
+
   const handleAllSelection = () => {
     const allSelected = selectedOptions.length === options.length;
     handleSelect(allSelected ? [] : options);
@@ -44,9 +44,9 @@ const MultiSelect = ({
         </span>
 
         {showDropDown && (
-          <div className="absolute z-10 w-full px-3 bg-white rounded-md shadow-lg">
-            <ul className="py-1 overflow-auto text-sm rounded-md selectDropdown max-h-56 focus:outline-none sm:text-sm">
-              <li
+          <div className="absolute z-10 overflow-auto selectDropdown max-h-56 w-full px-3 bg-white rounded-md shadow-lg">
+            <ul className="py-1  text-sm rounded-md  focus:outline-none sm:text-sm">
+              {options && options.length > 0 && <li
                 key="allOption"
                 className="cursor-pointer select-none relative border-b-2 text-sm font-normal py-2"
                 onClick={handleAllSelection}
@@ -63,6 +63,7 @@ const MultiSelect = ({
                   />
                 </div>
               </li>
+              }
               {options.map(option => (
                 <li
                   key={option.id}

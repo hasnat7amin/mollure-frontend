@@ -13,7 +13,7 @@ import category1 from "../../../../images/professional/category1.svg";
 import Info from "../../../../components/info";
 import deleteIcon from "../../../../images/professional/delete_icon.svg";
 import CustomAddSubServiceButton from "../../../../components/custom_add_sub_service";
-import { imageUrl } from "../../../../apis/base_url";
+import { baseUrl, imageUrl } from "../../../../apis/base_url";
 import AddService from "./popups/add_service";
 import AddSubService from "./popups/add_sub_service";
 import ConfirmationDeletePopUp from "../../../../components/confirmation_delete_popup";
@@ -158,11 +158,11 @@ export default function CategoryAndSubCategorySection({ id, type }) {
                                     className={`w-[11rem] flex flex-col items-center justify-center flex-shrink-0 px-2 py-4 space-y-3 rounded-md shadow-md hover:bg-gradient-to-b hover:from-customBlue hover:to-customGreen hover:text-white group ${selectedCategory.id == card.id ? "bg-gradient-to-b from-customBlue to-customGreen text-white" : "bg-white"}`}
                                 >
                                     <img
-                                        src={imageUrl + card.image}
+                                        src={baseUrl+ "/imgs/category/" + card.image}
                                         width={100}
                                         height={100}
                                         alt="Edit"
-                                        className="cursor-pointer group-hover:text-white "
+                                        className="cursor-pointer group-hover:text-white h-20 w-20"
                                         style={{ cursor: "grab" }}
                                         onDragStart={e => e.preventDefault()}
                                     // onClick={toggleUpdateButtonVisibility}
@@ -319,8 +319,9 @@ function Services({ data, templateId, categoryId }) {
         <div className="flex items-center w-full h-[6rem] justify-center text-customBlue bg-customBlue bg-opacity-5">
             <div className="flex w-full h-full ">
                 <div className="w-2 bg-customBlue rounded-r-md" />
-                <p className="flex items-center justify-center w-full h-full text-lg font-normal text-center border-r ms-2 ">
+                <p className="flex items-center gap-2 justify-center w-full h-full text-lg font-normal text-center border-r ms-2 ">
                     {data?.service_name}
+                    {data?.bio&&<Info title={data?.bio} />}
                 </p>
             </div>
             <p className="flex items-center justify-center w-full h-full text-lg font-normal text-center border-r">
@@ -334,7 +335,7 @@ function Services({ data, templateId, categoryId }) {
                 <p className="flex items-center justify-center space-x-2">
                     <span>Discount {data.discount_amount} EUR </span>
 
-                    <Info title={"Discover More"} />
+                    {data.discount_info&&<Info title={data.discount_info} />}
                 </p>
             </div>
             <div className="flex items-center justify-center w-full h-full space-x-2 font-semibold ">

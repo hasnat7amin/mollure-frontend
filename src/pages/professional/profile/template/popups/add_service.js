@@ -73,7 +73,7 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
 
 
 
-    if (serviceName && fromDuration && toDuration && currentPriceSelected && price) {
+    if (serviceName && fromDuration  && currentPriceSelected && price) {
       // Check if optional fields are filled
       if ((discount || currentDiscountSelected || fromselectedDate || toselectedDate) &&
         (!discount || !currentDiscountSelected || !fromselectedDate || !toselectedDate)) {
@@ -132,10 +132,32 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
 
     } else {
       // Alert the user to fill mandatory fields
-      setError("Please fill service name and duration fields.");
-      setLoading(false);
-      setShowErrorModel(true);
-      return;
+      if (!serviceName) {
+        setError("Please fill service name fields.");
+        setLoading(false);
+        setShowErrorModel(true);
+        return;
+      }
+      if (!fromDuration) {
+        setError("Please fill from duration fields.");
+        setLoading(false);
+        setShowErrorModel(true);
+        return;
+      }
+
+      if (!currentPriceSelected) {
+        setError("Please fill price type fields.");
+        setLoading(false);
+        setShowErrorModel(true);
+        return;
+      }
+      if (!price) {
+        setError("Please fill price fields.");
+        setLoading(false);
+        setShowErrorModel(true);
+        return;
+      }
+     
     }
   };
 
@@ -286,7 +308,7 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
                 <div className="flex items-center gap-2 ">
                   <div className="w-full ">
                     <div className="w-full">
-                      <CustomDatePicker placeholder="Date" onDateChange={handleFromDateChange} />
+                      <CustomDatePicker placeholder="Date" value={fromselectedDate} onDateChange={handleFromDateChange} />
                     </div>
                   </div>
                   <label className="block text-sm font-normal text-gray-500">
@@ -294,7 +316,7 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
                   </label>
                   <div className="w-full ">
                     <div className="w-full">
-                      <CustomDatePicker placeholder="Date" onDateChange={handleToDateChange} />
+                      <CustomDatePicker placeholder="Date"  value={toselectedDate} onDateChange={handleToDateChange} />
                     </div>
                   </div>
                 </div>

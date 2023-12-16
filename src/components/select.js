@@ -45,7 +45,7 @@ const Select = ({
                 </span>
               </Listbox.Button>
             </span>
-            <div className="absolute z-10 w-full px-3 bg-white rounded-md shadow-lg mb-11">
+            <div className="absolute z-10 overflow-auto max-h-56 w-full px-3 bg-white rounded-md selectDropdown shadow-lg mb-11">
               {/* bottom-0 will open the select menu up & mb-11 will put the dropup above the select option */}
               <Transition
                 show={open}
@@ -56,7 +56,7 @@ const Select = ({
                 <Listbox.Options
 
                   static
-                  className="py-1 overflow-auto text-sm rounded-md selectDropdown max-h-56 focus:outline-none sm:text-sm"
+                  className="py-1  text-sm rounded-md  max-h-56 focus:outline-none sm:text-sm"
                 >
                   {!disabled && options.map((option,index) => {
                     return (

@@ -242,6 +242,12 @@ export default function AddLocation({
 
                   {/* bio */}
                   <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm mt-3 font-normal text-gray-500"
+                  >
+                    Address
+                  </label>
                     <input
                       type="text"
                       value={formData.address}

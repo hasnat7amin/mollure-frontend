@@ -4,8 +4,64 @@ import uploadIcon from "../../../../../images/professional/upload_icon.svg";
 import { useRef, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import Select from "../../../../../components/select";
+import { useProfessionalContext } from "../../../../../contexts/ProfessionalContextProvider";
+import { useAuthContext } from "../../../../../contexts/AuthContextProvider";
+import SuccessPopUp from "../../../../../components/success_popup";
+import ErrorPopUp from "../../../../../components/error_popup";
+import spinner from "../../../../../images/spinner.svg";
 
-export default function FeatureTeamMember({ showModel, setShowModel }) {
+export default function FeatureTeamMember({ id,type, showModel, setShowModel }) {
+  const [allChecked, setAllChecked] = useState(false);
+  
+  const {
+    postTeamMemberOnPublicPage,
+    updateServiceFor
+  } = useProfessionalContext();
+
+  const { token } = useAuthContext();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [showErrorPopUp, setShowErrorPopUp] = useState(false);
+  const [showSuccessPopUp, setShowSuccessPopUp] = useState(false)
+  const [showErrorModel, setShowErrorModel] = useState(false)
+  
+  const handleAllChange = (e) => {
+    setAllChecked(e.target.checked);
+
+  };
+
+  const handleSubmit = async () => {
+    setError('');
+
+    setLoading(true);
+
+    const data = {
+      "team_member_on_public_page":allChecked
+    };
+
+   
+
+
+
+
+    const response = await postTeamMemberOnPublicPage(token, id, JSON.stringify(data));
+    if (!response) {
+      setError("Please check your credentials again.");
+      setLoading(false);
+      setShowErrorModel(true);
+    }
+    else {
+      // setShowModel(false);
+      setLoading(false);
+      setShowSuccessPopUp(true)
+
+    }
+
+    setLoading(false);
+
+
+  };
+
   return (
     <div>
       {showModel &&
@@ -22,7 +78,7 @@ export default function FeatureTeamMember({ showModel, setShowModel }) {
                 </h3>
               </div>
               <div className="px-5 pt-5">
-                <form className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2">
                   {/* only womens checkbox */}
                   <div className="flex items-center justify-between px-6">
                   <label
@@ -34,16 +90,24 @@ export default function FeatureTeamMember({ showModel, setShowModel }) {
                     <input
                       type="checkbox"
                       id="onlyWomen"
+                      checked={allChecked}
+                      onChange={handleAllChange}
                       className="w-4 h-4 border-2 rounded-sm appearance-none cursor-pointer"
                     />
                   
                   </div>
                   
-
-                  <button className="w-full gap-20 py-3 mt-8 mb-4 text-base font-medium text-white rounded-md bg-customGreen ">
-                    Save
+                  <button disabled={loading} onClick={handleSubmit} className={`${loading ? "bg-gray-100 flex items-center justify-center" : "bg-customGreen"} text-white w-full py-3 mt-4  mb-4  rounded-md text-base font-medium`} >
+                    {
+                      loading ?
+                        <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Update"
+                    }
                   </button>
-                </form>
+                  <SuccessPopUp closeAction={()=>setShowModel(false)}  title={"Congratulation! Team Members are published successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+                  {/* error popup */}
+                  <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
+
+                </div>
               </div>
               <AiOutlineClose
                 onClick={() => setShowModel(false)}

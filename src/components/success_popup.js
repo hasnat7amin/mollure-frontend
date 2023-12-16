@@ -29,7 +29,7 @@ export default function SuccessPopUp({
           if (to) {
             navigate(to);
           }
-        }, 500); // Hides the popup after 30 seconds
+        }, 1500); // Hides the popup after 30 seconds
       }
 
       return () => {
@@ -41,6 +41,7 @@ export default function SuccessPopUp({
 
   const handleClose = async () => {
     setShowModel(false);
+    closeAction();
     if (isLogout) {
       logout(); // Perform logout if isLogout is true
     }

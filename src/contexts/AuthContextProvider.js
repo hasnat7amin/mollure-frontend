@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useState } from "react";
 import ApiTemplate from "../apis/api_template";
-import { jsonHeaderWithoutToken, multiFormHeaderWithoutToken,jsonHeader } from "../apis/header";
+import { jsonHeaderWithoutToken, multiFormHeaderWithoutToken, jsonHeader } from "../apis/header";
 
 const AuthContext = createContext();
 
@@ -118,13 +118,33 @@ export const AuthContextProvider = ({ children }) => {
     try {
       console.log(" checking user");
       const token = JSON.parse(await localStorage.getItem("token"));
-      const user = JSON.parse(await localStorage.getItem("user"));
-      // Implement the logic to check if the user is still authenticated (e.g., token validation)
+      if (token !== null) {
+        const headers = {
+          "Content-Type": "application/json",
+          "X-CSRF-TOKEN": document.head
+            .querySelector('meta[name="csrf-token"]')
+            ?.getAttribute("content"),
+          "Authorization": "Bearer " + token,
+        };
 
-      if (token !== null && user !== null) {
-        setToken(token);
-        setIsLoggedIn(true);
-        setUserProfile(user);
+        const response = await ApiTemplate(
+          "get",
+          "/api/verifyToken",
+          {},
+          headers,
+        );
+
+        if (response && response["success"] === true) {
+          console.log(response["data"]);
+          // await localStorage.setItem("token", JSON.stringify(response["data"]["token"]));
+          await localStorage.setItem("user", JSON.stringify(response["data"]["user"]));
+          setIsLoggedIn(true);
+          setUserProfile(response["data"]["user"]);
+
+        } else {
+          setIsLoggedIn(false);
+          setUserProfile(null);
+        }
       } else {
         setIsLoggedIn(false);
         setUserProfile(null);
@@ -154,7 +174,7 @@ export const AuthContextProvider = ({ children }) => {
         return true;
         // window.location.href="/" ;
       } else {
-        console.log("error response",response)
+        console.log("error response", response)
         return false
       }
 
@@ -180,7 +200,7 @@ export const AuthContextProvider = ({ children }) => {
         return true;
         // window.location.href="/" ;
       } else {
-        console.log("error response",response)
+        console.log("error response", response)
         return false
       }
 
@@ -204,9 +224,9 @@ export const AuthContextProvider = ({ children }) => {
       );
       if (response && response["success"] === true) {
         return true;
-        
+
       } else {
-        console.log("error response",response)
+        console.log("error response", response)
         return false
       }
 

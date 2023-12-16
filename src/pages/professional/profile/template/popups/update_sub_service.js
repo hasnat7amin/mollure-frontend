@@ -118,7 +118,7 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
             return;
         }
 
-        if (serviceName && fromDuration && toDuration && currentPriceSelected && price) {
+        if (serviceName && fromDuration && currentPriceSelected && price) {
             // Check if optional fields are filled
             if ((discount || currentDiscountSelected || fromselectedDate || toselectedDate) &&
                 (!discount || !currentDiscountSelected || !fromselectedDate || !toselectedDate)) {
@@ -150,7 +150,7 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
                 data['discount_valid_to'] = new Date(toselectedDate.toString().slice(1, -1));
             }
 
-            const response = await updateServiceAndSubService(token, serviceId, categoryId,templateId, JSON.stringify(data));
+            const response = await updateServiceAndSubService(token, serviceId, categoryId, templateId, JSON.stringify(data));
             if (!response) {
                 setError("Please check your credentials again.");
                 setLoading(false);
@@ -177,11 +177,32 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
 
 
         } else {
-            // Alert the user to fill mandatory fields
-            setError("Please fill service name and duration fields.");
-            setLoading(false);
-            setShowErrorModel(true);
-            return;
+            if (!serviceName) {
+                setError("Please fill service name fields.");
+                setLoading(false);
+                setShowErrorModel(true);
+                return;
+            }
+            if (!fromDuration) {
+                setError("Please fill from duration fields.");
+                setLoading(false);
+                setShowErrorModel(true);
+                return;
+            }
+
+            if (!currentPriceSelected) {
+                setError("Please fill price type fields.");
+                setLoading(false);
+                setShowErrorModel(true);
+                return;
+            }
+            if (!price) {
+                setError("Please fill price fields.");
+                setLoading(false);
+                setShowErrorModel(true);
+                return;
+            }
+
         }
     };
 
@@ -370,7 +391,7 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
                                             <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Save"
                                     }
                                 </button>
-                                <SuccessPopUp closeAction={()=>setShowModel(false)} title={"Your Data is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+                                <SuccessPopUp closeAction={() => setShowModel(false)} title={"Your Data is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
                                 {/* error popup */}
                                 <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 

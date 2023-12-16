@@ -65,7 +65,7 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
     setToSelectedDate(date);
   };
 
-  
+
 
 
   const handleSave = async () => {
@@ -74,7 +74,7 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
 
 
 
-    if (serviceName && fromDuration && toDuration && currentPriceSelected && price) {
+    if (serviceName && fromDuration && currentPriceSelected && price) {
       // Check if optional fields are filled
       if ((discount || currentDiscountSelected || fromselectedDate || toselectedDate) &&
         (!discount || !currentDiscountSelected || !fromselectedDate || !toselectedDate)) {
@@ -100,14 +100,14 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
         data['parent_id'] = parseInt(parentId);
       }
       data['template_id'] = parseInt(templateId);
-      if ((discount || currentDiscountSelected || fromselectedDate || toselectedDate) ) {
+      if ((discount || currentDiscountSelected || fromselectedDate || toselectedDate)) {
         data['discount_type'] = currentDiscountSelected?.value;
         data['discount_amount'] = discount;
-        data['discount_valid_from'] = new Date(fromselectedDate.toString().slice(1,-1));
-        data['discount_valid_to'] = new Date(toselectedDate.toString().slice(1,-1));
+        data['discount_valid_from'] = new Date(fromselectedDate.toString().slice(1, -1));
+        data['discount_valid_to'] = new Date(toselectedDate.toString().slice(1, -1));
       }
 
-      const response = await addServiceAndSubService(token, categoryId,templateId,JSON.stringify(data));
+      const response = await addServiceAndSubService(token, categoryId, templateId, JSON.stringify(data));
       if (!response) {
         setError("Please check your credentials again.");
         setLoading(false);
@@ -135,10 +135,32 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
 
     } else {
       // Alert the user to fill mandatory fields
-      setError("Please fill service name and duration fields.");
-      setLoading(false);
-      setShowErrorModel(true);
-      return;
+      if (!serviceName) {
+        setError("Please fill service name fields.");
+        setLoading(false);
+        setShowErrorModel(true);
+        return;
+      }
+      if (!fromDuration) {
+        setError("Please fill from duration fields.");
+        setLoading(false);
+        setShowErrorModel(true);
+        return;
+      }
+
+      if (!currentPriceSelected) {
+        setError("Please fill price type fields.");
+        setLoading(false);
+        setShowErrorModel(true);
+        return;
+      }
+      if (!price) {
+        setError("Please fill price fields.");
+        setLoading(false);
+        setShowErrorModel(true);
+        return;
+      }
+
     }
   };
 
@@ -322,7 +344,7 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
                       <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Save"
                   }
                 </button>
-                <SuccessPopUp closeAction={()=>setShowModel(false)} title={"Your Sub Service is added Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+                <SuccessPopUp closeAction={() => setShowModel(false)} title={"Your Sub Service is added Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
                 {/* error popup */}
                 <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 

@@ -528,6 +528,24 @@ export const ProfessionalContextProvider = ({ children }) => {
     }
   };
 
+  const postTeamMemberOnPublicPage = async (token, id, data) => {
+    try {
+      const headers = jsonHeader(token);
+      const response = await ApiTemplate("post", "/api/team_members/team_member_on_public_page/" + id, data, headers);
+
+      if (response && response["success"]) {
+        await getTemplateBio(token,id)
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
+  };
+
+ 
+
   return (
     <ProfessionalContext.Provider
       value={{
@@ -570,7 +588,8 @@ export const ProfessionalContextProvider = ({ children }) => {
         updateDesiredLocation,
         getDesiredLocation,
         copyTemplate,
-        publishTemplate
+        publishTemplate,
+        postTeamMemberOnPublicPage
 
       }}
     >
