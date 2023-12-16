@@ -95,7 +95,7 @@ export default function TeamMemberSection({ id, type }) {
 
                 </div>
                 {/* team cards */}
-                <div className="flex  flex-wrap items-center gap-2 px-3 py-5">
+                <div className="flex flex-wrap items-center gap-2 px-3 py-5">
                     {/* card */}
                     {
                         teamMembers && teamMembers.map((team, index) => {
@@ -284,18 +284,19 @@ function TeamCard({ index, team, id, type }) {
             </div>
             <div className="grid grid-cols-2 gap-3 mt-3">
                 {
-                    JSON.parse(team?.service) && JSON.parse(team?.service).map((item, index) => {
-                        if (item.serviceIds.length == item.services.length) {
-                            return <div key={index} className="w-full py-2 text-xs font-medium text-center text-white rounded-md bg-gradient-to-b from-customBlue to-customGreen">
-                                {item.categoryId.value}
-                            </div>
+                    JSON.parse(team?.service)?.slice(0, 4).map((item, index) => {
+                        if (index < 2 && item.serviceIds.length === item.services.length) {
+                            return (
+                                <div key={index} className="w-full py-2 text-xs font-medium text-center text-white rounded-md bg-gradient-to-b from-customBlue to-customGreen">
+                                    {item.categoryId.value}
+                                </div>
+                            );
+                        } else if (index < 4) {
+                            return <CategoryCard key={index} title={item.categoryId.value} options={item.serviceIds} />;
                         }
-                        else {
-                            return <CategoryCard title={item.categoryId.value} options={item.serviceIds} />
-                        }
+                        return null;
                     })
                 }
-
             </div>
 
             <div className="flex items-center justify-end w-full gap-2">

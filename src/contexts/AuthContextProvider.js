@@ -117,14 +117,14 @@ export const AuthContextProvider = ({ children }) => {
   const checkUser = async () => {
     try {
       console.log(" checking user");
-      const token = JSON.parse(await localStorage.getItem("token"));
-      if (token !== null) {
+      const localToken = JSON.parse(await localStorage.getItem("token"));
+      if (localToken !== null) {
         const headers = {
           "Content-Type": "application/json",
           "X-CSRF-TOKEN": document.head
             .querySelector('meta[name="csrf-token"]')
             ?.getAttribute("content"),
-          "Authorization": "Bearer " + token,
+          "Authorization": "Bearer " + localToken,
         };
 
         const response = await ApiTemplate(
@@ -134,15 +134,19 @@ export const AuthContextProvider = ({ children }) => {
           headers,
         );
 
+        console.log(response)
+
         if (response && response["success"] === true) {
           console.log(response["data"]);
           // await localStorage.setItem("token", JSON.stringify(response["data"]["token"]));
           await localStorage.setItem("user", JSON.stringify(response["data"]["user"]));
           setIsLoggedIn(true);
+          setToken(localToken)
           setUserProfile(response["data"]["user"]);
 
         } else {
           setIsLoggedIn(false);
+          
           setUserProfile(null);
         }
       } else {

@@ -48,10 +48,21 @@ const SelectWithInputs = ({
       const selectedValue = `${inputHrValue}hr ${inputMintValue}mint`;
       handleSelect(selectedValue);
     } else {
+      handleSelect(null);
       // Handle input validation, e.g., show an error message
       console.error("Invalid input value. Please enter a positive integer.");
     }
   };
+
+  const updateInputValues = () => {
+    console.log("Updating input values", selectedOption);
+    selectedOption && selectedOption.split(" ")[0] && setInputHrValue(String(parseInt(selectedOption.split(" ")[0])))
+    selectedOption && selectedOption.split(" ")[1] && setInputMintValue(String((selectedOption.split(" ")[1])))
+  }
+
+  useEffect(() => {
+      updateInputValues();
+  }, [selectedOption])
 
   useEffect(
     () => {
@@ -68,7 +79,7 @@ const SelectWithInputs = ({
           <div className="inline-block w-full rounded-md shadow-sm">
             <div
               onClick={handleFocus}
-              className="relative cursor-pointer w-full py-3 pl-3 pr-8 mt-1 text-base font-normal text-left transition duration-150 ease-in-out border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+              className="relative w-full py-3 pl-3 pr-8 mt-1 text-base font-normal text-left transition duration-150 ease-in-out border border-gray-300 rounded-md cursor-pointer focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
             >
               <span className={`${!selectedOption ? "text-gray-400" : ""} block truncate`}>
                 {selectedOption ? selectedOption : placeholder}

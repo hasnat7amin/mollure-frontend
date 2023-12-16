@@ -91,7 +91,9 @@ export default function UpdateService({ categoryId, type, templateId, parentId, 
             setCurrentPriceSelected(priceOptions.find(item => item.value == data?.price_type))
             setCurrentDiscountSelected(discountOptions.find(item => item.value == data?.discount_type))
             setFromDuration(data?.duration?.split('-')[0])
-            setToDuration(data?.duration?.split('-')[0])
+            if (data.duration?.split('-')[1]) {
+                setToDuration(data?.duration?.split('-')[1])
+            }
             console.log(data?.discount_valid_from)
             console.log(data?.discount_valid_to)
             data?.discount_valid_from && setFromSelectedDate(new Date(`${data?.discount_valid_from}`))
@@ -133,7 +135,12 @@ export default function UpdateService({ categoryId, type, templateId, parentId, 
             // Log all the values
             data['service_name'] = serviceName;
             data['bio'] = bio;
-            data['duration'] = fromDuration + " - " + toDuration;
+            if (toDuration) {
+                data['duration'] = fromDuration + " - " + toDuration;
+            }
+            else {
+                data['duration'] = fromDuration;
+            }
             data['price_type'] = currentPriceSelected?.value;
             data['price'] = price;
 

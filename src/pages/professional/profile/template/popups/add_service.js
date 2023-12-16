@@ -87,7 +87,12 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
       // Log all the values
       data['service_name'] = serviceName;
       data['bio'] = bio;
-      data['duration'] = fromDuration + " - " + toDuration;
+      if(toDuration){
+        data['duration'] = fromDuration + " - " + toDuration;
+      }
+      else{
+        data['duration'] = fromDuration;
+      }
       data['price_type'] = currentPriceSelected?.value;
       data['price'] = price;
 

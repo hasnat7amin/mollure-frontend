@@ -134,7 +134,7 @@ export default function SignupCompany() {
   }
 
   const setMunicipalities = async () => {
-    if (municipalities && (municipalities !== null || municipalities != [])) {
+    if (municipalities && municipalities.length>0 && (municipalities !== null || municipalities != [])) {
       setMunicipalityOptions(
         municipalities.map((item) => (
           { id: item.id, value: item.name, label: item.name }

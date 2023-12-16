@@ -341,12 +341,14 @@ export default function EditTeamMember({ id, type, showModel, setShowModel, data
                     <div className="w-full">
                       <Select
                         placeholder="Select Category"
-                        options={categoryAndServiceForTeam.map((category) => ({
-                          id: category.id,
-                          value: category.label_en,
-                          label: category.label_en
-                        })).filter((category) => !disabledCategories.includes(category.id))}
-                        selectedOption={row.categoryId ? row.categoryId : null}
+                        options={categoryAndServiceForTeam ? categoryAndServiceForTeam
+                          .filter(category => !rows.find(row => row.categoryId && row.categoryId.id === category.id))
+                          .map((category) => ({
+                            id: category.id,
+                            value: category.label_en,
+                            label: category.label_en
+                          })) : []}
+                          selectedOption={row.categoryId ? row.categoryId : null}
                         handelChange={(selectedOption) => handleCategoryChange(selectedOption, index)}
                       />
                     </div>
@@ -354,7 +356,7 @@ export default function EditTeamMember({ id, type, showModel, setShowModel, data
 
                       <MultiSelect
                         placeholder={"Select Services"}
-                        options={rows[index].services}
+                        options={row.services}
                         selectedOptions={row.serviceIds || []}
                         handleSelect={(selectedIds) => handleSelectService(selectedIds, index)}
 
@@ -378,12 +380,13 @@ export default function EditTeamMember({ id, type, showModel, setShowModel, data
 
 
                 {/* copy template and clear all buttons */}
-                {
-                  categoryAndServiceForTeam.map((category) => ({
+                {categoryAndServiceForTeam && categoryAndServiceForTeam
+                  .filter(category => !rows.find(row => row.categoryId && row.categoryId.id === category.id))
+                  .map((category) => ({
                     id: category.id,
                     value: category.label_en,
                     label: category.label_en
-                  })).filter((category) => !disabledCategories.includes(category.id)).length > 0 && <div className="flex items-center justify-end w-full mt-2 space-x-2">
+                  })).length > 0 && <div className="flex items-center justify-end w-full mt-2 space-x-2">
                     <button onClick={addRow} className="flex items-center gap-2 px-3 py-2 text-base font-normal rounded-full bg-customBlue bg-opacity-10 text-customBlue focus:ring-0 ">
                       <AiOutlinePlus /> <span>Category </span>
                     </button>

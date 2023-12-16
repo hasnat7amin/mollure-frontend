@@ -18,53 +18,60 @@ import ChangePassword from './app/(auth)/change-password/page';
 import VerifyToken from './app/(auth)/verify-token/page';
 
 function App() {
-  const { checkUser, isUserLoggedIn, getUserProfile ,isLoggedIn} = useAuthContext();
-  const [loading, setLoading] = useState(true);
+  const { checkUser, isUserLoggedIn, getUserProfile, isLoggedIn, } = useAuthContext();
+  const [loading, setLoading] = useState(false);
+
+  const userProfile = getUserProfile();
+  
+  const verifyUser = async () => {
+    console.log("verify user")
+    setLoading(true);
+    await checkUser();
+    setLoading(false);
+  };
+
 
   useEffect(() => {
-    const verifyUser = async () => {
-      const storedToken = localStorage.getItem("token");
-      if (storedToken) {
-        await checkUser();
-      }
-      setLoading(false);
-    };
     verifyUser();
   }, []);
 
-  if (loading) {
-    return <Loading />;
-  }
+ 
 
-  const userProfile = getUserProfile();
 
   return (
-    <Router>
-      <Routes>
-        {isLoggedIn ? (
-          <>
-            { isLoggedIn && <Route path="/" element={<Navigate to={`/${userProfile.user_type}`} />} />}
-            <Route path="/professional" element={<Professional />} />
-            <Route path="/individual" element={<IndividualClient />} />
-            <Route path="/company" element={<CompanyClient />} />
-          </>
-        ) : (
-          <>
-            <Route path="/" element={<Login />} />
-            <Route path="/select-user-type" element={<SelectUserType />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/change-password/:token" element={<ChangePassword />} />
-            <Route path="/verify-token" element={<VerifyToken />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup-company" element={<SignupCompany />} />
-            <Route path="/signup-professional" element={<SignupProfessional />} />
-            <Route path="/signup-individual" element={<SignupIC />} />
-            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-          </>
-        )}
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </Router>
+    <section>
+      <Router>
+        {
+          !loading ?
+
+            <Routes>
+              {isLoggedIn ? (
+                <>
+                  {isLoggedIn && <Route path="/" element={<Navigate to={`/${userProfile.user_type}`} />} />}
+                  <Route path="/professional" element={<Professional />} />
+                  <Route path="/individual" element={<IndividualClient />} />
+                  <Route path="/company" element={<CompanyClient />} />
+                </>
+              ) : (
+                <>
+                  <Route path="/" element={<Login />} />
+                  <Route path="/select-user-type" element={<SelectUserType />} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
+                  <Route path="/change-password/:token" element={<ChangePassword />} />
+                  <Route path="/verify-token" element={<VerifyToken />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup-company" element={<SignupCompany />} />
+                  <Route path="/signup-professional" element={<SignupProfessional />} />
+                  <Route path="/signup-individual" element={<SignupIC />} />
+                  <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+                </>
+              )}
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+            : <Loading />
+        }
+      </Router>
+    </section>
   );
 }
 

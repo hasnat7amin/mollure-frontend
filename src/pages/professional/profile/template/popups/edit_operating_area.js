@@ -251,7 +251,7 @@ export default function EditOperatingArea({ showModel, setShowModel, data,id = 2
 
                                             <MultiSelect
                                                 placeholder={"Select Services"}
-                                                options={rows[index].municipalities ? rows[index].municipalities.map((category) => ({
+                                                options={rows[index].municipalities?.length ?  rows[index].municipalities.map((category) => ({
                                                     id: category.id,
                                                     value: category.label_en,
                                                     label: category.label_en

@@ -81,7 +81,7 @@ export default function AddLocation({
   }
 
   const setMunicipalities = async () => {
-    if (municipalities && (municipalities !== null || municipalities != [])) {
+    if (municipalities && municipalities.length>0 &&  (municipalities !== null || municipalities != [])) {
       setMunicipalityOptions(
         municipalities.map((item) => (
           { id: item.id, value: item.name, label: item.name }
@@ -244,7 +244,7 @@ export default function AddLocation({
                   <div>
                   <label
                     htmlFor="email"
-                    className="block text-sm mt-3 font-normal text-gray-500"
+                    className="block mt-3 text-sm font-normal text-gray-500"
                   >
                     Address
                   </label>

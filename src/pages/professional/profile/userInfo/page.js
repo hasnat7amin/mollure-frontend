@@ -220,7 +220,7 @@ export default function UserInfo() {
   }
 
   const setMunicipalities = async () => {
-    if (municipalities && (municipalities !== null || municipalities != [])) {
+    if (municipalities &&  municipalities.length>0 && (municipalities !== null || municipalities != [])) {
       setMunicipalityOptions(
         municipalities.map((item) => (
           { id: item.id, value: item.name, label: item.name }
@@ -597,7 +597,7 @@ export default function UserInfo() {
                 <div>
                   <label
                     // htmlFor="documentation"
-                    className="inline-block   items-center gap-1 text-sm font-normal text-gray-500"
+                    className="items-center inline-block gap-1 text-sm font-normal text-gray-500"
                     style={{ whiteSpace: 'wrap', }}
                   >
                     <span>

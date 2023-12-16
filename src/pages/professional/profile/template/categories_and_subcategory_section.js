@@ -155,14 +155,14 @@ export default function CategoryAndSubCategorySection({ id, type }) {
                                 <div
                                     key={card.id}
                                     onClick={() => setSelectedCategory(card)}
-                                    className={`w-[11rem] flex flex-col items-center justify-center flex-shrink-0 px-2 py-4 space-y-3 rounded-md shadow-md hover:bg-gradient-to-b hover:from-customBlue hover:to-customGreen hover:text-white group ${selectedCategory.id == card.id ? "bg-gradient-to-b from-customBlue to-customGreen text-white" : "bg-white"}`}
+                                    className={`w-[14rem] flex flex-col items-center justify-center flex-shrink-0 px-2 py-4 space-y-3 rounded-md shadow-md hover:bg-gradient-to-b hover:from-customBlue hover:to-customGreen hover:text-white group ${selectedCategory.id == card.id ? "bg-gradient-to-b from-customBlue to-customGreen text-white" : "bg-white"}`}
                                 >
                                     <img
                                         src={baseUrl+ "/imgs/category/" + card.image}
                                         width={100}
                                         height={100}
                                         alt="Edit"
-                                        className="cursor-pointer group-hover:text-white h-20 w-20"
+                                        className="object-contain object-center w-auto h-20 cursor-pointer group-hover:text-white"
                                         style={{ cursor: "grab" }}
                                         onDragStart={e => e.preventDefault()}
                                     // onClick={toggleUpdateButtonVisibility}
@@ -316,10 +316,10 @@ function Services({ data, templateId, categoryId }) {
 
     return <section>
         {/* category 1 */}
-        <div className="flex items-center w-full h-[6rem] justify-center text-customBlue bg-customBlue bg-opacity-5">
+        <div className=" flex items-center w-full h-[6rem] justify-center text-customBlue bg-customBlue bg-opacity-5">
             <div className="flex w-full h-full ">
                 <div className="w-2 bg-customBlue rounded-r-md" />
-                <p className="flex items-center gap-2 justify-center w-full h-full text-lg font-normal text-center border-r ms-2 ">
+                <p className="flex items-center justify-center w-full h-full gap-2 text-lg font-normal text-center border-r ms-2 ">
                     {data?.service_name}
                     {data?.bio&&<Info title={data?.bio} />}
                 </p>
@@ -332,10 +332,10 @@ function Services({ data, templateId, categoryId }) {
                     <span className="text-sm line-through">{data?.price} EUR</span> {data?.price - data?.discount_amount}
                     EUR
                 </p>
-                <p className="flex items-center justify-center space-x-2">
+                <p className="flex items-center justify-center space-x-2 ">
                     <span>Discount {data.discount_amount} EUR </span>
 
-                    {data.discount_info&&<Info title={data.discount_info} />}
+                    {data.additional_info&&<Info title={data.additional_info} />}
                 </p>
             </div>
             <div className="flex items-center justify-center w-full h-full space-x-2 font-semibold ">
@@ -461,17 +461,29 @@ function SubServices({ data, templateId, categoryId, parentId }) {
 
 
     return <section>
-        <div className="flex items-center w-full border-b h-[3rem] justify-center  bg-opacity-5">
+        <div className="flex items-center w-full border-b h-[3.5rem] justify-center  bg-opacity-5">
             <div className="flex w-full h-full ">
                 <p className="flex items-center justify-center w-full h-full text-lg font-normal border-r ms-3 ">
                     {data?.service_name}
+                    {data?.bio&&<Info title={data?.bio} />}
                 </p>
             </div>
             <p className="flex items-center justify-center w-full h-full text-lg font-normal text-center border-r">
                 {data?.duration}
             </p>
             <div className="flex flex-col items-center justify-center w-full h-full space-y-1 text-lg font-normal text-center border-r">
-                <p>{data?.price} EUR</p>
+                {/* <p>{data?.price} EUR</p> */}
+                <div className="flex flex-col items-center justify-center w-full h-full text-lg font-normal text-center border-r">
+                <p>
+                    <span className="text-sm line-through">{data?.price} EUR</span> {data?.price - data?.discount_amount}
+                    EUR
+                </p>
+                <p className="flex items-center justify-center gap-2">
+                    <span>Discount {data.discount_amount} EUR </span>
+
+                    {data.additional_info&&<Info title={data.additional_info} />}
+                </p>
+            </div>
             </div>
             <div className="flex items-center justify-center w-full h-full space-x-2 font-normal ">
                 {/* edit image */}
