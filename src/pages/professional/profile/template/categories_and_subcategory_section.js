@@ -219,7 +219,7 @@ function Category({ category, templateId }) {
             <LightTitleBar title={category.name_en + "'s Subservices"} />
 
             {/* table */}
-            {servicesById && <div className="overflow-x-scroll md:overflow-hidden">
+            {servicesById && <div className="overflow-x-scroll md:overflow-visible">
                 <div className="md:w-full w-[60rem]">
                     {/* titles  */}
                     <div className="flex items-center justify-between my-4">
@@ -463,7 +463,7 @@ function SubServices({ data, templateId, categoryId, parentId }) {
     return <section>
         <div className="flex items-center w-full border-b h-[3.5rem] justify-center  bg-opacity-5">
             <div className="flex w-full h-full ">
-                <p className="flex items-center justify-center w-full h-full text-lg font-normal border-r ms-3 ">
+                <p className="flex items-center justify-center w-full h-full gap-2 text-lg font-normal border-r ms-3">
                     {data?.service_name}
                     {data?.bio&&<Info title={data?.bio} />}
                 </p>
