@@ -162,7 +162,7 @@ export default function PublishSection({ id, type }) {
         <ConfirmationProcessPopUp
             showModel={showCopyPagePopUp}
             setShowModel={setShowCopyPagePopUp}
-            title={"Are you sure you want to copy the date from fixed to desired location?"}
+            title={`Are you sure you want to copy the date from ${id==1?"fixed":"desired"} to ${id==1?"desired":"fixed"} location?`}
             handleNo={() => setShowCopyPagePopUp(false)}
             handleYes={() => handleCopyPageProcess()}
         />

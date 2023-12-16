@@ -59,22 +59,22 @@ export default function ServiceForSection({ id,type }) {
                     <div className="flex flex-wrap items-center w-full gap-2 mt-3 ms-2 md:mt-0">
                         {
                             serviceFor && serviceFor.women == 1 && <p className="px-3 py-3 text-base font-normal border border-gray-300 rounded-md flex-nowrap">
-                                only womens
+                               Only Womens
                             </p>
                         }
                         {
                             serviceFor && serviceFor.men == 1 && <p className="px-3 py-3 text-base font-normal border border-gray-300 rounded-md flex-nowrap">
-                                only mens
+                                Only Mens
                             </p>
                         }
                         {
                             serviceFor && serviceFor.kids == 1 && <p className="px-3 py-3 text-base font-normal border border-gray-300 rounded-md flex-nowrap">
-                                only kids
+                                Kids
                             </p>
                         }
                         {
                             serviceFor && serviceFor.all_gender == 1 && <p className="px-3 py-3 text-base font-normal border border-gray-300 rounded-md flex-nowrap">
-                                kids
+                                Women & Men
                             </p>
                         }
                         {/* {
