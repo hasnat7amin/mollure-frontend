@@ -118,7 +118,7 @@ export default function SignupCompany() {
   }
 
   const setProvinces = async () => {
-    if (provinces && (provinces !== null || provinces != [])) {
+    if (provinces && provinces.length>0 && (provinces !== null || provinces != [])) {
       setProvinceOptions(
         provinces.map((item) => (
           { id: item.id, value: item.name, label: item.name }

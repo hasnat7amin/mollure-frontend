@@ -204,19 +204,19 @@ export default function UserInfo() {
   }
 
   const setProvinces = async () => {
-    if (provinces && (provinces !== null || provinces != [])) {
+    if (provinces && provinces.length>0 &&  (provinces !== null || provinces != [])) {
       setProvinceOptions(
-        provinces?.map((item) => (
+        provinces.map((item) => (
           { id: item.id, value: item.name, label: item.name }
         ))
       )
     }
-    // if (provinces == []) {
-    //   setProvinceOptions(
-    //     { id: "loading", value: "No Provinces Found", label: "No Provinces Found" }
+    if (provinces == []) {
+      setProvinceOptions(
+        { id: "loading", value: "No Provinces Found", label: "No Provinces Found" }
 
-    //   )
-    // }
+      )
+    }
   }
 
   const setMunicipalities = async () => {
