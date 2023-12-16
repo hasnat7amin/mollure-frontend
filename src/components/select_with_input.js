@@ -57,7 +57,7 @@ const SelectWithInputs = ({
   const updateInputValues = () => {
     console.log("Updating input values", selectedOption);
     selectedOption && selectedOption.split(" ")[0] && setInputHrValue(String(parseInt(selectedOption.split(" ")[0])))
-    selectedOption && selectedOption.split(" ")[1] && setInputMintValue(String((selectedOption.split(" ")[1])))
+    selectedOption && selectedOption.split(" ")[1] && setInputMintValue(String(parseInt(selectedOption.split(" ")[1])))
   }
 
   useEffect(() => {
@@ -103,8 +103,8 @@ const SelectWithInputs = ({
                       value={inputHrValue}
                       onChange={e => {
                         e.stopPropagation();
-                        const re = /^[0-9\b]+$/; // Regex pattern to allow only numbers
-                        if (e.target.value === '' || re.test(e.target.value)) {
+                        const re = /^\d*$/; // Regex pattern to allow only numbers
+                        if (re.test(e.target.value)) {
                           handleHrInputChange(e);
                         }
                       }}
@@ -119,11 +119,10 @@ const SelectWithInputs = ({
                       value={inputMintValue}
                       onChange={e => {
                         e.stopPropagation();
-                        const re = /^[0-9\b]+$/; // Regex pattern to allow only numbers
-                        if (e.target.value === '' || re.test(e.target.value)) {
+                        const re = /^\d*$/; // Regex pattern to allow only numbers
+                        if (re.test(e.target.value)) {
                           handleMintInputChange(e);
                         }
-
                       }}
                       max={59}
                       maxLength={2}
