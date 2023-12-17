@@ -231,7 +231,7 @@ export default function UpdateService({ categoryId, type, templateId, parentId, 
                         <div className="relative px-2 py-4 bg-white rounded-lg shadow-lg">
                             <div className="flex flex-col items-start gap-2 px-5 rounded-t">
                                 <h3 className="w-full text-lg font-bold text-center text-softblue">
-                                    Add Service
+                                    Update Service
                                 </h3>
                             </div>
                             <div className="px-5 pt-9">

@@ -67,9 +67,25 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
   };
 
   const convertDurationToMinutes = (duration) => {
-    const hours = parseInt(duration.split('hr')[0]) || 0;
-    const minutes = parseInt(duration.split(' ')[1]?.replace('mint', '') || 0);
-    return ((hours * 60) + minutes);
+    const parts = duration.split(" ");
+
+    const hours = parts.find(part => part.includes("hr"));
+    const minutes = parts.find(part => part.includes("mint"));
+
+    const parsedHours = hours ? parseInt(hours) : null;
+    const parsedMinutes = minutes ? parseInt(minutes) : null;
+
+    let totalMinutes = 0;
+
+    if(parsedHours){
+      totalMinutes = totalMinutes + (parsedHours*60)
+    }
+
+    if(parsedMinutes){
+      totalMinutes = totalMinutes + (parsedMinutes)
+    }
+
+    return totalMinutes;
   };
 
 
@@ -91,7 +107,7 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
       if (fromDuration && toDuration) {
         const fromDurationInMinutes = convertDurationToMinutes(fromDuration);
         const toDurationInMinutes = convertDurationToMinutes(toDuration);
-        
+
         if (toDurationInMinutes < fromDurationInMinutes) {
           // Show error message or handle the case where toDuration is less than fromDuration
           setError("To duration cannot be less than from duration.");

@@ -158,7 +158,7 @@ export default function CategoryAndSubCategorySection({ id, type }) {
                                     className={`w-[14rem] flex flex-col items-center justify-center flex-shrink-0 px-2 py-4 space-y-3 rounded-md shadow-md hover:bg-gradient-to-b hover:from-customBlue hover:to-customGreen hover:text-white group ${selectedCategory.id == card.id ? "bg-gradient-to-b from-customBlue to-customGreen text-white" : "bg-white"}`}
                                 >
                                     <img
-                                        src={baseUrl+ "/imgs/category/" + card.image}
+                                        src={baseUrl + "/imgs/category/" + card.image}
                                         width={100}
                                         height={100}
                                         alt="Edit"
@@ -203,7 +203,7 @@ function Category({ category, templateId }) {
     };
 
     const fetchServicesById = async () => {
-        category && await getServicesByCategoryId(token, category.id,templateId);
+        category && await getServicesByCategoryId(token, category.id, templateId);
     }
 
 
@@ -246,7 +246,7 @@ function Category({ category, templateId }) {
 
                     </div>
                 </div>
-            </div> 
+            </div>
 
             }
 
@@ -288,10 +288,10 @@ function Services({ data, templateId, categoryId }) {
     const { token } = useAuthContext();
 
 
-    const handleServiceDeleteConfirm = async (id, categoryId,templateId) => {
+    const handleServiceDeleteConfirm = async (id, categoryId, templateId) => {
         setError('');
 
-        const response = await deleteServiceAndSubService(token, id, categoryId,templateId);
+        const response = await deleteServiceAndSubService(token, id, categoryId, templateId);
         if (!response) {
             setError("Please check your credentials again.");
 
@@ -313,6 +313,53 @@ function Services({ data, templateId, categoryId }) {
         setShowSubServices(prevState => !prevState); // Toggle the visibility of sub-services
     };
 
+    const calculateGreatestDiscount = (data) => {
+        let greatestDiscount = 0;
+        let discountType = '';
+        let originalPrice = data.price;
+        let discountPrice = data.price; // Initially set to the original price
+      
+        // If data has sub-services
+        if (data?.sub_services && data.sub_services.length > 0) {
+          data.sub_services.forEach((subservice) => {
+            const { discount_type, discount_amount } = subservice;
+            if (discount_type === 'f') {
+              if (discount_amount > greatestDiscount) {
+                greatestDiscount = discount_amount;
+                discountType = 'f';
+              }
+            } else if (discount_type === 'p') {
+              const percentageDiscount = (data.price * discount_amount) / 100;
+              if (percentageDiscount > greatestDiscount) {
+                greatestDiscount = percentageDiscount;
+                discountType = 'p';
+              }
+            }
+          });
+        } else {
+          // If data doesn't have sub-services, consider the discount type for the main service
+          if (data.discount_type === 'f') {
+            greatestDiscount = data.discount_amount;
+            discountType = 'f';
+          } else if (data.discount_type === 'p') {
+            const percentageDiscount = (data.price * data.discount_amount) / 100;
+            greatestDiscount = percentageDiscount;
+            discountType = 'p';
+          }
+        }
+      
+        // Calculate the discount price
+        if (discountType === 'f') {
+          discountPrice = originalPrice - greatestDiscount;
+        } else if (discountType === 'p') {
+          discountPrice = originalPrice - greatestDiscount;
+          greatestDiscount = 100 * (greatestDiscount / originalPrice);
+        }
+      
+        return { greatestDiscount, discountType, originalPrice, discountPrice };
+      };
+      
+
 
     return <section>
         {/* category 1 */}
@@ -321,22 +368,24 @@ function Services({ data, templateId, categoryId }) {
                 <div className="w-2 bg-customBlue rounded-r-md" />
                 <p className="flex items-center justify-center w-full h-full gap-2 text-lg font-normal text-center border-r ms-2 ">
                     {data?.service_name}
-                    {data?.bio&&<Info title={data?.bio} />}
+                    {data?.bio && <Info title={data?.bio} />}
                 </p>
             </div>
             <p className="flex items-center justify-center w-full h-full text-lg font-normal text-center border-r">
                 {data?.duration}
             </p>
             <div className="flex flex-col items-center justify-center w-full h-full space-y-1 text-lg font-normal text-center border-r">
-                <p>
-                    <span className="text-sm line-through">{data?.price} EUR</span> {data?.price - data?.discount_amount}
+                {data.discount_amount>0 && !(data.sub_services.length>0) && calculateGreatestDiscount(data).greatestDiscount > 0 ? <p>
+                    <span className="text-sm line-through"> {calculateGreatestDiscount(data).originalPrice} EUR</span> {calculateGreatestDiscount(data).discountPrice}
                     EUR
-                </p>
-                <p className="flex items-center justify-center space-x-2 ">
-                    <span>Discount {data.discount_amount} EUR </span>
+                </p> : <p>
+                    Starting From {data?.price} EUR
+                </p>}
+                {data.discount_amount>0 && calculateGreatestDiscount(data).greatestDiscount > 0  && <p className="flex items-center justify-center space-x-2 ">
+                    <span>Discount {data.sub_services.length>0?"up to":""} {calculateGreatestDiscount(data).greatestDiscount} {calculateGreatestDiscount(data).discountType === "f"? "Eur":"%"} </span>
 
-                    {data.additional_info&&<Info title={data.additional_info} />}
-                </p>
+                    {data.additional_info && <Info title={data.additional_info} />}
+                </p>}
             </div>
             <div className="flex items-center justify-center w-full h-full space-x-2 font-semibold ">
                 {/* edit button */}
@@ -345,7 +394,7 @@ function Services({ data, templateId, categoryId }) {
                         src={edit}
                         alt="Edit"
                         className="mt-0 cursor-pointer "
-                        onClick={()=>setShowUpdateServiceModel(true)}
+                        onClick={() => setShowUpdateServiceModel(true)}
                     />
                 </button>
                 {/* delete button */}
@@ -394,8 +443,8 @@ function Services({ data, templateId, categoryId }) {
             setShowModel={setShowAddSubServiceModel}
             servicePrice={data?.price}
         />
-         {/* add  service */}
-         <UpdateService
+        {/* add  service */}
+        <UpdateService
             categoryId={categoryId}
             templateId={templateId}
             parentId={data?.id}
@@ -404,13 +453,13 @@ function Services({ data, templateId, categoryId }) {
             setShowModel={setShowUpdateServiceModel}
             data={data}
         />
-        
+
         <ConfirmationDeletePopUp
             showModel={showDeleteVisualPopUp}
             setShowModel={setShowDeleteVisualPopUp}
             title={"Are you sure you want to delete this Service?"}
             handleCancel={() => { setShowDeleteVisualPopUp(false); }}
-            handleDelete={() => handleServiceDeleteConfirm(data?.id, categoryId,templateId)}
+            handleDelete={() => handleServiceDeleteConfirm(data?.id, categoryId, templateId)}
         />
 
         {/* error popup */}
@@ -438,10 +487,10 @@ function SubServices({ data, templateId, categoryId, parentId }) {
     const { token } = useAuthContext();
 
 
-    const handleServiceDeleteConfirm = async (id, categoryId,templateId) => {
+    const handleServiceDeleteConfirm = async (id, categoryId, templateId) => {
         setError('');
 
-        const response = await deleteServiceAndSubService(token, id, categoryId,templateId);
+        const response = await deleteServiceAndSubService(token, id, categoryId, templateId);
         if (!response) {
             setError("Please check your credentials again.");
 
@@ -465,7 +514,7 @@ function SubServices({ data, templateId, categoryId, parentId }) {
             <div className="flex w-full h-full ">
                 <p className="flex items-center justify-center w-full h-full gap-2 text-lg font-normal border-r ms-3">
                     {data?.service_name}
-                    {data?.bio&&<Info title={data?.bio} />}
+                    {data?.bio && <Info title={data?.bio} />}
                 </p>
             </div>
             <p className="flex items-center justify-center w-full h-full text-lg font-normal text-center border-r">
@@ -474,16 +523,16 @@ function SubServices({ data, templateId, categoryId, parentId }) {
             <div className="flex flex-col items-center justify-center w-full h-full space-y-1 text-lg font-normal text-center border-r">
                 {/* <p>{data?.price} EUR</p> */}
                 <div className="flex flex-col items-center justify-center w-full h-full text-lg font-normal text-center border-r">
-                <p>
-                    <span className="text-sm line-through">{data?.price} EUR</span> {data?.price - data?.discount_amount}
-                    EUR
-                </p>
-                <p className="flex items-center justify-center gap-2">
-                    <span>Discount {data.discount_amount} EUR </span>
+                    <p>
+                        <span className="text-sm line-through">{data?.price} EUR</span> {data?.price - data?.discount_amount}
+                        EUR
+                    </p>
+                    <p className="flex items-center justify-center gap-2">
+                        <span>Discount {data.discount_amount} EUR </span>
 
-                    {data.additional_info&&<Info title={data.additional_info} />}
-                </p>
-            </div>
+                        {data.additional_info && <Info title={data.additional_info} />}
+                    </p>
+                </div>
             </div>
             <div className="flex items-center justify-center w-full h-full space-x-2 font-normal ">
                 {/* edit image */}
@@ -492,7 +541,7 @@ function SubServices({ data, templateId, categoryId, parentId }) {
                         src={edit}
                         alt="Edit"
                         className="mt-0 cursor-pointer "
-                        onClick={()=>setShowUpdateServiceModel(true)}
+                        onClick={() => setShowUpdateServiceModel(true)}
                     />
                 </button>
                 {/* edit image */}
@@ -512,11 +561,11 @@ function SubServices({ data, templateId, categoryId, parentId }) {
             setShowModel={setShowDeleteVisualPopUp}
             title={"Are you sure you want to delete this Service?"}
             handleCancel={() => { setShowDeleteVisualPopUp(false); }}
-            handleDelete={() => handleServiceDeleteConfirm(data?.id, categoryId,templateId)}
+            handleDelete={() => handleServiceDeleteConfirm(data?.id, categoryId, templateId)}
         />
 
-          {/* add  service */}
-          <UpdateSubService
+        {/* add  service */}
+        <UpdateSubService
             categoryId={categoryId}
             templateId={templateId}
             parentId={parentId}
