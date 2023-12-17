@@ -16,6 +16,8 @@ import SignupProfessional from './app/(auth)/signup-professional/page';
 import SignupIC from './app/(auth)/signup-individual/page';
 import ChangePassword from './app/(auth)/change-password/page';
 import VerifyToken from './app/(auth)/verify-token/page';
+import ContactUs from "./app/contact-us/page"
+import UserProfile from "./app/user/user-profile"
 
 function App() {
   const { checkUser, isUserLoggedIn, getUserProfile, isLoggedIn, } = useAuthContext();
@@ -51,6 +53,9 @@ function App() {
                   <Route path="/professional" element={<Professional />} />
                   <Route path="/individual" element={<IndividualClient />} />
                   <Route path="/company" element={<CompanyClient />} />
+                  <Route path="/contact-us" element={<ContactUs />} />
+                  <Route path="/user/:userId" element={<UserProfile />} />
+
                 </>
               ) : (
                 <>
@@ -64,6 +69,9 @@ function App() {
                   <Route path="/signup-professional" element={<SignupProfessional />} />
                   <Route path="/signup-individual" element={<SignupIC />} />
                   <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+                  <Route path="/contact-us" element={<ContactUs />} />
+                  <Route path="/user/:userId" element={<UserProfile />} />
+
                 </>
               )}
               <Route path="*" element={<Navigate to="/" />} />

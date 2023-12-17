@@ -66,6 +66,12 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
     setToSelectedDate(date);
   };
 
+  const convertDurationToMinutes = (duration) => {
+    const hours = parseInt(duration.split('hr')[0]) || 0;
+    const minutes = parseInt(duration.split(' ')[1]?.replace('mint', '') || 0);
+    return ((hours * 60) + minutes);
+  };
+
 
   const handleSave = async () => {
     setError('');
@@ -73,7 +79,7 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
 
 
 
-    if (serviceName && fromDuration  && currentPriceSelected && price) {
+    if (serviceName && fromDuration && currentPriceSelected && price) {
       // Check if optional fields are filled
       if ((discount || currentDiscountSelected || fromselectedDate || toselectedDate) &&
         (!discount || !currentDiscountSelected || !fromselectedDate || !toselectedDate)) {
@@ -82,15 +88,27 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
         setShowErrorModel(true);
         return;
       }
+      if (fromDuration && toDuration) {
+        const fromDurationInMinutes = convertDurationToMinutes(fromDuration);
+        const toDurationInMinutes = convertDurationToMinutes(toDuration);
+        
+        if (toDurationInMinutes < fromDurationInMinutes) {
+          // Show error message or handle the case where toDuration is less than fromDuration
+          setError("To duration cannot be less than from duration.");
+          setLoading(false);
+          setShowErrorModel(true);
+          return;
+        }
+      }
 
       const data = {};
       // Log all the values
       data['service_name'] = serviceName;
       data['bio'] = bio;
-      if(toDuration){
+      if (toDuration) {
         data['duration'] = fromDuration + " - " + toDuration;
       }
-      else{
+      else {
         data['duration'] = fromDuration;
       }
       data['price_type'] = currentPriceSelected?.value;
@@ -106,11 +124,11 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
       if ((discount || currentDiscountSelected || fromselectedDate || toselectedDate)) {
         data['discount_type'] = currentDiscountSelected?.value;
         data['discount_amount'] = discount;
-        data['discount_valid_from'] = new Date(fromselectedDate.toString().slice(1,-1));
-        data['discount_valid_to'] = new Date(toselectedDate.toString().slice(1,-1));
+        data['discount_valid_from'] = new Date(fromselectedDate.toString().slice(1, -1));
+        data['discount_valid_to'] = new Date(toselectedDate.toString().slice(1, -1));
       }
 
-      const response = await addServiceAndSubService(token, categoryId,templateId ,JSON.stringify(data));
+      const response = await addServiceAndSubService(token, categoryId, templateId, JSON.stringify(data));
       if (!response) {
         setError("Please check your credentials again.");
         setLoading(false);
@@ -162,7 +180,7 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
         setShowErrorModel(true);
         return;
       }
-     
+
     }
   };
 
@@ -321,7 +339,7 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
                   </label>
                   <div className="w-full ">
                     <div className="w-full">
-                      <CustomDatePicker placeholder="Date"  value={toselectedDate} onDateChange={handleToDateChange} />
+                      <CustomDatePicker placeholder="Date" value={toselectedDate} onDateChange={handleToDateChange} />
                     </div>
                   </div>
                 </div>
@@ -346,7 +364,7 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
                       <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Save"
                   }
                 </button>
-                <SuccessPopUp closeAction={()=>setShowModel(false)} title={"Your Service is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+                <SuccessPopUp closeAction={() => setShowModel(false)} title={"Your Service is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
                 {/* error popup */}
                 <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 

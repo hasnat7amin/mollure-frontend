@@ -18,11 +18,11 @@ const SelectWithInputs = ({
 
   const handleMintInputChange = e => {
     const value = e.target.value;
-    setInputMintValue(value);
+    setInputMintValue(value === '' ? null : value);
   };
   const handleHrInputChange = e => {
     const value = e.target.value;
-    setInputHrValue(value);
+    setInputHrValue(value === '' ? null : value);
   };
 
   const handleFocus = () => {
@@ -32,10 +32,13 @@ const SelectWithInputs = ({
   const handleSelectOption = () => {
     if (inputMintValue && inputMintValue.match(/^\d+$/) && !inputHrValue) {
       // Check if inputValue is a positive integer
+      console.log("Checking 1st:", `${inputMintValue}mint`)
       const selectedValue = `${inputMintValue}mint`;
       handleSelect(selectedValue);
     } else if (inputHrValue && inputHrValue.match(/^\d+$/) && !inputMintValue) {
       // Check if inputValue is a positive integer
+      console.log("Checking 2st:", `${inputHrValue}hr`)
+
       const selectedValue = `${inputHrValue}hr`;
       handleSelect(selectedValue);
     } else if (
@@ -45,6 +48,8 @@ const SelectWithInputs = ({
       inputMintValue.match(/^\d+$/)
     ) {
       // Check if inputValue is a positive integer
+      console.log("Checking 3st:", `${inputHrValue}hr ${inputMintValue}mint`)
+
       const selectedValue = `${inputHrValue}hr ${inputMintValue}mint`;
       handleSelect(selectedValue);
     } else {
@@ -56,12 +61,23 @@ const SelectWithInputs = ({
 
   const updateInputValues = () => {
     console.log("Updating input values", selectedOption);
-    selectedOption && selectedOption.split(" ")[0] && setInputHrValue(String(parseInt(selectedOption.split(" ")[0])))
-    selectedOption && selectedOption.split(" ")[1] && setInputMintValue(String(parseInt(selectedOption.split(" ")[1])))
-  }
+    if (selectedOption) {
+      const parts = selectedOption.split(" ");
+
+      const hours = parts.find(part => part.includes("hr"));
+      const minutes = parts.find(part => part.includes("mint"));
+
+      const parsedHours = hours ? parseInt(hours) : null;
+      const parsedMinutes = minutes ? parseInt(minutes) : null;
+
+      setInputHrValue(parsedHours !== null ? String(parsedHours) : null);
+      setInputMintValue(parsedMinutes !== null ? String(parsedMinutes) : null);
+
+    }
+  };
 
   useEffect(() => {
-      updateInputValues();
+    updateInputValues();
   }, [selectedOption])
 
   useEffect(
@@ -99,7 +115,7 @@ const SelectWithInputs = ({
                 >
                   <div className="flex flex-col items-center gap-2 md:flex-row">
                     <input
-                      type="text"
+                      type="tel"
                       value={inputHrValue}
                       onChange={e => {
                         e.stopPropagation();
@@ -115,7 +131,7 @@ const SelectWithInputs = ({
                       className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
                     />
                     <input
-                      type="text"
+                      type="tel"
                       value={inputMintValue}
                       onChange={e => {
                         e.stopPropagation();
