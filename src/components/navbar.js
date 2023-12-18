@@ -4,7 +4,7 @@
 import logoImage from "../images/Logo.svg";
 import { Link } from 'react-router-dom';
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Listbox, Transition } from "@headlessui/react";
 
@@ -13,13 +13,15 @@ import ClickAwayListener from "react-click-away-listener";
 
 import { FaUserCircle, FaCog, FaSignOutAlt } from "react-icons/fa";
 import { AiFillSetting } from "react-icons/ai";
-import profile from "../images/professional/profile.jpg";
+import profile from "../images/professional/profile.png";
 import ConfirmationDeletePopUp from "./confirmation_delete_popup";
 import MessagePopUp from "./message_popup";
 import { useAuthContext } from "../contexts/AuthContextProvider";
 import { useNavigate } from "react-router-dom"
-import  ErrorPopUp from "./error_popup"
-import  SuccessPopUp from "./success_popup"
+import ErrorPopUp from "./error_popup"
+import SuccessPopUp from "./success_popup"
+import { useProfileContext } from "../contexts/ProfileContextProvider";
+import { imageUrl } from "../apis/base_url";
 
 export default function Navbar() {
     const { logout, token, isUserLoggedIn, getUserProfile, isLoggedIn, deleteAcount } = useAuthContext();
@@ -27,11 +29,24 @@ export default function Navbar() {
     const [showProfileOptions, setShowProfileOptions] = useState(false);
     const [showConfirmDeleteAccountModel, setShowConfirmDeleteAccountModel] = useState(false);
     const [showSuccessDeleteAccountModel, setShowSuccessDeleteAccountModel] = useState(false);
+    const {
+        userProfilePic,
+        getUserProfilePic,
+    } = useProfileContext();
     const [error, setError] = useState(false);
     const [title, setTitle] = useState("");
 
     const [showErrorModel, setShowErrorModel] = useState(false)
     const [showSuccessModel, setShowSuccessModel] = useState(false)
+
+    useEffect(() => {
+        fetchUserProfile();
+    }, [])
+
+    const fetchUserProfile = async () => {
+        await getUserProfilePic(token);
+    }
+    console.log("userProfilePic:", userProfilePic)
 
     const handleLogout = async () => {
         await logout();
@@ -81,7 +96,7 @@ export default function Navbar() {
         }
         // setLoading(false);
 
-        
+
     }
     const handleCancelDelete = () => {
         setShowConfirmDeleteAccountModel(false);
@@ -132,11 +147,20 @@ export default function Navbar() {
                                     id="profileButton"
                                     className="relative"
                                 >
-                                    <img
-                                        className="border border-blue-200 rounded-full shadow w-9 h-9 shadow-gray-300"
-                                        src={profile}
-                                        alt="User Avatar"
-                                    />
+
+                                    {
+                                        userProfilePic && userProfilePic.profile_pic ? <img
+                                            className="border border-blue-200 rounded-full shadow w-9 h-9 shadow-gray-300 bg-white"
+                                            src={imageUrl+userProfilePic.profile_pic}
+                                            alt="User Avatar"
+                                        /> :
+                                            <img
+                                                className="border border-blue-200 rounded-full shadow w-9 h-9 shadow-gray-300 bg-white"
+                                                src={profile}
+                                                alt="User Avatar"
+                                            />
+                                    }
+
                                     {showProfileOptions &&
                                         <div className="absolute -right-1/2  bg-white rounded-md shadow-lg z-50  top-9 w-[10rem]">
                                             <ul>

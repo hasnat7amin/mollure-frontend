@@ -147,7 +147,7 @@ export default function SignupIC() {
       !currentNameForRating ||
       !dob
     ) {
-      setError('All fields are required');
+      setError('Fill in all the required fields.');
       setLoading(false);
       setShowErrorModel(true);
       return;
@@ -278,7 +278,7 @@ export default function SignupIC() {
                       htmlFor="firstName"
                       className="block text-sm font-normal text-gray-500"
                     >
-                      First Name
+                      First Name <span className="text-red-500">*</span> 
                     </label>
                     <input
                       type="text"
@@ -295,7 +295,7 @@ export default function SignupIC() {
                       htmlFor="lastName"
                       className="block text-sm font-normal text-gray-500"
                     >
-                      Last Name
+                      Last Name <span className="text-red-500">*</span> 
                     </label>
                     <input
                       type="text"
@@ -313,7 +313,7 @@ export default function SignupIC() {
                     htmlFor="ratingName"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Select Name for Rating and Review
+                    Select Name for Rating and Review <span className="text-red-500">*</span> 
                   </label>
                   <div className="w-full">
                     <Select
@@ -333,7 +333,7 @@ export default function SignupIC() {
                     htmlFor="dob"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Date of Birth
+                    Date of Birth <span className="text-red-500">*</span> 
                   </label>
                   <input
                     type="date"
@@ -351,7 +351,7 @@ export default function SignupIC() {
                     htmlFor="gender"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Gender
+                    Gender <span className="text-red-500">*</span> 
                   </label>
 
                   <div className="w-full">
@@ -374,7 +374,7 @@ export default function SignupIC() {
                     htmlFor="contactNumber"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Contact Number
+                    Contact Number <span className="text-red-500">*</span> 
                   </label>
                   <input
                     type="tel"
@@ -391,7 +391,7 @@ export default function SignupIC() {
                     htmlFor="email"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Email
+                    Email <span className="text-red-500">*</span> 
                   </label>
                   <input
                     type="email"
@@ -408,7 +408,7 @@ export default function SignupIC() {
                     htmlFor="password"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Password
+                    Password <span className="text-red-500">*</span> 
                   </label>
                   <div className="relative">
                     <input
@@ -437,7 +437,7 @@ export default function SignupIC() {
                     htmlFor="repeatPassword"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Repeat Password
+                    Repeat Password <span className="text-red-500">*</span> 
                   </label>
                   <div className="relative">
                     <input

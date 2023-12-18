@@ -63,6 +63,7 @@ export default function AddTeamMember({ id, type, showModel, setShowModel }) {
     console.log("fetching apis...")
     await getCategoryAndServiceForTeam(token, id);
   };
+  
   const setFetchCategories = async () => {
     // console.log('Fetching categories', categoryAndServiceForTeam.toString());
   };

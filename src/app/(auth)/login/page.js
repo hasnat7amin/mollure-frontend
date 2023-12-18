@@ -91,6 +91,7 @@ export default function Login() {
                         type="email"
                         id="email"
                         autocomplete="email"
+                        required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Enter Email"
@@ -110,7 +111,7 @@ export default function Login() {
                           type={showPassword ? "text" : "password"}
                           id="password"
                           autocomplete="current-password"
-
+                          required
                           placeholder="Enter Password"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}

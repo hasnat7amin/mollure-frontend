@@ -9,6 +9,7 @@ import { MunicipalityContextProvider } from './contexts/MunicipalityContextProvi
 import { ProfessionalContextProvider } from './contexts/ProfessionalContextProvider';
 import { CompanyContextProvider } from './contexts/CompanyContextProvider';
 import { IndividualClientContextProvider } from './contexts/IndividualClientContext';
+import { ProfileContextProvider } from './contexts/ProfileContextProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -19,7 +20,9 @@ root.render(
           <ProfessionalContextProvider>
             <CompanyContextProvider>
               <IndividualClientContextProvider>
-                <App />
+                <ProfileContextProvider>
+                  <App />
+                </ProfileContextProvider>
               </IndividualClientContextProvider>
             </CompanyContextProvider>
           </ProfessionalContextProvider>

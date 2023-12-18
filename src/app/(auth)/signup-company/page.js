@@ -219,7 +219,7 @@ export default function SignupCompany() {
       !currentProvinceSelected ||
       !acceptTerms
     ) {
-      setError('All fields are required');
+      setError('Fill in all the required fields.');
       setLoading(false);
       setShowErrorModel(true);
       return;
@@ -356,7 +356,7 @@ export default function SignupCompany() {
                     className="flex items-end gap-1 text-sm font-normal text-gray-500"
                   >
 
-                    <span > Legal Name </span> <Info title={"Enter your full name."} />
+                    <span > Legal Name </span> <span className="text-red-500">*</span>  <Info title={"Enter your full name."} />
                   </label>
                   <input
                     type="text"
@@ -373,7 +373,7 @@ export default function SignupCompany() {
                     htmlFor="cocNumber"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    COC Number
+                    COC Number <span className="text-red-500">*</span> 
                   </label>
                   <input
                     type="text"
@@ -390,7 +390,7 @@ export default function SignupCompany() {
                     htmlFor="vatNumber"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    VAT Number
+                    VAT Number <span className="text-red-500">*</span> 
                   </label>
                   <input
                     type="text"
@@ -408,7 +408,7 @@ export default function SignupCompany() {
                     className="flex items-end gap-1 text-sm font-normal text-gray-500"
                   >
 
-                    <span className="pt-[1px]"> Address </span> <Info title={"Enter your full address."} />
+                    <span className="pt-[1px]"> Address </span> <span className="text-red-500">*</span>  <Info title={"Enter your full address."} />
                   </label>
                   <div className="grid grid-cols-1 gap-2 md:grid-cols-2 ">
                     <div className="w-full ">
@@ -479,7 +479,7 @@ export default function SignupCompany() {
                     htmlFor="contactPerson"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Contact Person
+                    Contact Person <span className="text-red-500">*</span> 
                   </label>
                   <div className="flex flex-col space-y-5 md:space-x-2 md:space-y-0 md:flex-row">
                     <div className="w-full md:w-1/2">
@@ -511,7 +511,7 @@ export default function SignupCompany() {
                     htmlFor="gender"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Gender
+                    Gender <span className="text-red-500">*</span> 
                   </label>
                   <div className="w-full">
                     <Select
@@ -533,7 +533,7 @@ export default function SignupCompany() {
                     htmlFor="contactNumber"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Contact Number
+                    Contact Number <span className="text-red-500">*</span> 
                   </label>
                   <input
                     type="tel"
@@ -550,7 +550,7 @@ export default function SignupCompany() {
                     htmlFor="email"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Email
+                    Email <span className="text-red-500">*</span> 
                   </label>
                   <input
                     type="email"
@@ -567,7 +567,7 @@ export default function SignupCompany() {
                     htmlFor="password"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Password
+                    Password <span className="text-red-500">*</span> 
                   </label>
                   <div className="relative">
                     <input
@@ -596,7 +596,7 @@ export default function SignupCompany() {
                     htmlFor="repeatPassword"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Repeat Password
+                    Repeat Password <span className="text-red-500">*</span> 
                   </label>
                   <div className="relative">
                     <input

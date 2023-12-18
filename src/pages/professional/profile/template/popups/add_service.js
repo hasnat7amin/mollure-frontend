@@ -22,6 +22,7 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
   ];
 
   const discountOptions = [
+    
     { id: "fixedDiscount", label: "Fixed Discount", value: "f" },
     {
       id: "percentageDiscount",
