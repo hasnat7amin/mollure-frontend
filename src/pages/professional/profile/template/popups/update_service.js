@@ -147,8 +147,8 @@ export default function UpdateService({ categoryId, type, templateId, parentId, 
 
         if (serviceName && fromDuration && currentPriceSelected && price) {
             // Check if optional fields are filled
-            if ((discount || currentDiscountSelected || fromselectedDate || toselectedDate) &&
-                (!discount || !currentDiscountSelected || !fromselectedDate || !toselectedDate)) {
+            if ((discount || currentDiscountSelected || fromselectedDate ) &&
+                (!discount || !currentDiscountSelected || !fromselectedDate )) {
                 setError("Please fill discount fields.");
                 setLoading(false);
                 setShowErrorModel(true);
@@ -196,10 +196,13 @@ export default function UpdateService({ categoryId, type, templateId, parentId, 
             data['parent_id'] = 0;
 
             data['template_id'] = parseInt(templateId);
-            if ((discount || currentDiscountSelected || fromselectedDate || toselectedDate)) {
+            if ((discount || currentDiscountSelected || fromselectedDate )) {
                 data['discount_type'] = currentDiscountSelected?.value;
                 data['discount_amount'] = discount;
                 data['discount_valid_from'] = new Date(fromselectedDate.toString().slice(1, -1));
+               
+            }
+            if(toselectedDate){
                 data['discount_valid_to'] = new Date(toselectedDate.toString().slice(1, -1));
             }
 
