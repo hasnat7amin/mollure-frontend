@@ -428,7 +428,7 @@ function Services({ data, templateId, categoryId }) {
                 {
                     data.sub_services && data.sub_services.map(subService => (
                         <SubServices parentId={data?.id} data={subService} categoryId={categoryId}
-                            templateId={templateId} />
+                            templateId={templateId} servicePrice={data.price}  />
                     ))
                 }
             </div>}
@@ -475,7 +475,7 @@ function Services({ data, templateId, categoryId }) {
 
 
 
-function SubServices({ data, templateId, categoryId, parentId }) {
+function SubServices({ data, templateId, categoryId, parentId,servicePrice }) {
     const [showDeleteVisualPopUp, setShowDeleteVisualPopUp] = useState(false);
     const [showErrorModel, setShowErrorModel] = useState(false)
     const [error, setError] = useState(false);
@@ -574,6 +574,7 @@ function SubServices({ data, templateId, categoryId, parentId }) {
             showModel={showUpdateServiceModel}
             setShowModel={setShowUpdateServiceModel}
             data={data}
+            servicePrice={servicePrice}
         />
 
         {/* error popup */}

@@ -173,6 +173,13 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
                 return;
             }
 
+            if (parseFloat(servicePrice) > parseFloat(price)) {
+                setError("SubService price must be greater than or equal to service price.");
+                setLoading(false);
+                setShowErrorModel(true);
+                return;
+              }
+
           
 
             const data = {};
