@@ -66,6 +66,28 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
   };
 
 
+  const convertDurationToMinutes = (duration) => {
+    const parts = duration.split(" ");
+
+    const hours = parts.find(part => part.includes("hr"));
+    const minutes = parts.find(part => part.includes("mint"));
+
+    const parsedHours = hours ? parseInt(hours) : null;
+    const parsedMinutes = minutes ? parseInt(minutes) : null;
+
+    let totalMinutes = 0;
+
+    if (parsedHours) {
+      totalMinutes = totalMinutes + (parsedHours * 60)
+    }
+
+    if (parsedMinutes) {
+      totalMinutes = totalMinutes + (parsedMinutes)
+    }
+
+    return totalMinutes;
+  };
+
 
 
   const handleSave = async () => {
@@ -85,18 +107,44 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
         return;
       }
 
+      if (fromDuration && toDuration) {
+        const fromDurationInMinutes = convertDurationToMinutes(fromDuration);
+        const toDurationInMinutes = convertDurationToMinutes(toDuration);
+
+        if (toDurationInMinutes < fromDurationInMinutes) {
+          // Show error message or handle the case where toDuration is less than fromDuration
+          setError("To duration cannot be less than from duration.");
+          setLoading(false);
+          setShowErrorModel(true);
+          return;
+        }
+      }
+
+      if (parseFloat(servicePrice) > parseFloat(price)) {
+        setError("SubService price must be greater than or equal to service price.");
+        setLoading(false);
+        setShowErrorModel(true);
+        return;
+      }
+      if (!(parseFloat(price)>=0)) {
+        setError("Price should be greater or equal zero.");
+        setLoading(false);
+        setShowErrorModel(true);
+        return;
+      }
+
       const data = {};
       // Log all the values
       data['service_name'] = serviceName;
       data['bio'] = bio;
-      if(toDuration){
+      if (toDuration) {
         data['duration'] = fromDuration + " - " + toDuration;
       }
-      else{
+      else {
         data['duration'] = fromDuration;
       }
       data['price_type'] = currentPriceSelected?.value;
-      data['price'] = price;
+      data['price'] = parseFloat(price);
 
       data['category_id'] = parseInt(categoryId);
       data['additional_info'] = info;
@@ -107,7 +155,7 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
       data['template_id'] = parseInt(templateId);
       if ((discount || currentDiscountSelected || fromselectedDate || toselectedDate)) {
         data['discount_type'] = currentDiscountSelected?.value;
-        data['discount_amount'] = discount;
+        data['discount_amount'] = parseFloat(discount);
         data['discount_valid_from'] = new Date(fromselectedDate.toString().slice(1, -1));
         data['discount_valid_to'] = new Date(toselectedDate.toString().slice(1, -1));
       }
@@ -188,12 +236,15 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
 
                 {/* (sub)Service Name */}
                 <div>
+                <label className="block text-sm font-normal text-gray-500 pb-2">
+                    (sub)Service Name <span className="text-red-500">*</span>
+                  </label>
                   <input
                     type="text"
                     value={serviceName}
                     onChange={(e) => setServiceName(e.target.value)}
                     placeholder="(sub)Service Name"
-                    className="w-full px-3 py-3 mt-6 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                    className="w-full px-3 py-3 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
                   />
                 </div>
                 {/* info */}
@@ -211,7 +262,7 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
 
                 <div>
                   <label className="block text-sm font-normal text-gray-500">
-                    Duration
+                    Duration <span className="text-red-500">*</span>
                   </label>
 
                   {/* from and to */}

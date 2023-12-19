@@ -22,7 +22,7 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
   ];
 
   const discountOptions = [
-    
+
     { id: "fixedDiscount", label: "Fixed Discount", value: "f" },
     {
       id: "percentageDiscount",
@@ -78,11 +78,11 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
 
     let totalMinutes = 0;
 
-    if(parsedHours){
-      totalMinutes = totalMinutes + (parsedHours*60)
+    if (parsedHours) {
+      totalMinutes = totalMinutes + (parsedHours * 60)
     }
 
-    if(parsedMinutes){
+    if (parsedMinutes) {
       totalMinutes = totalMinutes + (parsedMinutes)
     }
 
@@ -118,6 +118,13 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
         }
       }
 
+      if (!(parseFloat(price)>=0)) {
+        setError("Price should be greater or equal zero.");
+        setLoading(false);
+        setShowErrorModel(true);
+        return;
+      }
+
       const data = {};
       // Log all the values
       data['service_name'] = serviceName;
@@ -129,7 +136,7 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
         data['duration'] = fromDuration;
       }
       data['price_type'] = currentPriceSelected?.value;
-      data['price'] = price;
+      data['price'] = parseFloat(price);
 
       data['category_id'] = parseInt(categoryId);
       data['additional_info'] = info;
@@ -140,7 +147,7 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
       data['template_id'] = parseInt(templateId);
       if ((discount || currentDiscountSelected || fromselectedDate || toselectedDate)) {
         data['discount_type'] = currentDiscountSelected?.value;
-        data['discount_amount'] = discount;
+        data['discount_amount'] = parseFloat(discount);
         data['discount_valid_from'] = new Date(fromselectedDate.toString().slice(1, -1));
         data['discount_valid_to'] = new Date(toselectedDate.toString().slice(1, -1));
       }
@@ -220,12 +227,15 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
 
                 {/* (sub)Service Name */}
                 <div>
+                  <label className="block text-sm font-normal text-gray-500 pb-2">
+                    (sub)Service Name <span className="text-red-500">*</span>
+                  </label>
                   <input
                     type="text"
                     value={serviceName}
                     onChange={(e) => setServiceName(e.target.value)}
                     placeholder="(sub)Service Name"
-                    className="w-full px-3 py-3 mt-6 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                    className="w-full px-3 py-3  text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
                   />
                 </div>
                 {/* info */}
@@ -243,7 +253,7 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
 
                 <div>
                   <label className="block text-sm font-normal text-gray-500">
-                    Duration
+                    Duration  <span className="text-red-500">*</span>
                   </label>
 
                   {/* from and to */}
@@ -301,7 +311,7 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
                 {/* price */}
                 <div className="relative">
                   <input
-                    type="number"
+                    type="text"
                     placeholder="Price"
                     min={0}
 

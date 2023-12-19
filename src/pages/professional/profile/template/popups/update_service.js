@@ -109,6 +109,29 @@ export default function UpdateService({ categoryId, type, templateId, parentId, 
         setToSelectedDate(date);
     };
 
+    const convertDurationToMinutes = (duration) => {
+        const parts = duration.split(" ");
+
+        const hours = parts.find(part => part.includes("hr"));
+        const minutes = parts.find(part => part.includes("mint"));
+
+        const parsedHours = hours ? parseInt(hours) : null;
+        const parsedMinutes = minutes ? parseInt(minutes) : null;
+
+        let totalMinutes = 0;
+
+        if (parsedHours) {
+            totalMinutes = totalMinutes + (parsedHours * 60)
+        }
+
+        if (parsedMinutes) {
+            totalMinutes = totalMinutes + (parsedMinutes)
+        }
+
+        return totalMinutes;
+    };
+
+
 
     const handleSave = async () => {
         setError('');
@@ -126,6 +149,27 @@ export default function UpdateService({ categoryId, type, templateId, parentId, 
             if ((discount || currentDiscountSelected || fromselectedDate || toselectedDate) &&
                 (!discount || !currentDiscountSelected || !fromselectedDate || !toselectedDate)) {
                 setError("Please fill discount fields.");
+                setLoading(false);
+                setShowErrorModel(true);
+                return;
+            }
+
+            if (fromDuration && toDuration) {
+                const fromDurationInMinutes = convertDurationToMinutes(fromDuration);
+                const toDurationInMinutes = convertDurationToMinutes(toDuration);
+
+                if (toDurationInMinutes < fromDurationInMinutes) {
+                    // Show error message or handle the case where toDuration is less than fromDuration
+                    setError("To duration cannot be less than from duration.");
+                    setLoading(false);
+                    setShowErrorModel(true);
+                    return;
+                }
+            }
+
+
+            if (!(parseFloat(price) >= 0)) {
+                setError("Price should be greater or equal zero.");
                 setLoading(false);
                 setShowErrorModel(true);
                 return;
@@ -238,12 +282,15 @@ export default function UpdateService({ categoryId, type, templateId, parentId, 
 
                                 {/* (sub)Service Name */}
                                 <div>
+                                    <label className="block text-sm font-normal text-gray-500 pb-2">
+                                        (sub)Service Name <span className="text-red-500">*</span>
+                                    </label>
                                     <input
                                         type="text"
                                         value={serviceName}
                                         onChange={(e) => setServiceName(e.target.value)}
                                         placeholder="(sub)Service Name"
-                                        className="w-full px-3 py-3 mt-6 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                                        className="w-full px-3 py-3  text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
                                     />
                                 </div>
                                 {/* info */}

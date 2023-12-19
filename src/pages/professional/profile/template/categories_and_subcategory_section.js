@@ -452,6 +452,7 @@ function Services({ data, templateId, categoryId }) {
             showModel={showUpdateServiceModel}
             setShowModel={setShowUpdateServiceModel}
             data={data}
+            servicePrice={data?.price}
         />
 
         <ConfirmationDeletePopUp

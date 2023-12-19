@@ -15,7 +15,7 @@ import spinner from "../../../../../images/spinner.svg";
 import { useProfessionalContext } from "../../../../../contexts/ProfessionalContextProvider";
 import { useAuthContext } from "../../../../../contexts/AuthContextProvider";
 
-export default function UpdateSubService({ categoryId, type, templateId, parentId, showModel, setShowModel, data }) {
+export default function UpdateSubService({ categoryId, type, templateId, parentId, showModel, setShowModel, data, servicePrice }) {
     const priceOptions = [
         { id: "fixedPrice", label: "Fixed price", value: "f" },
         { id: "startingPrice", label: "Starting price", value: "s" }
@@ -107,6 +107,28 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
     const handleToDateChange = date => {
         setToSelectedDate(date);
     };
+    const convertDurationToMinutes = (duration) => {
+        const parts = duration.split(" ");
+
+        const hours = parts.find(part => part.includes("hr"));
+        const minutes = parts.find(part => part.includes("mint"));
+
+        const parsedHours = hours ? parseInt(hours) : null;
+        const parsedMinutes = minutes ? parseInt(minutes) : null;
+
+        let totalMinutes = 0;
+
+        if (parsedHours) {
+            totalMinutes = totalMinutes + (parsedHours * 60)
+        }
+
+        if (parsedMinutes) {
+            totalMinutes = totalMinutes + (parsedMinutes)
+        }
+
+        return totalMinutes;
+    };
+
 
 
     const handleSave = async () => {
@@ -130,6 +152,29 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
                 return;
             }
 
+
+            if (fromDuration && toDuration) {
+                const fromDurationInMinutes = convertDurationToMinutes(fromDuration);
+                const toDurationInMinutes = convertDurationToMinutes(toDuration);
+
+                if (toDurationInMinutes < fromDurationInMinutes) {
+                    // Show error message or handle the case where toDuration is less than fromDuration
+                    setError("To duration cannot be less than from duration.");
+                    setLoading(false);
+                    setShowErrorModel(true);
+                    return;
+                }
+            }
+
+            if (!(parseFloat(price) >= 0)) {
+                setError("Price should be greater or equal zero.");
+                setLoading(false);
+                setShowErrorModel(true);
+                return;
+            }
+
+          
+
             const data = {};
             // Log all the values
             data['service_name'] = serviceName;
@@ -141,7 +186,7 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
                 data['duration'] = fromDuration;
             }
             data['price_type'] = currentPriceSelected?.value;
-            data['price'] = price;
+            data['price'] = parseFloat(price);
 
             data['category_id'] = parseInt(categoryId);
             data['additional_info'] = info;
@@ -152,7 +197,7 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
             data['template_id'] = parseInt(templateId);
             if ((discount || currentDiscountSelected || fromselectedDate || toselectedDate)) {
                 data['discount_type'] = currentDiscountSelected?.value;
-                data['discount_amount'] = discount;
+                data['discount_amount'] = parseFloat(discount);
                 data['discount_valid_from'] = new Date(fromselectedDate.toString().slice(1, -1));
                 data['discount_valid_to'] = new Date(toselectedDate.toString().slice(1, -1));
             }
@@ -230,19 +275,22 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
                         <div className="relative px-2 py-4 bg-white rounded-lg shadow-lg">
                             <div className="flex flex-col items-start gap-2 px-5 rounded-t">
                                 <h3 className="w-full text-lg font-bold text-center text-softblue">
-                                    Add Service
+                                    Update SubService
                                 </h3>
                             </div>
                             <div className="px-5 pt-9">
 
                                 {/* (sub)Service Name */}
                                 <div>
+                                    <label className="block text-sm font-normal text-gray-500 pb-2">
+                                        (sub)Service Name <span className="text-red-500">*</span>
+                                    </label>
                                     <input
                                         type="text"
                                         value={serviceName}
                                         onChange={(e) => setServiceName(e.target.value)}
                                         placeholder="(sub)Service Name"
-                                        className="w-full px-3 py-3 mt-6 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                                        className="w-full px-3 py-3 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
                                     />
                                 </div>
                                 {/* info */}
