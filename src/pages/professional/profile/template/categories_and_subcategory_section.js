@@ -358,6 +358,34 @@ function Services({ data, templateId, categoryId }) {
       
         return { greatestDiscount, discountType, originalPrice, discountPrice };
       };
+
+      const calculateServiceDiscount = (data) => {
+        let greatestDiscount = 0;
+        let discountType = '';
+        let originalPrice = data.price;
+        let discountPrice = data.price; // Initially set to the original price
+      
+
+          // If data doesn't have sub-services, consider the discount type for the main service
+          if (data.discount_type === 'f') {
+            greatestDiscount = data.discount_amount;
+            discountType = 'f';
+          } else if (data.discount_type === 'p') {
+            const percentageDiscount = (data.price * data.discount_amount) / 100;
+            greatestDiscount = percentageDiscount;
+            discountType = 'p';
+          }
+      
+        // Calculate the discount price
+        if (discountType === 'f') {
+          discountPrice = originalPrice - greatestDiscount;
+        } else if (discountType === 'p') {
+          discountPrice = originalPrice - greatestDiscount;
+          greatestDiscount = 100 * (greatestDiscount / originalPrice);
+        }
+      
+        return { greatestDiscount, discountType, originalPrice, discountPrice };
+      };
       
 
 
@@ -375,8 +403,8 @@ function Services({ data, templateId, categoryId }) {
                 {data?.duration}
             </p>
             <div className="flex flex-col items-center justify-center w-full h-full space-y-1 text-lg font-normal text-center border-r">
-                {data.discount_amount>0 && !(data.sub_services.length>0) && calculateGreatestDiscount(data).greatestDiscount > 0 ? <p>
-                    <span className="text-sm line-through"> {calculateGreatestDiscount(data).originalPrice} EUR</span> {calculateGreatestDiscount(data).discountPrice}
+                {!(data.sub_services.length>0) ? <p>
+                    {data.discount_amount>0 &&<span className="text-sm line-through"> {calculateServiceDiscount(data).originalPrice} EUR</span>} {calculateServiceDiscount(data).discountPrice}
                     EUR
                 </p> : <p>
                     Starting From {data?.price} EUR

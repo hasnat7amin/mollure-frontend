@@ -23,6 +23,7 @@ export default function UpdateService({ categoryId, type, templateId, parentId, 
     ];
 
     const discountOptions = [
+        { id: 0, label: "Select Discount", value: "Select Discount" },
         { id: "fixedDiscount", label: "Fixed Discount", value: "f" },
         {
             id: "percentageDiscount",
@@ -389,10 +390,13 @@ export default function UpdateService({ categoryId, type, templateId, parentId, 
                                             options={discountOptions}
                                             selectedOption={currentDiscountSelected}
                                             handelChange={event => {
-                                                if (event.value !== "discountOption") {
-
+                                                if(event.id === 0){
+                                                    setCurrentDiscountSelected(null);
+                                                  }
+                                                  if (event.value !== "discountOption" && event.id !== 0) {
+                          
                                                     setCurrentDiscountSelected(event);
-                                                }
+                                                  }
                                             }}
                                         />
                                     </div>
