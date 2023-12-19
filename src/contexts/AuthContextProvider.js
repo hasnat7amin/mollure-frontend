@@ -39,13 +39,12 @@ export const AuthContextProvider = ({ children }) => {
         // window.location.href="/" ;
       } else {
         // console.log("error: ", response)
-        setError("Please check your credentials again.");
+        setError(response.response.data.message.toString());
       }
 
     } catch (error) {
-      console.log("error.message message: ", error.message)
-
-      setError(error.message)
+      
+      setError("Something went wrong.Please try again.")
     }
   };
 
@@ -60,14 +59,12 @@ export const AuthContextProvider = ({ children }) => {
         data,
         headers,
       );
-      if (response && response["success"] === true) {
-
-        return true;
-      } else {
-        return false;
-      }
+      return response;
     } catch (error) {
-      return false;
+      return {
+        success: false,
+        message: "Please try again.Something went wrong.",
+      };
     }
   };
 
@@ -83,23 +80,13 @@ export const AuthContextProvider = ({ children }) => {
         headers,
 
       );
-      if (response && response["success"] === true) {
-        console.log(response["user"]);
-
-
-        return true;
-
-        // window.location.href="/" ;
-      } else {
-        // console.log("error: ", response)
-        return false;
-      }
-
+      return response;
     } catch (error) {
-      console.log("error.message message: ", error.message)
-
-      setError(error.message)
-    }
+      return {
+        success: false,
+        message: "Please try again.Something went wrong.",
+      };
+    };
   };
 
   const logout = async () => {
@@ -146,7 +133,7 @@ export const AuthContextProvider = ({ children }) => {
 
         } else {
           setIsLoggedIn(false);
-          
+
           setUserProfile(null);
         }
       } else {

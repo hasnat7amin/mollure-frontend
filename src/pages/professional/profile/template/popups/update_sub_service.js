@@ -145,8 +145,8 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
 
         if (serviceName && fromDuration && currentPriceSelected && price) {
             // Check if optional fields are filled
-            if ((discount || currentDiscountSelected || fromselectedDate ) &&
-                (!discount || !currentDiscountSelected || !fromselectedDate )) {
+            if ((discount || currentDiscountSelected || fromselectedDate) &&
+                (!discount || !currentDiscountSelected || !fromselectedDate)) {
                 setError("Please fill discount fields.");
                 setLoading(false);
                 setShowErrorModel(true);
@@ -179,9 +179,9 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
                 setLoading(false);
                 setShowErrorModel(true);
                 return;
-              }
+            }
 
-          
+
 
             const data = {};
             // Log all the values
@@ -203,13 +203,15 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
             data['parent_id'] = parseInt(parentId);
 
             data['template_id'] = parseInt(templateId);
-            if ((discount || currentDiscountSelected || fromselectedDate )) {
+            if ((discount || currentDiscountSelected || fromselectedDate)) {
                 data['discount_type'] = currentDiscountSelected?.value;
                 data['discount_amount'] = parseFloat(discount);
                 data['discount_valid_from'] = new Date(fromselectedDate.toString().slice(1, -1));
             }
-            if(toselectedDate){
+            if (toselectedDate) {
                 data['discount_valid_to'] = new Date(toselectedDate.toString().slice(1, -1));
+            } else {
+                data['discount_valid_to'] = null;
             }
 
             const response = await updateServiceAndSubService(token, serviceId, categoryId, templateId, JSON.stringify(data));
@@ -399,13 +401,13 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
                                             options={discountOptions}
                                             selectedOption={currentDiscountSelected}
                                             handelChange={event => {
-                                                if(event.id === 0){
+                                                if (event.id === 0) {
                                                     setCurrentDiscountSelected(null);
-                                                  }
-                                                  if (event.value !== "discountOption" && event.id !== 0) {
-                          
+                                                }
+                                                if (event.value !== "discountOption" && event.id !== 0) {
+
                                                     setCurrentDiscountSelected(event);
-                                                  }
+                                                }
                                             }}
                                         />
                                     </div>

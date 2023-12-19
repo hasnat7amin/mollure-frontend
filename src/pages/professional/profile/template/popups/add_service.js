@@ -98,8 +98,8 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
 
     if (serviceName && fromDuration && currentPriceSelected && price) {
       // Check if optional fields are filled
-      if ((discount || currentDiscountSelected || fromselectedDate ) &&
-        (!discount || !currentDiscountSelected || !fromselectedDate )) {
+      if ((discount || currentDiscountSelected || fromselectedDate) &&
+        (!discount || !currentDiscountSelected || !fromselectedDate)) {
         setError("Please fill discount fields.");
         setLoading(false);
         setShowErrorModel(true);
@@ -118,7 +118,7 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
         }
       }
 
-      if (!(parseFloat(price)>=0)) {
+      if (!(parseFloat(price) >= 0)) {
         setError("Price should be greater or equal zero.");
         setLoading(false);
         setShowErrorModel(true);
@@ -145,14 +145,17 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
         data['parent_id'] = parseInt(parentId);
       }
       data['template_id'] = parseInt(templateId);
-      if ((discount || currentDiscountSelected || fromselectedDate )) {
+      if ((discount || currentDiscountSelected || fromselectedDate)) {
         data['discount_type'] = currentDiscountSelected?.value;
         data['discount_amount'] = parseFloat(discount);
         data['discount_valid_from'] = new Date(fromselectedDate.toString().slice(1, -1));
       }
-      if(toselectedDate){
+      if (toselectedDate) {
         data['discount_valid_to'] = new Date(toselectedDate.toString().slice(1, -1));
-    }
+      }
+      else{
+        data['discount_valid_to'] = null;
+      }
 
       const response = await addServiceAndSubService(token, categoryId, templateId, JSON.stringify(data));
       if (!response) {
@@ -336,7 +339,7 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
                       options={discountOptions}
                       selectedOption={currentDiscountSelected}
                       handelChange={event => {
-                        if(event.id === 0){
+                        if (event.id === 0) {
                           setCurrentDiscountSelected(null);
                         }
                         if (event.value !== "discountOption" && event.id !== 0) {

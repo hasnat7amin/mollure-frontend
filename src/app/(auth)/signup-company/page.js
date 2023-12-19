@@ -257,14 +257,13 @@ export default function SignupCompany() {
     data.append("user_type", "company")
 
     const response = await signUpProfessionalAndCompany(data);
-    if (!response) {
-      setError("Please check your credentials again.");
+    if (response && response.success == true) {
+      setShowSuccessModel(true);
+    } else {
+      console.log(response)
+      setError(response.response.data.message.toString());
       setLoading(false);
       setShowErrorModel(true);
-    }
-    else {
-      // navigate('/');
-      setShowSuccessModel(true);
 
     }
     setLoading(false);

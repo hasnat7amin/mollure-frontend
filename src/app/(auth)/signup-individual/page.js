@@ -179,14 +179,14 @@ export default function SignupIC() {
 
 
     const response = await signUpIndividual(data);
-    if (!response) {
-      setError("Please check your credentials again.");
+    if (response && response.success == true) {
+      setShowSuccessModel(true);
+    } else {
+      console.log(response)
+      setError(response.response.data.message.toString());
       setLoading(false);
       setShowErrorModel(true);
-    }
-    else {
-      // navigate('/');
-      setShowSuccessModel(true);
+
     }
 
     setLoading(false);

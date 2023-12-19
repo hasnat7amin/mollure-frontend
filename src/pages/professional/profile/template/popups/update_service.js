@@ -204,7 +204,9 @@ export default function UpdateService({ categoryId, type, templateId, parentId, 
             }
             if(toselectedDate){
                 data['discount_valid_to'] = new Date(toselectedDate.toString().slice(1, -1));
-            }
+            } else{
+                data['discount_valid_to'] = null;
+              }
 
             const response = await updateServiceAndSubService(token, serviceId, categoryId, templateId, JSON.stringify(data));
             if (!response) {

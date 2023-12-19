@@ -171,7 +171,7 @@ export default function SignupProfessional() {
   }
 
   const setProvinces = async () => {
-    if (provinces && provinces.length>0 && (provinces !== null || provinces != [])) {
+    if (provinces && provinces.length > 0 && (provinces !== null || provinces != [])) {
       setProvinceOptions(
         provinces.map((item) => (
           { id: item.id, value: item.name, label: item.name }
@@ -187,7 +187,7 @@ export default function SignupProfessional() {
   }
 
   const setMunicipalities = async () => {
-    if (municipalities &&  municipalities.length>0 && (municipalities !== null || municipalities != [])) {
+    if (municipalities && municipalities.length > 0 && (municipalities !== null || municipalities != [])) {
       setMunicipalityOptions(
         municipalities.map((item) => (
           { id: item.id, value: item.name, label: item.name }
@@ -273,7 +273,7 @@ export default function SignupProfessional() {
       !acceptTerms ||
       !currentMunicipalitySelected ||
       !currentProvinceSelected ||
-      !documentation > 0
+      documentation.length === 0
     ) {
       setError('Fill in all the required fields.');
       setLoading(false);
@@ -320,12 +320,13 @@ export default function SignupProfessional() {
 
 
     const response = await signUpProfessionalAndCompany(data);
-    if (!response) {
-      setError("Please check your credentials again.");
+    if (response && response.success == true) {
+      setShowSuccessModel(true);
+    } else {
+      console.log(response)
+      setError(response.response.data.message.toString());
       setLoading(false);
       setShowErrorModel(true);
-    } else {
-      setShowSuccessModel(true);
 
     }
     setLoading(false);
@@ -436,7 +437,7 @@ export default function SignupProfessional() {
                     htmlFor="cocNumber"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    COC Number <span className="text-red-500">*</span> 
+                    COC Number <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -453,7 +454,7 @@ export default function SignupProfessional() {
                     htmlFor="vatNumber"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    VAT Number <span className="text-red-500">*</span> 
+                    VAT Number <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -544,7 +545,7 @@ export default function SignupProfessional() {
                     style={{ whiteSpace: 'wrap', }}
                   >
                     <span>
-                      Provide documentation for the registration in the chamber of e-commerce <span className="text-red-500">*</span> 
+                      Provide documentation for the registration in the chamber of e-commerce <span className="text-red-500">*</span>
                     </span>
                     <span className="ps-1" style={{ display: "inline-block", marginTop: "4px", position: "absolute", }} >
                       <Info pb={"pb-0"} title={"Please enter your doc in pdf format."} />
@@ -648,7 +649,7 @@ export default function SignupProfessional() {
                     htmlFor="contactPerson"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Contact Person <span className="text-red-500">*</span> 
+                    Contact Person <span className="text-red-500">*</span>
                   </label>
                   <div className="flex flex-col space-y-5 md:space-x-2 md:space-y-0 md:flex-row">
                     <div className="w-full md:w-1/2">
@@ -680,7 +681,7 @@ export default function SignupProfessional() {
                     htmlFor="gender"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Gender <span className="text-red-500">*</span> 
+                    Gender <span className="text-red-500">*</span>
                   </label>
                   <div className="w-full">
                     <Select
@@ -702,7 +703,7 @@ export default function SignupProfessional() {
                     htmlFor="contactNumber"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Contact Number <span className="text-red-500">*</span> 
+                    Contact Number <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="tel"
@@ -719,7 +720,7 @@ export default function SignupProfessional() {
                     htmlFor="email"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Email <span className="text-red-500">*</span> 
+                    Email <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="email"
@@ -737,7 +738,7 @@ export default function SignupProfessional() {
 
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Password <span className="text-red-500">*</span> 
+                    Password <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <input
@@ -766,7 +767,7 @@ export default function SignupProfessional() {
                     htmlFor="repeatPassword"
                     className="block text-sm font-normal text-gray-500"
                   >
-                    Repeat Password <span className="text-red-500">*</span> 
+                    Repeat Password <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <input

@@ -161,6 +161,8 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
       }
       if(toselectedDate){
         data['discount_valid_to'] = new Date(toselectedDate.toString().slice(1, -1));
+    } else{
+      data['discount_valid_to'] = null;
     }
 
       const response = await addServiceAndSubService(token, categoryId, templateId, JSON.stringify(data));
