@@ -18,6 +18,7 @@ import ChangePassword from './app/(auth)/change-password/page';
 import VerifyToken from './app/(auth)/verify-token/page';
 import ContactUs from "./app/contact-us/page"
 import UserProfile from "./app/user/user-profile"
+import EmailVerified from './app/email-verified/page';
 
 function App() {
   const { checkUser, isUserLoggedIn, getUserProfile, isLoggedIn, } = useAuthContext();
@@ -55,6 +56,8 @@ function App() {
                   <Route path="/company" element={<CompanyClient />} />
                   <Route path="/contact-us" element={<ContactUs />} />
                   <Route path="/user/:userId" element={<UserProfile />} />
+                  <Route path="/email-verified" element={<EmailVerified />} />
+
 
                 </>
               ) : (
@@ -71,6 +74,7 @@ function App() {
                   <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
                   <Route path="/contact-us" element={<ContactUs />} />
                   <Route path="/user/:userId" element={<UserProfile />} />
+                  <Route path="/email-verified" element={<EmailVerified />} />
 
                 </>
               )}
