@@ -318,75 +318,75 @@ function Services({ data, templateId, categoryId }) {
         let discountType = '';
         let originalPrice = data.price;
         let discountPrice = data.price; // Initially set to the original price
-      
+
         // If data has sub-services
         if (data?.sub_services && data.sub_services.length > 0) {
-          data.sub_services.forEach((subservice) => {
-            const { discount_type, discount_amount } = subservice;
-            if (discount_type === 'f') {
-              if (discount_amount > greatestDiscount) {
-                greatestDiscount = discount_amount;
+            data.sub_services.forEach((subservice) => {
+                const { discount_type, discount_amount } = subservice;
+                if (discount_type === 'f') {
+                    if (discount_amount > greatestDiscount) {
+                        greatestDiscount = discount_amount;
+                        discountType = 'f';
+                    }
+                } else if (discount_type === 'p') {
+                    const percentageDiscount = (data.price * discount_amount) / 100;
+                    if (percentageDiscount > greatestDiscount) {
+                        greatestDiscount = percentageDiscount;
+                        discountType = 'p';
+                    }
+                }
+            });
+        } else {
+            // If data doesn't have sub-services, consider the discount type for the main service
+            if (data.discount_type === 'f') {
+                greatestDiscount = data.discount_amount;
                 discountType = 'f';
-              }
-            } else if (discount_type === 'p') {
-              const percentageDiscount = (data.price * discount_amount) / 100;
-              if (percentageDiscount > greatestDiscount) {
+            } else if (data.discount_type === 'p') {
+                const percentageDiscount = (data.price * data.discount_amount) / 100;
                 greatestDiscount = percentageDiscount;
                 discountType = 'p';
-              }
             }
-          });
-        } else {
-          // If data doesn't have sub-services, consider the discount type for the main service
-          if (data.discount_type === 'f') {
-            greatestDiscount = data.discount_amount;
-            discountType = 'f';
-          } else if (data.discount_type === 'p') {
-            const percentageDiscount = (data.price * data.discount_amount) / 100;
-            greatestDiscount = percentageDiscount;
-            discountType = 'p';
-          }
         }
-      
+
         // Calculate the discount price
         if (discountType === 'f') {
-          discountPrice = originalPrice - greatestDiscount;
+            discountPrice = originalPrice - greatestDiscount;
         } else if (discountType === 'p') {
-          discountPrice = originalPrice - greatestDiscount;
-          greatestDiscount = 100 * (greatestDiscount / originalPrice);
+            discountPrice = originalPrice - greatestDiscount;
+            greatestDiscount = 100 * (greatestDiscount / originalPrice);
         }
-      
-        return { greatestDiscount, discountType, originalPrice, discountPrice };
-      };
 
-      const calculateServiceDiscount = (data) => {
+        return { greatestDiscount, discountType, originalPrice, discountPrice };
+    };
+
+    const calculateServiceDiscount = (data) => {
         let greatestDiscount = 0;
         let discountType = '';
         let originalPrice = data.price;
         let discountPrice = data.price; // Initially set to the original price
-      
 
-          // If data doesn't have sub-services, consider the discount type for the main service
-          if (data.discount_type === 'f') {
+
+        // If data doesn't have sub-services, consider the discount type for the main service
+        if (data.discount_type === 'f') {
             greatestDiscount = data.discount_amount;
             discountType = 'f';
-          } else if (data.discount_type === 'p') {
+        } else if (data.discount_type === 'p') {
             const percentageDiscount = (data.price * data.discount_amount) / 100;
             greatestDiscount = percentageDiscount;
             discountType = 'p';
-          }
-      
+        }
+
         // Calculate the discount price
         if (discountType === 'f') {
-          discountPrice = originalPrice - greatestDiscount;
+            discountPrice = originalPrice - greatestDiscount;
         } else if (discountType === 'p') {
-          discountPrice = originalPrice - greatestDiscount;
-          greatestDiscount = 100 * (greatestDiscount / originalPrice);
+            discountPrice = originalPrice - greatestDiscount;
+            greatestDiscount = 100 * (greatestDiscount / originalPrice);
         }
-      
+
         return { greatestDiscount, discountType, originalPrice, discountPrice };
-      };
-      
+    };
+
 
 
     return <section>
@@ -403,14 +403,14 @@ function Services({ data, templateId, categoryId }) {
                 {data?.duration}
             </p>
             <div className="flex flex-col items-center justify-center w-full h-full space-y-1 text-lg font-normal text-center border-r">
-                {!(data.sub_services.length>0) ? <p>
-                    {data.discount_amount>0 &&<span className="text-sm line-through"> {calculateServiceDiscount(data).originalPrice} EUR</span>} {calculateServiceDiscount(data).discountPrice}
+                {!(data.sub_services.length > 0) ? <p>
+                    {data.discount_amount > 0 && <span className="text-sm line-through"> {calculateServiceDiscount(data).originalPrice} EUR</span>} {calculateServiceDiscount(data).discountPrice}
                     EUR
                 </p> : <p>
                     Starting From {data?.price} EUR
                 </p>}
-                {data.discount_amount>0 && calculateGreatestDiscount(data).greatestDiscount > 0  && <p className="flex items-center justify-center space-x-2 ">
-                    <span>Discount {data.sub_services.length>0?"up to":""} {calculateGreatestDiscount(data).greatestDiscount} {calculateGreatestDiscount(data).discountType === "f"? "Eur":"%"} </span>
+                { calculateGreatestDiscount(data).greatestDiscount > 0 && <p className="flex items-center justify-center space-x-2 ">
+                    <span>Discount {data.sub_services.length > 0 ? "up to" : ""} {calculateGreatestDiscount(data).greatestDiscount} {calculateGreatestDiscount(data).discountType === "f" ? "Eur" : "%"} </span>
 
                     {data.additional_info && <Info title={data.additional_info} />}
                 </p>}
@@ -456,7 +456,7 @@ function Services({ data, templateId, categoryId }) {
                 {
                     data.sub_services && data.sub_services.map(subService => (
                         <SubServices parentId={data?.id} data={subService} categoryId={categoryId}
-                            templateId={templateId} servicePrice={data.price}  />
+                            templateId={templateId} servicePrice={data.price} />
                     ))
                 }
             </div>}
@@ -503,7 +503,7 @@ function Services({ data, templateId, categoryId }) {
 
 
 
-function SubServices({ data, templateId, categoryId, parentId,servicePrice }) {
+function SubServices({ data, templateId, categoryId, parentId, servicePrice }) {
     const [showDeleteVisualPopUp, setShowDeleteVisualPopUp] = useState(false);
     const [showErrorModel, setShowErrorModel] = useState(false)
     const [error, setError] = useState(false);
@@ -538,6 +538,34 @@ function SubServices({ data, templateId, categoryId, parentId,servicePrice }) {
     }
 
 
+    const calculateServiceDiscount = (data) => {
+        let greatestDiscount = 0;
+        let discountType = '';
+        let originalPrice = data.price;
+        let discountPrice = data.price; // Initially set to the original price
+
+
+        // If data doesn't have sub-services, consider the discount type for the main service
+        if (data.discount_type === 'f') {
+            greatestDiscount = data.discount_amount;
+            discountType = 'f';
+        } else if (data.discount_type === 'p') {
+            const percentageDiscount = (data.price * data.discount_amount) / 100;
+            greatestDiscount = percentageDiscount;
+            discountType = 'p';
+        }
+
+        // Calculate the discount price
+        if (discountType === 'f') {
+            discountPrice = originalPrice - greatestDiscount;
+        } else if (discountType === 'p') {
+            discountPrice = originalPrice - greatestDiscount;
+            greatestDiscount = 100 * (greatestDiscount / originalPrice);
+        }
+
+        return { greatestDiscount, discountType, originalPrice, discountPrice };
+    };
+
     return <section>
         <div className="flex items-center w-full border-b h-[3.5rem] justify-center  bg-opacity-5">
             <div className="flex w-full h-full ">
@@ -553,14 +581,14 @@ function SubServices({ data, templateId, categoryId, parentId,servicePrice }) {
                 {/* <p>{data?.price} EUR</p> */}
                 <div className="flex flex-col items-center justify-center w-full h-full text-lg font-normal text-center border-r">
                     <p>
-                        <span className="text-sm line-through">{data?.price} EUR</span> {data?.price - data?.discount_amount}
+                        {calculateServiceDiscount(data).greatestDiscount > 0 && <span className="text-sm line-through">{data?.price} EUR</span>} {calculateServiceDiscount(data).discountPrice}
                         EUR
                     </p>
-                    <p className="flex items-center justify-center gap-2">
-                        <span>Discount {data.discount_amount} EUR </span>
+                    {calculateServiceDiscount(data).greatestDiscount > 0 && <p className="flex items-center justify-center gap-2">
+                        <span>Discount {calculateServiceDiscount(data).greatestDiscount} {calculateServiceDiscount(data).discountType === "f" ? "Eur" : "%"} </span>
 
                         {data.additional_info && <Info title={data.additional_info} />}
-                    </p>
+                    </p>}
                 </div>
             </div>
             <div className="flex items-center justify-center w-full h-full space-x-2 font-normal ">
