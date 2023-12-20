@@ -161,7 +161,7 @@ export const AuthContextProvider = ({ children }) => {
         headers,
 
       );
-      if (response && response["status"] === true) {
+      if (response && response["success"] === true) {
         return true;
         // window.location.href="/" ;
       } else {
