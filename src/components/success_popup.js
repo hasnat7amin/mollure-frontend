@@ -29,7 +29,7 @@ export default function SuccessPopUp({
           if (to) {
             navigate(to);
           }
-        }, 1500); // Hides the popup after 30 seconds
+        }, 2100); // Hides the popup after 30 seconds
       }
 
       return () => {
