@@ -2,11 +2,14 @@
 import { useEffect } from "react";
 import correct from "../../images/correct.svg";
 import { useNavigate } from "react-router-dom"
+import { useAuthContext } from "../../contexts/AuthContextProvider";
 
 export default function EmailVerified() {
     const navigate = useNavigate();
+    const {logout} = useAuthContext();
 
     const handleClose = async () => {
+        await logout();
         navigate("/");
     }
     useEffect(
@@ -14,8 +17,8 @@ export default function EmailVerified() {
             let timeoutId;
 
 
-            timeoutId = setTimeout(() => {
-
+            timeoutId = setTimeout(async() => {
+                await logout();
                 navigate("/");
 
             }, 1700); // Hides the popup after 30 seconds
