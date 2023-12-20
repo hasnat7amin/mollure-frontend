@@ -335,7 +335,7 @@ export const ProfessionalContextProvider = ({ children }) => {
   const getCategoryAndServiceForTeam = async (token, templateId) => {
     try {
       const headers = jsonHeader(token);
-      const response = await ApiTemplate("get", "/api/services/get_services_for_add_team/" + templateId, {}, headers);
+      const response = await ApiTemplate("get", "/api/team_members/get_related_category/" + templateId, {}, headers);
 
       if (response && response["success"] && response.data.length > 0) {
         const updatedData = response.data.map(item => {

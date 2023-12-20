@@ -329,6 +329,7 @@ export default function EditTeamMember({ id, type, showModel, setShowModel, data
                   <input
                     type="text"
                     value={bio}
+                    maxLength={14}
                     onChange={handleBioChange}
                     placeholder="Bio"
                     className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"

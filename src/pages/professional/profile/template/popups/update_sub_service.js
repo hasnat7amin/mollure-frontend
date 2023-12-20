@@ -186,7 +186,11 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
             const data = {};
             // Log all the values
             data['service_name'] = serviceName;
-            data['bio'] = bio;
+            if (bio) {
+                data['bio'] = bio;
+            } else {
+                data['bio'] = null;
+            }
             if (toDuration) {
                 data['duration'] = fromDuration + " - " + toDuration;
             }
@@ -197,7 +201,12 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
             data['price'] = parseFloat(price);
 
             data['category_id'] = parseInt(categoryId);
-            data['additional_info'] = info;
+            if (info) {
+                data['additional_info'] = info;
+            } else {
+                data['additional_info'] = null;
+
+            }
             data['type'] = type;
 
             data['parent_id'] = parseInt(parentId);
@@ -207,6 +216,10 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
                 data['discount_type'] = currentDiscountSelected?.value;
                 data['discount_amount'] = parseFloat(discount);
                 data['discount_valid_from'] = new Date(fromselectedDate.toString().slice(1, -1));
+            } else {
+                data['discount_type'] = null;
+                data['discount_amount'] = 0;
+                data['discount_valid_from'] = null;
             }
             if (toselectedDate) {
                 data['discount_valid_to'] = new Date(toselectedDate.toString().slice(1, -1));
