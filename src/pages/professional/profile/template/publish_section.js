@@ -33,12 +33,12 @@ export default function PublishSection({ id, type }) {
 
     const fetchUserInfo = async () => {
         await getUserInfo(token)
-      }
+    }
 
 
     useEffect(() => {
         fetchUserInfo();
-      }, [])
+    }, [])
 
 
     const handleCopyPageProcess = async () => {
@@ -154,7 +154,10 @@ export default function PublishSection({ id, type }) {
             >
                 Publish Update
             </button>
-            {(userInfo && userInfo.fixed === 1 && userInfo.desired === 1) ? null : <button onClick={() => setShowCopyPagePopUp(true)} className="px-6 py-2 text-base font-normal text-black border rounded-md">
+            {(userInfo && userInfo.fixed === parseInt(id)) ? null : <button onClick={() => setShowCopyPagePopUp(true)} className="px-6 py-2 text-base font-normal text-black border rounded-md">
+                Copy Template
+            </button>}
+            {(userInfo && userInfo.desired === parseInt(id)) ? null : <button onClick={() => setShowCopyPagePopUp(true)} className="px-6 py-2 text-base font-normal text-black border rounded-md">
                 Copy Template
             </button>}
         </div>

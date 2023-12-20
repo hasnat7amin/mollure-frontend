@@ -381,7 +381,7 @@ function Services({ data, templateId, categoryId }) {
             discountPrice = originalPrice - greatestDiscount;
         } else if (discountType === 'p') {
             discountPrice = originalPrice - greatestDiscount;
-            greatestDiscount = 100 * (greatestDiscount / originalPrice);
+            greatestDiscount = parseFloat(100 * (greatestDiscount / originalPrice)).toFixed(3);
         }
 
         return { greatestDiscount, discountType, originalPrice, discountPrice };
