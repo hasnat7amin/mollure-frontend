@@ -43,11 +43,11 @@ export default function EmailVerified() {
                                 Email Verified Successfully
                             </h3>
 
-                            <button onClick={handleClose} className={`bg-customGreen text-white w-full py-3   rounded-md text-base font-medium`} >
+                            {/* <button onClick={handleClose} className={`bg-customGreen text-white w-full py-3   rounded-md text-base font-medium`} >
 
                                 Go To Home
 
-                            </button>
+                            </button> */}
                         </div>
 
 
