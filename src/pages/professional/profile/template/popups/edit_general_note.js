@@ -92,7 +92,7 @@ export default function EditGeneralNote({
                 </h3>
               </div>
               <div className="px-5 pt-5">
-                <form>
+                <div>
 
                   {/* Keyword 1 */}
                   <div>
@@ -115,7 +115,7 @@ export default function EditGeneralNote({
                   {/* error popup */}
                   <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 
-                </form>
+                </div>
               </div>
               <AiOutlineClose
                 onClick={() => setShowModel(false)}

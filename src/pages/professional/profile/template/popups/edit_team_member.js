@@ -13,6 +13,7 @@ import { useAuthContext } from "../../../../../contexts/AuthContextProvider";
 import SuccessPopUp from "../../../../../components/success_popup";
 import ErrorPopUp from "../../../../../components/error_popup";
 import { imageUrl } from "../../../../../apis/base_url";
+import ClickAwayListener from "react-click-away-listener";
 
 export default function EditTeamMember({ id, type, showModel, setShowModel, data }) {
   console.log("add team member", id)
@@ -34,7 +35,7 @@ export default function EditTeamMember({ id, type, showModel, setShowModel, data
   const [error, setError] = useState(false);
   const [showErrorModel, setShowErrorModel] = useState(false)
   const [showSuccessPopUp, setShowSuccessPopUp] = useState(false)
-  const [teamId,setTeamId] = useState(null);
+  const [teamId, setTeamId] = useState(null);
   const [rows, setRows] = useState([{
     categoryId: null,
     serviceIds: [],
@@ -47,16 +48,34 @@ export default function EditTeamMember({ id, type, showModel, setShowModel, data
     data && setBio(data.bio ? data.bio : '')
     data && setTeamId(data.id ? data.id : null)
     data && setProfileImage(data.image ? data.image : null)
-    data && setRows(JSON.parse(data.service) ? JSON.parse(data.service) : [{
-      categoryId: null,
-      serviceIds: [],
-    }])
+    if (data && JSON.parse(data.service) && categoryAndServiceForTeam) {
+      let oldService = JSON.parse(data.service);
+      let newServices = oldService.map((service) => {
+        const selectedCategoryId = service.categoryId.id;
+        const selectedCategoryData = categoryAndServiceForTeam.find(
+          (category) => category.id == selectedCategoryId
+        );
+        return {
+          categoryId: service.categoryId,
+          serviceIds: service.serviceIds,
+          services: selectedCategoryData.services
+        }
+      })
+      console.log("old services", oldService)
+      setRows(newServices);
+    } else {
+      setRows([{
+        categoryId: null,
+        serviceIds: [],
+      }]);
+    }
+
   }
 
 
   useEffect(() => {
     setFormData();
-  }, []);
+  }, [categoryAndServiceForTeam, showModel, data]);
 
 
   useEffect(() => {
@@ -160,7 +179,7 @@ export default function EditTeamMember({ id, type, showModel, setShowModel, data
     data.append('service', JSON.stringify(rows));
     data.append('bio', bio);
 
-    const response = await updateTeamMembers(token, id, teamId ,data);
+    const response = await updateTeamMembers(token, id, teamId, data);
     if (!response) {
       setError("Please check your credentials again.");
       setLoading(false);
@@ -168,7 +187,7 @@ export default function EditTeamMember({ id, type, showModel, setShowModel, data
     }
     else {
       setLoading(false);
-     
+
       setShowSuccessPopUp(true)
     }
 
@@ -239,179 +258,182 @@ export default function EditTeamMember({ id, type, showModel, setShowModel, data
             onClick={() => setShowModel(false)}
             className="fixed inset-0 bg-black opacity-[66%]"
           />
-          <div className="relative z-50 md:w-auto w-[95%] md:min-w-[28rem] mx-auto my-6">
-            <div className="relative px-2 py-4 bg-white rounded-lg shadow-lg">
-              <div className="flex flex-col items-start gap-2 px-5 rounded-t">
-                <h3 className="w-full text-lg font-bold text-center text-softblue">
-                  Update Team Member
-                </h3>
-              </div>
-              <div className="px-5 pt-9">
+          <div className="relative z-50 md:w-auto w-[95%] md:min-w-[28rem] mx-auto my-6 flex items-center h-screen overflow-y-scroll no-scrollbar">
+            <ClickAwayListener onClickAway={() => setShowModel(false)}>
+              <div className="relative px-2 py-4 bg-white rounded-lg shadow-lg w-full">
+                <div className="flex flex-col items-start gap-2 px-5 rounded-t">
+                  <h3 className="w-full text-lg font-bold text-center text-softblue">
+                    Update Team Member
+                  </h3>
+                </div>
+                <div className="px-5 pt-9">
 
-                {/* image */}
-                <div>
-                  <div
-                    className={
-                      selectedImage
-                        ? "relative w-max mx-auto "
-                        : "relative w-max mx-auto text-gray-500  rounded-full"
-                    }
-                  >
-                    {selectedImage
-                      ? <div>
-                        <img
-                          src={selectedImage.base64}
-                          alt="Selected"
-                          width={100}
-                          height={100}
-                          className="object-cover rounded-full shadow-md w-28 h-28"
-                        />
-                        <div className="absolute bottom-0 right-0 z-50 flex items-center justify-center p-2 bg-white rounded-full shadow-md w-min h-min">
-                          <BsCamera
-                            size={28}
-                            className="text-gray-500 cursor-pointer"
-                            onClick={handleImageUploadClick}
+                  {/* image */}
+                  <div>
+                    <div
+                      className={
+                        selectedImage
+                          ? "relative w-max mx-auto "
+                          : "relative w-max mx-auto text-gray-500  rounded-full"
+                      }
+                    >
+                      {selectedImage
+                        ? <div>
+                          <img
+                            src={selectedImage.base64}
+                            alt="Selected"
+                            width={100}
+                            height={100}
+                            className="object-cover rounded-full shadow-md w-28 h-28"
                           />
+                          <div className="absolute bottom-0 right-0 z-50 flex items-center justify-center p-2 bg-white rounded-full shadow-md w-min h-min">
+                            <BsCamera
+                              size={28}
+                              className="text-gray-500 cursor-pointer"
+                              onClick={handleImageUploadClick}
+                            />
+                          </div>
                         </div>
-                      </div>
-                      : <>
-                        {
-                          profileImage && profileImage ?
-                            <>
-                              {" "}
-                              <img
-                                src={imageUrl+profileImage}
-                                alt="Selected"
-                                width={100}
-                                height={100}
-                                className="object-cover w-40 h-40 rounded-full shadow-md"
-                              />
-                              <div className="absolute right-0 z-50 flex items-center justify-center p-2 bg-white rounded-full shadow-md bottom-3 w-min h-min">
-                                <BsCamera
-                                  size={28}
+                        : <>
+                          {
+                            profileImage && profileImage ?
+                              <>
+                                {" "}
+                                <img
+                                  src={imageUrl + profileImage}
+                                  alt="Selected"
+                                  width={100}
+                                  height={100}
+                                  className="object-cover w-40 h-40 rounded-full shadow-md"
+                                />
+                                <div className="absolute right-0 z-50 flex items-center justify-center p-2 bg-white rounded-full shadow-md bottom-3 w-min h-min">
+                                  <BsCamera
+                                    size={28}
+                                    className="text-gray-500 cursor-pointer"
+                                    onClick={handleImageUploadClick}
+                                  />
+                                </div>
+                              </> : <div className="flex items-center justify-center py-8 bg-gray-300 rounded-full shadow-md px-7">
+                                <img
+                                  src={uploadIcon}
                                   className="text-gray-500 cursor-pointer"
                                   onClick={handleImageUploadClick}
                                 />
                               </div>
-                            </> : <div className="flex items-center justify-center py-8 bg-gray-300 rounded-full shadow-md px-7">
-                              <img
-                                src={uploadIcon}
-                                className="text-gray-500 cursor-pointer"
-                                onClick={handleImageUploadClick}
-                              />
-                            </div>
-                        }
-                      </>}
+                          }
+                        </>}
+                    </div>
+                    <input
+                      type="file"
+                      id="image"
+                      ref={fileInputRef}
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleImageChange}
+                    />
                   </div>
-                  <input
-                    type="file"
-                    id="image"
-                    ref={fileInputRef}
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleImageChange}
-                  />
-                </div>
 
 
-                {/* Team Member Name */}
-                <div>
-                  <input
-                    type="text"
-                    value={teamMemberName}
-                    onChange={handleTeamMemberNameChange}
-                    placeholder="Team Member Name"
-                    className="w-full px-3 py-3 mt-6 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
-                  />
-                </div>
-                {/* bio */}
-                <div>
-                  <input
-                    type="text"
-                    value={bio}
-                    maxLength={14}
-                    onChange={handleBioChange}
-                    placeholder="Bio"
-                    className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
-                  />
-                </div>
+                  {/* Team Member Name */}
+                  <div>
+                    <input
+                      type="text"
+                      maxLength={14}
+                      value={teamMemberName}
+                      onChange={handleTeamMemberNameChange}
+                      placeholder="Team Member Name"
+                      className="w-full px-3 py-3 mt-6 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                    />
+                  </div>
+                  {/* bio */}
+                  <div>
+                    <input
+                      type="text"
+                      value={bio}
+                      maxLength={14}
+                      onChange={handleBioChange}
+                      placeholder="Bio"
+                      className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                    />
+                  </div>
 
-                {/* Rows for Category and Services */}
-                {rows.map((row, index) => (
-                  <div key={index} className="flex items-center gap-2 ">
-                    <div className="w-full">
-                      <Select
-                        placeholder="Select Category"
-                        options={categoryAndServiceForTeam ? categoryAndServiceForTeam
-                          .filter(category => !rows.find(row => row.categoryId && row.categoryId.id === category.id))
-                          .map((category) => ({
-                            id: category.id,
-                            value: category.label_en,
-                            label: category.label_en
-                          })) : []}
+                  {/* Rows for Category and Services */}
+                  {rows.map((row, index) => (
+                    <div key={index} className="flex items-center gap-2 ">
+                      <div className="w-full">
+                        <Select
+                          placeholder="Select Category"
+                          options={categoryAndServiceForTeam ? categoryAndServiceForTeam
+                            .filter(category => !rows.find(row => row.categoryId && row.categoryId.id === category.id))
+                            .map((category) => ({
+                              id: category.id,
+                              value: category.label_en,
+                              label: category.label_en
+                            })) : []}
                           selectedOption={row.categoryId ? row.categoryId : null}
-                        handelChange={(selectedOption) => handleCategoryChange(selectedOption, index)}
-                      />
-                    </div>
-                    <div className="w-full ">
-
-                      <MultiSelect
-                        placeholder={"Select Services"}
-                        options={row.services}
-                        selectedOptions={row.serviceIds || []}
-                        handleSelect={(selectedIds) => handleSelectService(selectedIds, index)}
-
-                      />
-
-                    </div>
-                    {/* Delete row button */}
-                    {index == 0 ? <div className="mt-0 h-14 w-14 "></div> :
-                      <button onClick={() => deleteRow(index)}>
-                        <img
-                          src={deleteIcon}
-                          alt="deleteIcon"
-                          className="mt-0 cursor-pointer h-14 w-14 "
+                          handelChange={(selectedOption) => handleCategoryChange(selectedOption, index)}
                         />
+                      </div>
+                      <div className="w-full ">
+
+                        <MultiSelect
+                          placeholder={"Select Services"}
+                          options={row.services}
+                          selectedOptions={row.serviceIds || []}
+                          handleSelect={(selectedIds) => handleSelectService(selectedIds, index)}
+
+                        />
+
+                      </div>
+                      {/* Delete row button */}
+                      {index == 0 ? <div className="mt-0 h-14 w-14 "></div> :
+                        <button onClick={() => deleteRow(index)}>
+                          <img
+                            src={deleteIcon}
+                            alt="deleteIcon"
+                            className="mt-0 cursor-pointer h-14 w-14 "
+                          />
+                        </button>
+
+                      }
+
+                    </div>
+                  ))}
+
+
+                  {/* copy template and clear all buttons */}
+                  {categoryAndServiceForTeam && categoryAndServiceForTeam
+                    .filter(category => !rows.find(row => row.categoryId && row.categoryId.id === category.id))
+                    .map((category) => ({
+                      id: category.id,
+                      value: category.label_en,
+                      label: category.label_en
+                    })).length > 0 && <div className="flex items-center justify-end w-full mt-2 space-x-2">
+                      <button onClick={addRow} className="flex items-center gap-2 px-3 py-2 text-base font-normal rounded-full bg-customBlue bg-opacity-10 text-customBlue focus:ring-0 ">
+                        <AiOutlinePlus /> <span>Category </span>
                       </button>
 
-                    }
-
-                  </div>
-                ))}
-
-
-                {/* copy template and clear all buttons */}
-                {categoryAndServiceForTeam && categoryAndServiceForTeam
-                  .filter(category => !rows.find(row => row.categoryId && row.categoryId.id === category.id))
-                  .map((category) => ({
-                    id: category.id,
-                    value: category.label_en,
-                    label: category.label_en
-                  })).length > 0 && <div className="flex items-center justify-end w-full mt-2 space-x-2">
-                    <button onClick={addRow} className="flex items-center gap-2 px-3 py-2 text-base font-normal rounded-full bg-customBlue bg-opacity-10 text-customBlue focus:ring-0 ">
-                      <AiOutlinePlus /> <span>Category </span>
-                    </button>
-
-                  </div>
-                }
-
-                <button disabled={loading} onClick={handleSubmit} className={`${loading ? "bg-gray-100  flex items-center justify-center" : "bg-customGreen"} text-white mt-4 w-full py-3  mb-4  rounded-md text-base font-medium`} >
-                  {
-                    loading ?
-                      <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Save"
+                    </div>
                   }
-                </button>
-                <SuccessPopUp closeAction={()=>setShowModel(false)} title={"Team Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
-                {/* error popup */}
-                <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
+
+                  <button disabled={loading} onClick={handleSubmit} className={`${loading ? "bg-gray-100  flex items-center justify-center" : "bg-customGreen"} text-white mt-4 w-full py-3  mb-4  rounded-md text-base font-medium`} >
+                    {
+                      loading ?
+                        <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Save"
+                    }
+                  </button>
+                  <SuccessPopUp closeAction={() => setShowModel(false)} title={"Team Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+                  {/* error popup */}
+                  <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 
 
+                </div>
+                <AiOutlineClose
+                  onClick={() => setShowModel(false)}
+                  className="absolute cursor-pointer top-5 right-5"
+                />
               </div>
-              <AiOutlineClose
-                onClick={() => setShowModel(false)}
-                className="absolute cursor-pointer top-5 right-5"
-              />
-            </div>
+            </ClickAwayListener>
           </div>
         </div>}
     </div>

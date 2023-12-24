@@ -46,6 +46,7 @@ export default function AddLocation({
   const [formData, setFormData] = useState({
     salonName: '',
     address: '',
+    number: '',
     postalCode: '',
 
   });
@@ -65,7 +66,7 @@ export default function AddLocation({
   }
 
   const setProvinces = async () => {
-    if (provinces && provinces.length>0 && (provinces !== null || provinces != [])) {
+    if (provinces && provinces.length > 0 && (provinces !== null || provinces != [])) {
       setProvinceOptions(
         provinces.map((item) => (
           { id: item.id, value: item.name, label: item.name }
@@ -81,7 +82,7 @@ export default function AddLocation({
   }
 
   const setMunicipalities = async () => {
-    if (municipalities && municipalities.length>0 &&  (municipalities !== null || municipalities != [])) {
+    if (municipalities && municipalities.length > 0 && (municipalities !== null || municipalities != [])) {
       setMunicipalityOptions(
         municipalities.map((item) => (
           { id: item.id, value: item.name, label: item.name }
@@ -111,6 +112,7 @@ export default function AddLocation({
         ...formData,
         salonName: fixedLocation.salon_name ? fixedLocation.salon_name : "",
         address: fixedLocation.address ? fixedLocation.address : "",
+        number: fixedLocation.number ? fixedLocation.number : "",
         postalCode: fixedLocation.postal_code ? fixedLocation.postal_code : ""
       })
 
@@ -131,42 +133,27 @@ export default function AddLocation({
       salonName,
       address,
       postalCode,
+      number,
 
     } = formData;
 
+    if (!salonName || !address || !postalCode || !number || !currentProvinceSelected || !currentMunicipalitySelected) {
+      setError('Please fill all required fields.');
+      setLoading(false);
+      setShowErrorModel(true);
+      return
+    }
 
 
     const data = new FormData();
-    if (
-      formData.salonName
-    ) {
-      data.append('salon_name', formData.salonName);
-    }
-    if (
-      address
-    ) {
-      data.append('address', address);
-    }
-    if (
-      postalCode
-    ) {
-      data.append('postal_code', postalCode);
-    }
 
-    if (
-      currentProvinceSelected
-    ) {
-      data.append('province_id', currentProvinceSelected.id);
+    data.append('salon_name', formData.salonName);
+    data.append('number', formData.number);
+    data.append('address', address);
+    data.append('postal_code', postalCode);
+    data.append('province_id', currentProvinceSelected.id);
+    data.append('municipality_id', currentMunicipalitySelected.id);
 
-
-    }
-    if (
-      currentMunicipalitySelected
-    ) {
-      data.append('municipality_id', currentMunicipalitySelected.id);
-
-
-    }
 
 
 
@@ -227,7 +214,7 @@ export default function AddLocation({
                 </h3>
               </div>
               <div className="px-5 pt-5">
-                <form>
+                <div>
                   {/* name */}
                   <div className="mt-2">
                     <input
@@ -242,18 +229,29 @@ export default function AddLocation({
 
                   {/* bio */}
                   <div>
-                  <label
-                    htmlFor="email"
-                    className="block mt-3 text-sm font-normal text-gray-500"
-                  >
-                    Address
-                  </label>
+                    <label
+                      htmlFor="email"
+                      className="block mt-3 text-sm font-normal text-gray-500"
+                    >
+                      Address
+                    </label>
                     <input
                       type="text"
                       value={formData.address}
                       name="address"
                       onChange={handleChange}
                       placeholder="Street"
+                      className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                    />
+                  </div>
+                  {/* Keyword 1 */}
+                  <div>
+                    <input
+                      type="text"
+                      value={formData.number}
+                      name="number"
+                      onChange={handleChange}
+                      placeholder="Number"
                       className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
                     />
                   </div>
@@ -309,11 +307,11 @@ export default function AddLocation({
                         <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Update"
                     }
                   </button>
-                  <SuccessPopUp closeAction={()=>setShowModel(false)}  title={"Your Data is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+                  <SuccessPopUp closeAction={() => setShowModel(false)} title={"Your Data is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
                   {/* error popup */}
                   <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 
-                </form>
+                </div>
               </div>
               <AiOutlineClose
                 onClick={() => setShowModel(false)}

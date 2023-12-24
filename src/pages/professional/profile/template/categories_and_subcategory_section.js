@@ -129,7 +129,7 @@ export default function CategoryAndSubCategorySection({ id, type }) {
                     <IoIosArrowDown
                         size={18}
                         color="white"
-                        className={`${showCategoriesSection ? "" : "rotate-180"}`}
+                    // className={`${showCategoriesSection ? "" : ""}`}
                     />
                 </div>
                 <TitleBar title={"Categories & Subservices"} />
@@ -216,7 +216,7 @@ function Category({ category, templateId }) {
 
     return <section>
         <div className="">
-            <LightTitleBar title={category.name_en + "'s Subservices"} />
+            <LightTitleBar title={category.name_en + "'s Services"} />
 
             {/* table */}
             {servicesById && <div className="overflow-x-scroll md:overflow-visible">
@@ -224,7 +224,7 @@ function Category({ category, templateId }) {
                     {/* titles  */}
                     <div className="flex items-center justify-between my-4">
                         <p className="w-full py-2 text-lg font-semibold text-center border-r">
-                            ( Sub ) Service Name
+                            Service Name
                         </p>
                         <p className="w-full py-2 text-lg font-semibold text-center border-r">
                             Duration
@@ -324,36 +324,39 @@ function Services({ data, templateId, categoryId }) {
             data.sub_services.forEach((subservice) => {
                 const { discount_type, discount_amount } = subservice;
                 if (discount_type === 'f') {
-                    if (discount_amount > greatestDiscount) {
-                        greatestDiscount = discount_amount;
+                    const percentageDiscount = (discount_amount / subservice.price) * 100;
+                    if (percentageDiscount > greatestDiscount) {
+                        originalPrice = subservice.price;
+                        greatestDiscount = percentageDiscount;
                         discountType = 'f';
                     }
                 } else if (discount_type === 'p') {
-                    const percentageDiscount = (data.price * discount_amount) / 100;
-                    if (percentageDiscount > greatestDiscount) {
-                        greatestDiscount = percentageDiscount;
+                    // const percentageDiscount = (data.price * discount_amount) / 100;
+                    if (discount_amount > greatestDiscount) {
+                        originalPrice = subservice.price;
+                        greatestDiscount = discount_amount;
                         discountType = 'p';
                     }
                 }
             });
-        } else {
-            // If data doesn't have sub-services, consider the discount type for the main service
-            if (data.discount_type === 'f') {
-                greatestDiscount = data.discount_amount;
-                discountType = 'f';
-            } else if (data.discount_type === 'p') {
-                const percentageDiscount = (data.price * data.discount_amount) / 100;
-                greatestDiscount = percentageDiscount;
-                discountType = 'p';
-            }
         }
 
         // Calculate the discount price
         if (discountType === 'f') {
+            greatestDiscount = (greatestDiscount / 100) * originalPrice
             discountPrice = originalPrice - greatestDiscount;
         } else if (discountType === 'p') {
+            greatestDiscount = (greatestDiscount / 100) * originalPrice
             discountPrice = originalPrice - greatestDiscount;
             greatestDiscount = 100 * (greatestDiscount / originalPrice);
+        }
+
+
+        if (Number.isInteger(greatestDiscount)) {
+            greatestDiscount = greatestDiscount.toFixed(0); // Convert to a string without decimal places
+        } else {
+            greatestDiscount = parseFloat(greatestDiscount).toFixed(0);
+
         }
 
         return { greatestDiscount, discountType, originalPrice, discountPrice };
@@ -381,7 +384,11 @@ function Services({ data, templateId, categoryId }) {
             discountPrice = originalPrice - greatestDiscount;
         } else if (discountType === 'p') {
             discountPrice = originalPrice - greatestDiscount;
-            greatestDiscount = parseFloat(100 * (greatestDiscount / originalPrice)).toFixed(3);
+            greatestDiscount = parseFloat(100 * (greatestDiscount / originalPrice)).toFixed(0);
+        }
+
+        if (Number.isInteger(greatestDiscount)) {
+            greatestDiscount = greatestDiscount.toFixed(0); // Convert to a string without decimal places
         }
 
         return { greatestDiscount, discountType, originalPrice, discountPrice };
@@ -391,7 +398,7 @@ function Services({ data, templateId, categoryId }) {
 
     return <section>
         {/* category 1 */}
-        <div className=" flex items-center w-full h-[6rem] justify-center text-customBlue bg-customBlue bg-opacity-5">
+        <div className=" flex items-center w-full h-[7rem] justify-center text-customBlue bg-customBlue bg-opacity-5">
             <div className="flex w-full h-full ">
                 <div className="w-2 bg-customBlue rounded-r-md" />
                 <p className="flex items-center justify-center w-full h-full gap-2 text-lg font-normal text-center border-r ms-2 ">
@@ -402,18 +409,33 @@ function Services({ data, templateId, categoryId }) {
             <p className="flex items-center justify-center w-full h-full text-lg font-normal text-center border-r">
                 {data?.duration}
             </p>
-            <div className="flex flex-col items-center justify-center w-full h-full space-y-1 text-lg font-normal text-center border-r">
-                {!(data.sub_services.length > 0) ? <p>
-                    {data.discount_amount > 0 && <span className="text-sm line-through"> {calculateServiceDiscount(data).originalPrice} EUR</span>} {calculateServiceDiscount(data).discountPrice}
-                    EUR
-                </p> : <p>
-                    Starting From {data?.price} EUR
-                </p>}
-                { calculateGreatestDiscount(data).greatestDiscount > 0 && <p className="flex items-center justify-center space-x-2 ">
-                    <span>Discount {data.sub_services.length > 0 ? "up to" : ""} {calculateGreatestDiscount(data).greatestDiscount} {calculateGreatestDiscount(data).discountType === "f" ? "Eur" : "%"} </span>
+            <div className="flex flex-col items-center justify-center w-full h-full gap-1 text-lg font-normal text-center border-r">
+                <div className="w-full h-max">
+                    {!(data.sub_services.length > 0) ? <p>
+                        {data.discount_amount > 0 && <span className="text-sm line-through"> {calculateServiceDiscount(data).originalPrice} EUR</span>} {calculateServiceDiscount(data).discountPrice}
+                        EUR
+                    </p> : <p>
+                        Starting From {data?.price} EUR
+                    </p>}
+                    {(data.sub_services.length > 0) ? calculateGreatestDiscount(data).greatestDiscount > 0 && <p className="flex items-center justify-center space-x-2 ">
+                        <span>Discount {data.sub_services.length > 0 ? "up to" : ""} {calculateGreatestDiscount(data).greatestDiscount} {calculateGreatestDiscount(data).discountType === "f" ? "Eur" : "%"} </span>
 
-                    {data.additional_info && <Info title={data.additional_info} />}
-                </p>}
+                        {data.additional_info && <Info title={data.additional_info} />}
+                    </p> :
+                        calculateServiceDiscount(data).greatestDiscount > 0 && <p className="flex items-center justify-center space-x-2 ">
+                            <span>Discount {calculateServiceDiscount(data).greatestDiscount} {calculateServiceDiscount(data).discountType === "f" ? "Eur" : "%"} </span>
+
+                            {data.additional_info && <Info title={data.additional_info} />}
+                        </p>
+                    }
+                </div>
+                {
+                    (data.discount_valid_from || data.discount_valid_to) &&
+                    <p className="text-[9px] h-2 p-0 m-0">
+                        {data.discount_valid_from && data.discount_valid_from.split("T")[0]}  {data.discount_valid_to && "- " + data.discount_valid_to.split("T")[0]}
+                    </p>
+                }
+
             </div>
             <div className="flex items-center justify-center w-full h-full space-x-2 font-semibold ">
                 {/* edit button */}
@@ -437,17 +459,19 @@ function Services({ data, templateId, categoryId }) {
                 {/* add sub category button */}
                 <CustomAddSubServiceButton title={"Add Sub Service"} handleClick={() => setShowAddSubServiceModel(true)} />
 
-                <button
-                    onClick={toggleSubServices}
-                    className="bg-customBlue rounded-full cursor-pointer p-1.5 bg-opacity-20 "
-                >
-                    <IoIosArrowDown
-                        size={19}
-                        className={`${showSubServices
-                            ? ""
-                            : "rotate-180"} text-customBlue`}
-                    />
-                </button>
+                {
+                    data.sub_services.length > 0 && <button
+                        onClick={toggleSubServices}
+                        className="bg-customBlue rounded-full cursor-pointer p-1.5 bg-opacity-20 "
+                    >
+                        <IoIosArrowDown
+                            size={19}
+                            className={`${showSubServices
+                                ? ""
+                                : ""} text-customBlue`}
+                        />
+                    </button>
+                }
             </div>
         </div>
         {/* subcategories */}
@@ -456,7 +480,7 @@ function Services({ data, templateId, categoryId }) {
                 {
                     data.sub_services && data.sub_services.map(subService => (
                         <SubServices parentId={data?.id} data={subService} categoryId={categoryId}
-                            templateId={templateId} servicePrice={data.price} />
+                            templateId={templateId} servicePrice={data.price} serviceDuration={data.duration} />
                     ))
                 }
             </div>}
@@ -470,6 +494,7 @@ function Services({ data, templateId, categoryId }) {
             showModel={showAddSubServiceModel}
             setShowModel={setShowAddSubServiceModel}
             servicePrice={data?.price}
+            serviceDuration={data?.duration}
         />
         {/* add  service */}
         <UpdateService
@@ -503,7 +528,7 @@ function Services({ data, templateId, categoryId }) {
 
 
 
-function SubServices({ data, templateId, categoryId, parentId, servicePrice }) {
+function SubServices({ data, templateId, categoryId, parentId, servicePrice, serviceDuration }) {
     const [showDeleteVisualPopUp, setShowDeleteVisualPopUp] = useState(false);
     const [showErrorModel, setShowErrorModel] = useState(false)
     const [error, setError] = useState(false);
@@ -567,7 +592,7 @@ function SubServices({ data, templateId, categoryId, parentId, servicePrice }) {
     };
 
     return <section>
-        <div className="flex items-center w-full border-b h-[3.5rem] justify-center  bg-opacity-5">
+        <div className="flex items-center w-full border-b h-[5rem] justify-center  bg-opacity-5">
             <div className="flex w-full h-full ">
                 <p className="flex items-center justify-center w-full h-full gap-2 text-lg font-normal border-r ms-3">
                     {data?.service_name}
@@ -578,17 +603,24 @@ function SubServices({ data, templateId, categoryId, parentId, servicePrice }) {
                 {data?.duration}
             </p>
             <div className="flex flex-col items-center justify-center w-full h-full space-y-1 text-lg font-normal text-center border-r">
-                {/* <p>{data?.price} EUR</p> */}
+
                 <div className="flex flex-col items-center justify-center w-full h-full text-lg font-normal text-center border-r">
-                    <p>
+                    <div className="w-full h-max"> <p>
                         {calculateServiceDiscount(data).greatestDiscount > 0 && <span className="text-sm line-through">{data?.price} EUR</span>} {calculateServiceDiscount(data).discountPrice}
                         EUR
                     </p>
-                    {calculateServiceDiscount(data).greatestDiscount > 0 && <p className="flex items-center justify-center gap-2">
-                        <span>Discount {calculateServiceDiscount(data).greatestDiscount} {calculateServiceDiscount(data).discountType === "f" ? "Eur" : "%"} </span>
+                        {calculateServiceDiscount(data).greatestDiscount > 0 && <p className="flex items-center justify-center gap-2">
+                            <span>Discount {calculateServiceDiscount(data).greatestDiscount} {calculateServiceDiscount(data).discountType === "f" ? "Eur" : "%"} </span>
 
-                        {data.additional_info && <Info title={data.additional_info} />}
-                    </p>}
+                            {data.additional_info && <Info title={data.additional_info} />}
+                        </p>}
+                    </div>
+                    {
+                        (data.discount_valid_from || data.discount_valid_to) &&
+                        <p className="text-[9px] h-5 p-0 m-0 leading-0">
+                            {data.discount_valid_from && data.discount_valid_from.split("T")[0]}  {data.discount_valid_to && "- " + data.discount_valid_to.split("T")[0]}
+                        </p>
+                    }
                 </div>
             </div>
             <div className="flex items-center justify-center w-full h-full space-x-2 font-normal ">
@@ -616,7 +648,7 @@ function SubServices({ data, templateId, categoryId, parentId, servicePrice }) {
         <ConfirmationDeletePopUp
             showModel={showDeleteVisualPopUp}
             setShowModel={setShowDeleteVisualPopUp}
-            title={"Are you sure you want to delete this Service?"}
+            title={"Are you sure you want to delete this SubService?"}
             handleCancel={() => { setShowDeleteVisualPopUp(false); }}
             handleDelete={() => handleServiceDeleteConfirm(data?.id, categoryId, templateId)}
         />
@@ -631,6 +663,7 @@ function SubServices({ data, templateId, categoryId, parentId, servicePrice }) {
             setShowModel={setShowUpdateServiceModel}
             data={data}
             servicePrice={servicePrice}
+            serviceDuration={serviceDuration}
         />
 
         {/* error popup */}

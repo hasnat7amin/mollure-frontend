@@ -104,7 +104,7 @@ export default function VisualsSection({ id, type }) {
                     <IoIosArrowDown
                         size={18}
                         color="white"
-                        className={`${showVisualsSection ? "" : "rotate-180"}`}
+                        className={`${showVisualsSection ? "" : ""}`}
                     />
                 </div>
                 <TitleBar title={"Visuals"} />

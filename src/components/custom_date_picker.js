@@ -7,6 +7,7 @@ const CustomDatePicker = ({ placeholder, onDateChange, value, disabled }) => {
   const [startDate, setStartDate] = useState(value);
 
   const handleChange = date => {
+    
     console.log(JSON.stringify(date).toString())
     setStartDate(date);
     onDateChange(date); // Pass the selected date to the parent component

@@ -22,14 +22,14 @@ export default function ErrorPopUp({ showModel, setShowModel, title }) {
                 </h3>
               </div>
               <div className="px-5 ">
-                <form className="flex flex-row gap-2">
+                <div className="flex flex-row gap-2">
                   <button
                     onClick={() => setShowModel(false)}
                     className="w-full gap-20 py-3 mt-8 mb-4 text-base font-medium text-white rounded-md bg-customGreen "
                   >
                     Ok
                   </button>
-                </form>
+                </div>
               </div>
               <AiOutlineClose
                 onClick={() => setShowModel(false)}

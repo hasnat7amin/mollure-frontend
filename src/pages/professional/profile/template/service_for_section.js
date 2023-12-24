@@ -38,7 +38,7 @@ export default function ServiceForSection({ id,type }) {
                     <IoIosArrowDown
                         size={18}
                         color="white"
-                        className={`${showServiceForSection ? "" : "rotate-180"}`}
+                        className={`${showServiceForSection ? "" : ""}`}
                     />
                 </div>
                 <TitleBar title={"Service For"} />

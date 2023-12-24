@@ -15,7 +15,7 @@ import spinner from "../../../../../images/spinner.svg";
 import { useProfessionalContext } from "../../../../../contexts/ProfessionalContextProvider";
 import { useAuthContext } from "../../../../../contexts/AuthContextProvider";
 
-export default function AddSubService({ categoryId, type, templateId, parentId, showModel, setShowModel, servicePrice }) {
+export default function AddSubService({ categoryId, type, templateId, parentId, showModel, setShowModel, servicePrice, serviceDuration }) {
   const priceOptions = [
     { id: "fixedPrice", label: "Fixed price", value: "f" },
     { id: "startingPrice", label: "Starting price", value: "s" }
@@ -99,8 +99,8 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
 
     if (serviceName && fromDuration && currentPriceSelected && price) {
       // Check if optional fields are filled
-      if ((discount || currentDiscountSelected || fromselectedDate ) &&
-        (!discount || !currentDiscountSelected || !fromselectedDate )) {
+      if ((discount || currentDiscountSelected || fromselectedDate) &&
+        (!discount || !currentDiscountSelected || !fromselectedDate)) {
         setError("Please fill discount fields.");
         setLoading(false);
         setShowErrorModel(true);
@@ -121,13 +121,55 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
         }
       }
 
+
+      const fromDurationInMinutes = convertDurationToMinutes(fromDuration);
+      const toDurationInMinutes = toDuration ? convertDurationToMinutes(toDuration) : null;
+
+      let durationDifference = 0;
+
+      if (toDuration) {
+        durationDifference = fromDurationInMinutes - toDurationInMinutes;
+      }
+      else {
+        durationDifference = fromDurationInMinutes;
+      }
+
+      const serviceFromDuration = serviceDuration?.split('-')[0];
+      const serviceToDuration = serviceDuration?.split('-')[1] ? serviceDuration?.split('-')[1] : null;
+
+      const serviceFromDurationInMinutes = convertDurationToMinutes(serviceFromDuration);
+      const serviceToDurationInMinutes = serviceToDuration ? convertDurationToMinutes(serviceToDuration) : 0;
+
+      const serviceDurationDifference = serviceFromDurationInMinutes - serviceToDurationInMinutes;
+      console.log("first condition in subservie:", serviceToDuration === null && durationDifference !== serviceDurationDifference)
+
+      if (serviceToDuration === null) {
+        if (durationDifference !== serviceDurationDifference) {
+          setError("SubService duration must be equal to service duration.");
+          setLoading(false);
+          setShowErrorModel(true);
+          return;
+        }
+
+      } else {
+        if (!(fromDurationInMinutes > serviceFromDurationInMinutes && serviceToDurationInMinutes > toDurationInMinutes)) {
+          setError("SubService duration must be with in service duration.");
+          setLoading(false);
+          setShowErrorModel(true);
+          return;
+        }
+
+      }
+
+
+
       if (parseFloat(servicePrice) > parseFloat(price)) {
         setError("SubService price must be greater than or equal to service price.");
         setLoading(false);
         setShowErrorModel(true);
         return;
       }
-      if (!(parseFloat(price)>=0)) {
+      if (!(parseFloat(price) >= 0)) {
         setError("Price should be greater or equal zero.");
         setLoading(false);
         setShowErrorModel(true);
@@ -159,11 +201,11 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
         data['discount_amount'] = parseFloat(discount);
         data['discount_valid_from'] = new Date(fromselectedDate.toString().slice(1, -1));
       }
-      if(toselectedDate){
+      if (toselectedDate) {
         data['discount_valid_to'] = new Date(toselectedDate.toString().slice(1, -1));
-    } else{
-      data['discount_valid_to'] = null;
-    }
+      } else {
+        data['discount_valid_to'] = null;
+      }
 
       const response = await addServiceAndSubService(token, categoryId, templateId, JSON.stringify(data));
       if (!response) {
@@ -225,12 +267,12 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
   return (
     <div>
       {showModel &&
-        <div className="fixed inset-0 z-50 flex items-center pt-40 overflow-y-scroll">
+        <div className="fixed inset-0 z-50 flex items-center ">
           <div
             onClick={() => setShowModel(false)}
             className="fixed inset-0 bg-black opacity-[66%]"
           />
-          <div className="relative z-50  w-[95%] md:w-[28rem] mx-auto my-6">
+          <div className="relative z-50  w-[95%] md:w-[28rem] mx-auto my-6 max-h-screen overflow-y-scroll no-scrollbar ">
             <div className="relative px-2 py-4 bg-white rounded-lg shadow-lg">
               <div className="flex flex-col items-start gap-2 px-5 rounded-t">
                 <h3 className="w-full text-lg font-bold text-center text-softblue">
@@ -241,7 +283,7 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
 
                 {/* (sub)Service Name */}
                 <div>
-                <label className="block text-sm font-normal text-gray-500 pb-2">
+                  <label className="block text-sm font-normal text-gray-500 pb-2">
                     (sub)Service Name <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -325,7 +367,7 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
                 {/* price */}
                 <div className="relative">
                   <input
-                    type="number"
+                    type="text"
                     placeholder="Price"
                     min={servicePrice}
 
@@ -348,7 +390,7 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
                       options={discountOptions}
                       selectedOption={currentDiscountSelected}
                       handelChange={event => {
-                        if(event.id === 0){
+                        if (event.id === 0) {
                           setCurrentDiscountSelected(null);
                         }
                         if (event.value !== "discountOption" && event.id !== 0) {

@@ -16,7 +16,7 @@ export default function ProvinceCard({ title, options, }) {
                         <IoIosArrowDown
                             size={18}
                             color="black"
-                            className={`${showDropdown ? '' : 'rotate-180'}`}
+                            className={`${showDropdown ? '' : ''}`}
                         />
                     </div>
 

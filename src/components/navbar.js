@@ -88,7 +88,7 @@ export default function Navbar() {
         else {
             // navigate('/');
             setShowConfirmDeleteAccountModel(false)
-            setTitle("Congratulation! Your account is deleted.")
+            setTitle("Your account is deleted.")
             setShowSuccessModel(true);
             return;
             // setShowConfirmDeleteAccountModel(false);
@@ -186,11 +186,11 @@ export default function Navbar() {
                     }
 
                     <ConfirmationDeletePopUp showModel={showConfirmDeleteAccountModel} setShowModel={setShowConfirmDeleteAccountModel} handleDelete={handleConfirmDelete} title={"Are you sure you want to delete your acount?"} handleCancel={handleCancelDelete} />
-                    {/* <MessagePopUp showModel={showSuccessDeleteAccountModel} setShowModel={setShowSuccessDeleteAccountModel} title={"Your account will be deleted by admin with in 3 business days?"} /> */}
+                    <MessagePopUp isLogout={true} to={"/"} showModel={showSuccessModel} setShowModel={setShowSuccessModel} title={title} />
                     {/* error popup */}
                     <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
                     {/* success popup */}
-                    <SuccessPopUp isLogout={true} to={"/"} title={title} showModel={showSuccessModel} setShowModel={setShowSuccessModel} />
+                    {/* <SuccessPopUp isLogout={true} to={"/"} title={title} showModel={showSuccessModel} setShowModel={setShowSuccessModel} /> */}
 
                 </div>
             </div>

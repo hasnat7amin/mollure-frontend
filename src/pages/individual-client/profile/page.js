@@ -20,6 +20,7 @@ import SuccessPopUp from "../../../components/success_popup";
 import spinner from "../../../images/spinner.svg";
 import { useIndividualClientContext } from "../../../contexts/IndividualClientContext";
 import { useAuthContext } from "../../../contexts/AuthContextProvider";
+import { useProfileContext } from "../../../contexts/ProfileContextProvider";
 
 export default function IndividualClientProfile() {
   const [showPassword, setShowPassword] = useState(false);
@@ -79,6 +80,7 @@ export default function IndividualClientProfile() {
     getClientInfo,
     editClientInfo,
   } = useIndividualClientContext();
+  const { getUserProfilePic } = useProfileContext();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -253,6 +255,7 @@ export default function IndividualClientProfile() {
     } else {
       setUpdateButtonVisibility(false)
       setShowSuccessModel(true);
+      await getUserProfilePic(token);
     }
     setLoading(false);
 

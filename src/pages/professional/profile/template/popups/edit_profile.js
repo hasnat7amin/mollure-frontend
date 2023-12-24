@@ -102,6 +102,20 @@ export default function EditProfile({
 
     } = formData;
 
+    if (!selectedImage) {
+      setError("Please enter image.");
+      setLoading(false);
+      setShowErrorModel(true);
+      return;
+    }
+    
+    if (!name) {
+      setError("Please enter a name.");
+      setLoading(false);
+      setShowErrorModel(true);
+      return;
+    }
+   
 
 
     const data = new FormData();
@@ -179,7 +193,7 @@ export default function EditProfile({
                 </h3>
               </div>
               <div className="px-5 pt-9">
-                <form>
+                <div>
                   {/* image */}
                   <div>
                     <div
@@ -251,6 +265,7 @@ export default function EditProfile({
                       type="text"
                       id="name"
                       name="name"
+
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="Name"
@@ -276,6 +291,7 @@ export default function EditProfile({
                       type="text"
                       id="legalName"
                       name="key1"
+                      maxLength={10}
                       value={formData.key1}
                       onChange={handleChange}
                       placeholder="Keyword 1"
@@ -288,6 +304,7 @@ export default function EditProfile({
                       type="text"
                       id="legalName"
                       name="key2"
+                      maxLength={10}
                       value={formData.key2}
                       onChange={handleChange}
                       placeholder="Keyword 2"
@@ -300,6 +317,7 @@ export default function EditProfile({
                       type="text"
                       id="legalName"
                       name="key3"
+                      maxLength={10}
                       value={formData.key3}
                       onChange={handleChange}
                       placeholder="Keyword 3"
@@ -317,7 +335,7 @@ export default function EditProfile({
                   {/* error popup */}
                   <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 
-                </form>
+                </div>
               </div>
               <AiOutlineClose onClick={() => setShowEditProfieModel(false)} className="absolute cursor-pointer top-5 right-5" />
             </div>

@@ -82,7 +82,7 @@ export default function TeamMemberSection({ id, type }) {
                 <IoIosArrowDown
                     size={18}
                     color="white"
-                    className={`${showTeamMemberSection ? "" : "rotate-180"}`}
+                    className={`${showTeamMemberSection ? "" : ""}`}
                 />
             </div>
             <TitleBar title={"Team Members"} />
@@ -148,6 +148,7 @@ export default function TeamMemberSection({ id, type }) {
         <FeatureTeamMember
             id={id}
             type={type}
+            checked={templateBio && templateBio?.team_member_on_public_page === 1 ? true : false}
             showModel={showFeatureTeamMemberModel}
             setShowModel={setShowFeatureTeamMemberModel}
         />
@@ -170,7 +171,7 @@ function CategoryCard({ title, options }) {
                         <IoIosArrowDown
                             size={18}
                             color="white"
-                            className={`${showDropdown ? '' : 'rotate-180'}`}
+                            className={`${showDropdown ? '' : ''}`}
                         />
                     </div>
 
@@ -221,14 +222,63 @@ function TeamCard({ index, team, id, type }) {
     const [showErrorModel, setShowErrorModel] = useState(false)
     const [error, setError] = useState(false);
     const [showSuccessPopUp, setShowSuccessPopUp] = useState(false)
+    const [rows, setRows] = useState([{
+        categoryId: null,
+        serviceIds: [],
+    }]);
 
     const {
         teamMembers,
         getTeamMembers,
-        deleteTeamMembers
+        deleteTeamMembers,
+        addTeamMembers,
+        getCategoryAndServiceForTeam,
+        categoryAndServiceForTeam,
+        updateTeamMembers
     } = useProfessionalContext();
     const { token } = useAuthContext();
 
+    const setFormData = () => {
+        if (team && JSON.parse(team.service) && categoryAndServiceForTeam) {
+            let oldService = JSON.parse(team.service);
+            let newServices = oldService.map((service) => {
+                const selectedCategoryId = service.categoryId.id;
+                const selectedCategoryData = categoryAndServiceForTeam.find(
+                    (category) => category.id == selectedCategoryId
+                );
+                return {
+                    categoryId: service.categoryId,
+                    serviceIds: service.serviceIds,
+                    services: selectedCategoryData.services
+                }
+            })
+            console.log("old services", oldService)
+            setRows(newServices);
+        } else {
+            setRows([{
+                categoryId: null,
+                serviceIds: [],
+            }]);
+        }
+
+    }
+
+
+    useEffect(() => {
+        setFormData();
+    }, [categoryAndServiceForTeam,team]);
+
+    const fetchCategories = async () => {
+        console.log("fetching apis...")
+        await getCategoryAndServiceForTeam(token, id);
+    };
+  
+
+
+
+    useEffect(() => {
+        fetchCategories();
+    }, [team,id]);
 
 
 
@@ -259,7 +309,7 @@ function TeamCard({ index, team, id, type }) {
                         className="rounded-full object-cover object-center  cursor-pointer w-[3.7rem]  h-[3.7rem] "
                     />
                     <div className="flex flex-col items-start justify-center space-y-2">
-                        <p className="text-base font-normal">{team?.member}</p>
+                        <p className="text-base font-normal line-clamp-1">{team?.member}</p>
                         <p className="text-sm font-normal text-gray-400 line-clamp-1">
                             {team?.bio}
                         </p>
@@ -284,15 +334,15 @@ function TeamCard({ index, team, id, type }) {
             </div>
             <div className="grid grid-cols-2 gap-3 mt-3">
                 {
-                    JSON.parse(team?.service)?.slice(0, 4).map((item, index) => {
-                        if (index < 2 && item.serviceIds.length === item.services.length) {
+                    rows?.slice(0, 4).map((item, index) => {
+                        if (index < 2 && item?.serviceIds?.length === item?.services?.length) {
                             return (
                                 <div key={index} className="w-full py-2 text-xs font-medium text-center text-white rounded-md bg-gradient-to-b from-customBlue to-customGreen">
                                     {item.categoryId.value}
                                 </div>
                             );
                         } else if (index < 4) {
-                            return <CategoryCard key={index} title={item.categoryId.value} options={item.serviceIds} />;
+                            return <CategoryCard key={index} title={item?.categoryId?.value} options={item?.serviceIds} />;
                         }
                         return null;
                     })

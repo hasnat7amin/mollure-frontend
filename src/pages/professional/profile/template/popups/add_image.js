@@ -93,7 +93,7 @@ export default function AddImage({ showModel, setShowModel, id, type }) {
                 </h3>
               </div>
               <div className="px-5 pt-9">
-                <form>
+                <div>
                   {/* image */}
                   <div>
                     <div
@@ -132,7 +132,7 @@ export default function AddImage({ showModel, setShowModel, id, type }) {
                         <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Save"
                     }
                   </button>
-                </form>
+                </div>
               </div>
               <AiOutlineClose
                 onClick={() => setShowModel(false)}

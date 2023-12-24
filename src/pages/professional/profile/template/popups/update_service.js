@@ -87,7 +87,7 @@ export default function UpdateService({ categoryId, type, templateId, parentId, 
             setServiceName(data?.service_name);
             setBio(data?.bio);
             setPrice(data?.price)
-            setDiscount(data?.discount_amount);
+            setDiscount(data?.discount_amount>0?data?.discount_amount:null);
             setInfo(data?.additional_info);
             setCurrentPriceSelected(priceOptions.find(item => item.value == data?.price_type))
             setCurrentDiscountSelected(discountOptions.find(item => item.value == data?.discount_type))
@@ -286,12 +286,12 @@ export default function UpdateService({ categoryId, type, templateId, parentId, 
     return (
         <div>
             {showModel &&
-                <div className="fixed inset-0 z-50 flex items-center pt-40 overflow-y-scroll">
+                <div className="fixed inset-0 z-50 flex items-center  ">
                     <div
                         onClick={() => setShowModel(false)}
                         className="fixed inset-0 bg-black opacity-[66%]"
                     />
-                    <div className="relative z-50  w-[95%] md:w-[28rem] mx-auto my-6">
+                    <div className="relative z-50  w-[95%] md:w-[28rem] mx-auto my-6 max-h-screen overflow-y-scroll no-scrollbar ">
                         <div className="relative px-2 py-4 bg-white rounded-lg shadow-lg">
                             <div className="flex flex-col items-start gap-2 px-5 rounded-t">
                                 <h3 className="w-full text-lg font-bold text-center text-softblue">
@@ -386,7 +386,7 @@ export default function UpdateService({ categoryId, type, templateId, parentId, 
                                 {/* price */}
                                 <div className="relative">
                                     <input
-                                        type="number"
+                                        type="text"
                                         placeholder="Price"
                                         min={0}
 

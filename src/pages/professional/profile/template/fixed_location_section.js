@@ -54,7 +54,7 @@ export default function FixedLocationSection() {
                 <IoIosArrowDown
                     size={18}
                     color="white"
-                    className={`${showFixedLocationSection ? "" : "rotate-180"}`}
+                    className={`${showFixedLocationSection ? "" : ""}`}
                 />
             </div>
             <TitleBar title={"Fixed Location"} />
@@ -102,6 +102,12 @@ export default function FixedLocationSection() {
                                     <p className="text-base font-normal text-black ">Street:</p>
                                     <p className="text-base font-normal text-black ">
                                         {fixedLocation.address}
+                                    </p>
+                                </div>
+                                <div className="flex w-full space-x-2">
+                                    <p className="text-base font-normal text-black ">Number:</p>
+                                    <p className="text-base font-normal text-black ">
+                                        {fixedLocation.number?fixedLocation.number: null}
                                     </p>
                                 </div>
                                 <div className="flex w-full space-x-2">

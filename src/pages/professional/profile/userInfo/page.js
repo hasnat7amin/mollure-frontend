@@ -22,11 +22,13 @@ import { useProfessionalContext } from "../../../../contexts/ProfessionalContext
 import { baseUrl, imageUrl } from "../../../../apis/base_url";
 import ErrorPopUp from "../../../../components/error_popup";
 import SuccessPopUp from "../../../../components/success_popup";
+import { useProfileContext } from "../../../../contexts/ProfileContextProvider";
 
 export default function UserInfo() {
   const {
     userInfo,
     getUserInfo, editUserInfo } = useProfessionalContext();
+    const {getUserProfilePic} = useProfileContext();
   const { token } = useAuthContext();
   const [showPassword, setShowPassword] = useState(false);
   const [showRestPassword, setRestShowPassword] = useState(false);
@@ -335,6 +337,7 @@ export default function UserInfo() {
     } else {
       setUpdateButtonVisibility(false)
       setShowSuccessModel(true);
+      await getUserProfilePic(token);
     }
     setLoading(false);
 

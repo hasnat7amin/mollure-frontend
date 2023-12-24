@@ -82,7 +82,7 @@ export default function DesiredLocationService() {
                 <IoIosArrowDown
                     size={18}
                     color="white"
-                    className={`${showFixedLocationSection ? '' : 'rotate-180'}`}
+                    className={`${showFixedLocationSection ? '' : ''}`}
                 />
             </div>
             <TitleBar title={'Operating Areas'} />

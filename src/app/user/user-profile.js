@@ -161,7 +161,7 @@ export default function UserProfile() {
                                 <IoIosArrowDown
                                     size={18}
                                     color="white"
-                                    className={`${setshowProfileSection ? '' : 'rotate-180'}`}
+                                    className={`${setshowProfileSection ? '' : ''}`}
                                 />
                             </div>
                             <TitleBar title={'Profile'} />
@@ -256,7 +256,7 @@ export default function UserProfile() {
                                 <IoIosArrowDown
                                     size={18}
                                     color="white"
-                                    className={`${showServiceForSection ? "" : "rotate-180"}`}
+                                    className={`${showServiceForSection ? "" : ""}`}
                                 />
                             </div>
                             <TitleBar title={"Service For"} />
@@ -290,7 +290,7 @@ export default function UserProfile() {
                                 <IoIosArrowDown
                                     size={18}
                                     color="white"
-                                    className={`${showCategoriesSection ? "" : "rotate-180"}`}
+                                    className={`${showCategoriesSection ? "" : ""}`}
                                 />
                             </div>
                             <TitleBar title={"Categories & Subservices"} />
@@ -389,7 +389,7 @@ export default function UserProfile() {
                                                                     size={19}
                                                                     className={`${showSubServices
                                                                         ? ""
-                                                                        : "rotate-180"} text-customBlue`}
+                                                                        : ""} text-customBlue`}
                                                                 />
                                                             </button>
                                                         </div>
@@ -460,7 +460,7 @@ export default function UserProfile() {
                                 <IoIosArrowDown
                                     size={18}
                                     color="white"
-                                    className={`${showGeneralNoteSection ? "" : "rotate-180"}`}
+                                    className={`${showGeneralNoteSection ? "" : ""}`}
                                 />
                             </div>
                             <TitleBar title={"General Note"} />
@@ -499,7 +499,7 @@ export default function UserProfile() {
                                 <IoIosArrowDown
                                     size={18}
                                     color="white"
-                                    className={`${showTeamMemberSection ? "" : "rotate-180"}`}
+                                    className={`${showTeamMemberSection ? "" : ""}`}
                                 />
                             </div>
                             <TitleBar title={"Team Members"} />
@@ -575,7 +575,7 @@ export default function UserProfile() {
                                 <IoIosArrowDown
                                     size={18}
                                     color="white"
-                                    className={`${showVisualsSection ? "" : "rotate-180"}`}
+                                    className={`${showVisualsSection ? "" : ""}`}
                                 />
                             </div>
                             <TitleBar title={"Visuals"} />
@@ -659,7 +659,7 @@ function DesiredLocationCard() {
             <IoIosArrowDown
                 size={18}
                 color="white"
-                className={`${showFixedLocationSection ? '' : 'rotate-180'}`}
+                className={`${showFixedLocationSection ? '' : ''}`}
             />
         </div>
         <TitleBar title={'Operating Areas'} />
@@ -719,7 +719,7 @@ function FixedLocationCard() {
                 <IoIosArrowDown
                     size={18}
                     color="white"
-                    className={`${showFixedLocationSection ? "" : "rotate-180"}`}
+                    className={`${showFixedLocationSection ? "" : ""}`}
                 />
             </div>
             <TitleBar title={"Fixed Location"} />

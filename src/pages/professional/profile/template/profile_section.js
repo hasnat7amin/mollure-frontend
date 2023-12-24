@@ -45,7 +45,7 @@ export default function ProfileSection({ id, type }) {
                 <IoIosArrowDown
                     size={18}
                     color="white"
-                    className={`${setshowProfileSection ? "" : "rotate-180"}`}
+                    className={`${setshowProfileSection ? "" : ""}`}
                 />
             </div>
             <TitleBar title={"Profile"} />
@@ -72,38 +72,47 @@ export default function ProfileSection({ id, type }) {
                             alt="Profile"
                             className="  rounded-full object-cover object-center  cursor-pointer w-[7.9rem]  h-[7.9rem] "
                         /> :
-                            <div className="bg-gray-200  rounded-full object-contain object-center  cursor-pointer w-[8.9rem]  h-[7.9rem] "
-                            ></div>
+                            null
                     }
 
                     {/* text */}
                     <div className="flex flex-col w-full space-y-2">
-                        <p className={`w-full px-3 py-3 text-base font-normal border border-gray-300 rounded-md ${templateBio?.bio_name ? "" : "opacity-25"} `}>
-                            {
-                                (templateBio && templateBio.bio_name) ? templateBio.bio_name : "Name"
-                            }
-                        </p>
-                        <p className={`w-full px-3 py-3 text-base font-normal border border-gray-300 rounded-md ${templateBio?.Bio_description ? "" : "opacity-25"} `}>
-                            {
-                                (templateBio && templateBio.Bio_description) ? templateBio.Bio_description : "Description"
-                            }
-                        </p>
+                        {
+                            templateBio && templateBio.bio_name && <p className={`w-full px-3 py-3 text-base font-normal border border-gray-300 rounded-md ${templateBio?.bio_name ? "" : "opacity-25"} `}>
+                                {
+                                    (templateBio && templateBio.bio_name) ? templateBio.bio_name : "Name"
+                                }
+                            </p>
+                        }
+                        {
+                            templateBio && templateBio.Bio_description && <p className={`w-full px-3 py-3 text-base font-normal border border-gray-300 rounded-md ${templateBio?.Bio_description ? "" : "opacity-25"} `}>
+                                {
+                                    (templateBio && templateBio.Bio_description) ? templateBio.Bio_description : "Description"
+                                }
+                            </p>
+                        }
                         <div className="flex flex-col w-full gap-2 md:flex-row">
-                            <p className={`w-full px-3 py-3 text-base font-normal border border-gray-300 rounded-md md:w-1/3  ${templateBio?.key1 ? "" : "opacity-25"} `}>
-                                {
-                                    (templateBio && templateBio.key1) ? templateBio.key1 : "Keyword 1"
-                                }
-                            </p>
-                            <p className={`w-full px-3 py-3 text-base font-normal border border-gray-300 rounded-md md:w-1/3 ${templateBio?.key2 ? "" : "opacity-25"} `}>
-                                {
-                                    (templateBio && templateBio.key2) ? templateBio.key2 : "Keyword 2"
-                                }
-                            </p>
-                            <p className={`w-full px-3 py-3 text-base font-normal border border-gray-300 rounded-md md:w-1/3 ${templateBio?.key3 ? "" : "opacity-25"} `}>
-                                {
-                                    (templateBio && templateBio.key3) ? templateBio.key3 : "Keyword 3"
-                                }
-                            </p>
+                            {templateBio && templateBio.key1 &&
+                                <p className={`w-full px-3 py-3 text-base font-normal border border-gray-300 rounded-md md:w-1/3  ${templateBio?.key1 ? "" : "opacity-25"} `}>
+                                    {
+                                        (templateBio && templateBio.key1) ? templateBio.key1 : "Keyword 1"
+                                    }
+                                </p>
+                            }
+                            {templateBio && templateBio.key2 &&
+                                <p className={`w-full px-3 py-3 text-base font-normal border border-gray-300 rounded-md md:w-1/3 ${templateBio?.key2 ? "" : "opacity-25"} `}>
+                                    {
+                                        (templateBio && templateBio.key2) ? templateBio.key2 : "Keyword 2"
+                                    }
+                                </p>
+                            }
+                            {templateBio && templateBio.key3 &&
+                                <p className={`w-full px-3 py-3 text-base font-normal border border-gray-300 rounded-md md:w-1/3 ${templateBio?.key3 ? "" : "opacity-25"} `}>
+                                    {
+                                        (templateBio && templateBio.key3) ? templateBio.key3 : "Keyword 3"
+                                    }
+                                </p>
+                            }
                         </div>
                     </div>
                 </div>

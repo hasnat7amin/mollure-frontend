@@ -43,7 +43,7 @@ export default function GeneralNoteSection({ id, type }) {
                     <IoIosArrowDown
                         size={18}
                         color="white"
-                        className={`${showGeneralNoteSection ? "" : "rotate-180"}`}
+                        className={`${showGeneralNoteSection ? "" : ""}`}
                     />
                 </div>
                 <TitleBar title={"General Note"} />

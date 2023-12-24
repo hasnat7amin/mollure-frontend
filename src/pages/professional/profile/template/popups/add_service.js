@@ -148,7 +148,7 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
       if ((discount || currentDiscountSelected || fromselectedDate)) {
         data['discount_type'] = currentDiscountSelected?.value;
         data['discount_amount'] = parseFloat(discount);
-        data['discount_valid_from'] = new Date(fromselectedDate.toString().slice(1, -1));
+        data['discount_valid_from'] =  new Date(fromselectedDate.toString().slice(1, -1));
       }
       if (toselectedDate) {
         data['discount_valid_to'] = new Date(toselectedDate.toString().slice(1, -1));
@@ -216,13 +216,13 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
   return (
     <div>
       {showModel &&
-        <div className="fixed inset-0 z-50 flex items-center pt-40 overflow-y-scroll">
+        <div className="fixed inset-0 z-50 flex items-center ">
           <div
             onClick={() => setShowModel(false)}
             className="fixed inset-0 bg-black opacity-[66%]"
           />
-          <div className="relative z-50  w-[95%] md:w-[28rem] mx-auto my-6">
-            <div className="relative px-2 py-4 bg-white rounded-lg shadow-lg">
+          <div className="relative z-50  w-[95%] md:w-[28rem] mx-auto my-6 max-h-screen overflow-y-scroll no-scrollbar ">
+            <div className="relative px-2 py-4 bg-white rounded-lg shadow-lg ">
               <div className="flex flex-col items-start gap-2 px-5 rounded-t">
                 <h3 className="w-full text-lg font-bold text-center text-softblue">
                   Add Service

@@ -29,7 +29,7 @@ export const AuthContextProvider = ({ children }) => {
       if (response && response["status"] === true) {
         console.log(response["user"]);
 
-        await localStorage.setItem("token", JSON.stringify(response["token"]));
+        await localStorage.setItem("token", response["token"]);
         await localStorage.setItem("user", JSON.stringify(response["user"]));
 
         setToken(response["token"]);
@@ -104,7 +104,7 @@ export const AuthContextProvider = ({ children }) => {
   const checkUser = async () => {
     try {
       console.log(" checking user");
-      const localToken = JSON.parse(await localStorage.getItem("token"));
+      const localToken = await localStorage.getItem("token");
       if (localToken !== null) {
         const headers = {
           "Content-Type": "application/json",

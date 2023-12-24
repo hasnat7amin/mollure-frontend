@@ -516,6 +516,7 @@ export default function SignupProfessional() {
                             if (event.value !== "selectProvince" && event.id != "loading") {
                               console.log("Province", event);
                               setCurrentProvinceSelected(event);
+                              setCurrentMunicipalitySelected(null)
                             }
                           }}
                         />

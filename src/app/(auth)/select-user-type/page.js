@@ -25,9 +25,9 @@ export default function SelectUserType() {
           </div>
           <div className="flex items-start justify-center w-full h-full ">
             {/* login form */}
-            <div className="w-full md:w-[32rem] flex flex-col space-y-4  my-10 md:mt-10  z-30">
+            <div className="w-full md:w-[32rem] flex flex-col space-y-4   my-10 md:mt-10  z-30">
               <Link to="/signup-individual">
-                <div className="px-3 py-12 bg-white border shadow-sm cursor-pointer md:px-6 rounded-3xl">
+                <div className="px-3 py-12 bg-white border  shadow-sm cursor-pointer md:px-6 rounded-3xl hover:bg-customGreen hover:text-white">
                   <h2 className="mb-2 text-2xl font-semibold md:text-3xl ">
                     For Individual client
                   </h2>
@@ -37,7 +37,7 @@ export default function SelectUserType() {
                 </div>
               </Link>
               <Link to="/signup-company">
-                <div className="px-3 py-12 text-white shadow-sm cursor-pointer md:px-6 bg-customGreen rounded-3xl">
+                <div className="px-3 py-12 bg-white border shadow-sm cursor-pointer md:px-6  rounded-3xl hover:bg-customGreen hover:text-white hover:border">
                   <h2 className="mb-2 text-2xl font-semibold md:text-3xl ">
                     For Company client
                   </h2>
@@ -48,7 +48,7 @@ export default function SelectUserType() {
               </Link>
               <Link to="/signup-professional">
                 {" "}
-                <div className="px-3 py-12 bg-white border shadow-sm cursor-pointer md:px-6 rounded-3xl">
+                <div className="px-3 py-12 bg-white border shadow-sm cursor-pointer md:px-6 rounded-3xl hover:bg-customGreen hover:text-white">
                   <h2 className="mb-2 text-2xl font-semibold md:text-3xl ">
                     For Professional
                   </h2>

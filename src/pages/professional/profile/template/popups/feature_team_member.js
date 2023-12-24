@@ -1,7 +1,7 @@
 
 import { BsCamera } from "react-icons/bs";
 import uploadIcon from "../../../../../images/professional/upload_icon.svg";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import Select from "../../../../../components/select";
 import { useProfessionalContext } from "../../../../../contexts/ProfessionalContextProvider";
@@ -10,9 +10,9 @@ import SuccessPopUp from "../../../../../components/success_popup";
 import ErrorPopUp from "../../../../../components/error_popup";
 import spinner from "../../../../../images/spinner.svg";
 
-export default function FeatureTeamMember({ id,type, showModel, setShowModel }) {
+export default function FeatureTeamMember({ id, type, showModel, setShowModel, checked }) {
   const [allChecked, setAllChecked] = useState(false);
-  
+
   const {
     postTeamMemberOnPublicPage,
     updateServiceFor
@@ -24,11 +24,19 @@ export default function FeatureTeamMember({ id,type, showModel, setShowModel }) 
   const [showErrorPopUp, setShowErrorPopUp] = useState(false);
   const [showSuccessPopUp, setShowSuccessPopUp] = useState(false)
   const [showErrorModel, setShowErrorModel] = useState(false)
-  
+
   const handleAllChange = (e) => {
     setAllChecked(e.target.checked);
 
   };
+
+  const updateCheckedToAllChecked = () => {
+    setAllChecked(checked);
+  };
+
+  useEffect(() => {
+    updateCheckedToAllChecked();
+  }, [checked,showModel]);
 
   const handleSubmit = async () => {
     setError('');
@@ -36,10 +44,10 @@ export default function FeatureTeamMember({ id,type, showModel, setShowModel }) 
     setLoading(true);
 
     const data = {
-      "team_member_on_public_page":allChecked
+      "team_member_on_public_page": allChecked
     };
 
-   
+
 
 
 
@@ -81,7 +89,7 @@ export default function FeatureTeamMember({ id,type, showModel, setShowModel }) 
                 <div className="flex flex-col gap-2">
                   {/* only womens checkbox */}
                   <div className="flex items-center justify-between px-6">
-                  <label
+                    <label
                       htmlFor="onlyWomen"
                       className="text-base font-normal cursor-pointer ms-2"
                     >
@@ -94,16 +102,16 @@ export default function FeatureTeamMember({ id,type, showModel, setShowModel }) 
                       onChange={handleAllChange}
                       className="w-4 h-4 border-2 rounded-sm appearance-none cursor-pointer"
                     />
-                  
+
                   </div>
-                  
+
                   <button disabled={loading} onClick={handleSubmit} className={`${loading ? "bg-gray-100 flex items-center justify-center" : "bg-customGreen"} text-white w-full py-3 mt-4  mb-4  rounded-md text-base font-medium`} >
                     {
                       loading ?
                         <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Update"
                     }
                   </button>
-                  <SuccessPopUp closeAction={()=>setShowModel(false)}  title={"Congratulation! Team Members are published successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+                  <SuccessPopUp closeAction={() => setShowModel(false)} title={"Congratulation! Team Members are published successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
                   {/* error popup */}
                   <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 

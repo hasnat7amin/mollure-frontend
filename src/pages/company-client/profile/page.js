@@ -22,6 +22,7 @@ import Info from "../../../components/info";
 import { useCompanyContext } from "../../../contexts/CompanyContextProvider";
 import { useProvinceContext } from "../../../contexts/ProvincesContextProvider";
 import { useMunicipalityContext } from "../../../contexts/MunicipalityContextProvider";
+import { useProfileContext } from "../../../contexts/ProfileContextProvider";
 
 
 
@@ -92,6 +93,8 @@ export default function CompanyClientProfile() {
   const { companyInfo,
     getCompanyInfo,
     editCompanyInfo, } = useCompanyContext();
+  const { getUserProfilePic } = useProfileContext();
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [showErrorModel, setShowErrorModel] = useState(false)
@@ -187,7 +190,7 @@ export default function CompanyClientProfile() {
   }
 
   const setProvinces = async () => {
-    if (provinces && provinces.length>0 && (provinces !== null || provinces != [])) {
+    if (provinces && provinces.length > 0 && (provinces !== null || provinces != [])) {
       setProvinceOptions(
         provinces.map((item) => (
           { id: item.id, value: item.name, label: item.name }
@@ -203,7 +206,7 @@ export default function CompanyClientProfile() {
   }
 
   const setMunicipalities = async () => {
-    if (municipalities && municipalities.length>0 &&  (municipalities !== null || municipalities != [])) {
+    if (municipalities && municipalities.length > 0 && (municipalities !== null || municipalities != [])) {
       setMunicipalityOptions(
         municipalities.map((item) => (
           { id: item.id, value: item.name, label: item.name }
@@ -317,6 +320,7 @@ export default function CompanyClientProfile() {
     } else {
       setUpdateButtonVisibility(false)
       setShowSuccessModel(true);
+      await getUserProfilePic(token);
     }
     setLoading(false);
 

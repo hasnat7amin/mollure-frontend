@@ -21,14 +21,35 @@ export default function PublishSection({ id, type }) {
     const [title, setTitle] = useState("");
     const {
         userInfo,
-        getUserInfo, editUserInfo } = useProfessionalContext();
+
+        templateBio,
+
+        fixedLocation,
+
+        serviceFor,
+
+        generalNote,
+
+        categories,
+
+        visuals,
+
+        servicesById,
+
+
+        teamMembers,
+
+        desiredLocation,
+
+    } = useProfessionalContext();
     const [showErrorModel, setShowErrorModel] = useState(false)
     const [showSuccessModel, setShowSuccessModel] = useState(false)
     const { token } = useAuthContext();
 
     const {
         copyTemplate,
-        publishTemplate
+        publishTemplate,
+        getUserInfo
     } = useProfessionalContext();
 
     const fetchUserInfo = async () => {
@@ -154,10 +175,10 @@ export default function PublishSection({ id, type }) {
             >
                 Publish Update
             </button>
-            {(userInfo && userInfo.fixed === parseInt(id)) ? null : <button onClick={() => setShowCopyPagePopUp(true)} className="px-6 py-2 text-base font-normal text-black border rounded-md">
+            {(userInfo && userInfo.fixed === 1 && parseInt(id) == 1 && userInfo.fixed !== userInfo.desired) && <button onClick={() => setShowCopyPagePopUp(true)} className="px-6 py-2 text-base font-normal text-black border rounded-md">
                 Copy Template
             </button>}
-            {(userInfo && userInfo.desired === parseInt(id)) ? null : <button onClick={() => setShowCopyPagePopUp(true)} className="px-6 py-2 text-base font-normal text-black border rounded-md">
+            {(userInfo && userInfo.desired === 1 && parseInt(id) == 2 && userInfo.fixed !== userInfo.desired) && <button onClick={() => setShowCopyPagePopUp(true)} className="px-6 py-2 text-base font-normal text-black border rounded-md">
                 Copy Template
             </button>}
         </div>
@@ -175,7 +196,7 @@ export default function PublishSection({ id, type }) {
         <ConfirmationProcessPopUp
             showModel={showCopyPagePopUp}
             setShowModel={setShowCopyPagePopUp}
-            title={`Are you sure you want to copy the date from ${id == 1 ? "fixed" : "desired"} to ${id == 1 ? "desired" : "fixed"} location?`}
+            title={`Are you sure you want to copy the template from ${id == 1 ? "fixed" : "desired"} to ${id == 1 ? "desired" : "fixed"} location?`}
             handleNo={() => setShowCopyPagePopUp(false)}
             handleYes={() => handleCopyPageProcess()}
         />

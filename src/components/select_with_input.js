@@ -92,19 +92,21 @@ const SelectWithInputs = ({
       <div>
 
         <div className="relative mt-1">
-          <div className="inline-block w-full rounded-md shadow-sm">
-            <div
-              onClick={handleFocus}
-              className="relative w-full py-3 pl-3 pr-8 mt-1 text-base font-normal text-left transition duration-150 ease-in-out border border-gray-300 rounded-md cursor-pointer focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
-            >
-              <span className={`${!selectedOption ? "text-gray-400" : ""} block truncate`}>
-                {selectedOption ? selectedOption : placeholder}
-              </span>
-              <span className="absolute inset-y-0 flex items-center pr-2 ml-3 pointer-events-none right-1">
-                <img src={arrowDown} alt="arrow" />
-              </span>
+          <Listbox>
+            <div className="inline-block w-full rounded-md shadow-sm">
+              <Listbox.Button
+                onClick={() => setShowDropDown(!showDropDown)}
+                className="relative w-full py-3 pl-3 pr-8 mt-1 text-base font-normal text-left transition duration-150 ease-in-out border border-gray-300 rounded-md cursor-pointer focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+              >
+                <span className={`${!selectedOption ? "text-gray-400" : ""} block truncate`}>
+                  {selectedOption ? selectedOption : placeholder}
+                </span>
+                <span className="absolute inset-y-0 flex items-center pr-2 ml-3 pointer-events-none right-1">
+                  <img src={arrowDown} alt="arrow" />
+                </span>
+              </Listbox.Button>
             </div>
-          </div>
+          </Listbox>
 
           {showDropDown && <div className="absolute z-10 w-full px-3 bg-white rounded-md shadow-lg mb-11">
 
@@ -114,22 +116,7 @@ const SelectWithInputs = ({
                   className={`text-gray-900 cursor-pointer select-none relative border-b-2 text-sm font-normal py-2 list-none`}
                 >
                   <div className="flex flex-col items-center gap-2 md:flex-row">
-                    <input
-                      type="tel"
-                      value={inputHrValue}
-                      onChange={e => {
-                        e.stopPropagation();
-                        const re = /^\d*$/; // Regex pattern to allow only numbers
-                        if (re.test(e.target.value)) {
-                          handleHrInputChange(e);
-                        }
-                      }}
-                      max={23}
-                      maxLength={2}
-                      min={0}
-                      placeholder="hr"
-                      className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
-                    />
+
                     <input
                       type="tel"
                       value={inputMintValue}
@@ -144,6 +131,22 @@ const SelectWithInputs = ({
                       maxLength={2}
                       min={0}
                       placeholder="mint"
+                      className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
+                    />
+                    <input
+                      type="tel"
+                      value={inputHrValue}
+                      onChange={e => {
+                        e.stopPropagation();
+                        const re = /^\d*$/; // Regex pattern to allow only numbers
+                        if (re.test(e.target.value)) {
+                          handleHrInputChange(e);
+                        }
+                      }}
+                      max={23}
+                      maxLength={2}
+                      min={0}
+                      placeholder="hr"
                       className="w-full px-3 py-3 mt-2 text-base font-normal border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
                     />
                   </div>
