@@ -163,7 +163,7 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
 
 
 
-      if (parseFloat(servicePrice) > parseFloat(price)) {
+      if (parseFloat(servicePrice) >= parseFloat(price)) {
         setError("SubService price must be greater than or equal to service price.");
         setLoading(false);
         setShowErrorModel(true);
