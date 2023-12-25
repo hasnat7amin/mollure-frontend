@@ -144,6 +144,8 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
       console.log("first condition in subservie:", serviceToDuration === null && durationDifference !== serviceDurationDifference)
 
       if (serviceToDuration === null) {
+         console.log("first condition in subservie:", durationDifference !== serviceDurationDifference )
+
         if (durationDifference !== serviceDurationDifference) {
           setError("SubService duration must be equal to service duration.");
           setLoading(false);
@@ -152,6 +154,8 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
         }
 
       } else {
+         console.log("second condition in subservie:", !(fromDurationInMinutes >= serviceFromDurationInMinutes && toDurationInMinutes <= serviceToDurationInMinutes  ) )
+        
         if (!(fromDurationInMinutes >= serviceFromDurationInMinutes && toDurationInMinutes <= serviceToDurationInMinutes  )) {
           setError("SubService duration must be with in service duration.");
           setLoading(false);
