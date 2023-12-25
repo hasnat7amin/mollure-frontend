@@ -152,7 +152,7 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
         }
 
       } else {
-        if (!(fromDurationInMinutes > serviceFromDurationInMinutes && serviceToDurationInMinutes > toDurationInMinutes)) {
+        if ((fromDurationInMinutes > serviceFromDurationInMinutes || serviceToDurationInMinutes > toDurationInMinutes)) {
           setError("SubService duration must be with in service duration.");
           setLoading(false);
           setShowErrorModel(true);
