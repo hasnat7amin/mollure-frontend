@@ -21,6 +21,7 @@ export default function EditGeneralNote({
   const [error, setError] = useState(false);
   const [showErrorPopUp, setShowErrorPopUp] = useState(false);
   const [showSuccessPopUp, setShowSuccessPopUp] = useState(false)
+  const [successTitle, setSuccessTitle] = useState('')
   const [showErrorModel, setShowErrorModel] = useState(false)
 
   const {
@@ -59,13 +60,13 @@ export default function EditGeneralNote({
 
 
     const response = await updateGeneralNote(token,id, data);
-    if (!response) {
+    if (!(response&&response.success)) {
       setError("Please check your credentials again.");
       setLoading(false);
       setShowErrorModel(true);
     }
     else {
-
+      setSuccessTitle(response.message);
       setLoading(false);
       setShowSuccessPopUp(true)
 
@@ -111,7 +112,7 @@ export default function EditGeneralNote({
                         <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Save"
                     }
                   </button>
-                  <SuccessPopUp closeAction={()=>setShowModel(false)}  title={"Your Data is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+                  <SuccessPopUp closeAction={()=>setShowModel(false)}  title={successTitle} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
                   {/* error popup */}
                   <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 

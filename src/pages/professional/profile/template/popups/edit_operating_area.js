@@ -34,6 +34,8 @@ export default function EditOperatingArea({ showModel, setShowModel, data, id = 
     const [error, setError] = useState(false);
     const [showErrorModel, setShowErrorModel] = useState(false)
     const [showSuccessPopUp, setShowSuccessPopUp] = useState(false)
+    const [successTitle, setSuccessTitle] = useState('')
+
 
     const [everyWhere, setEveryWhere] = useState(false);
     const [specificArea, setSpecificArea] = useState(false);
@@ -165,13 +167,13 @@ export default function EditOperatingArea({ showModel, setShowModel, data, id = 
         data.append('type', "desired")
 
         const response = await updateDesiredLocation(token, data);
-        if (!response) {
+        if (!(response && response.success)) {
             setError("Please check your credentials again.");
             setLoading(false);
             setShowErrorModel(true);
         }
         else {
-            // setShowModel(false)
+            setSuccessTitle(response.message)
             setLoading(false);
             setShowSuccessPopUp(true)
         }
@@ -304,7 +306,7 @@ export default function EditOperatingArea({ showModel, setShowModel, data, id = 
                                     </button>
                                     {/* error popup */}
                                     <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
-                                    <SuccessPopUp closeAction={() => setShowModel(false)} title={"Your Location is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+                                    <SuccessPopUp closeAction={() => setShowModel(false)} title={successTitle} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
 
 
                                     {/* </form> */}

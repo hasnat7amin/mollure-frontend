@@ -26,6 +26,7 @@ export default function EditService({ id, type, showModel, setShowModel }) {
   const [showErrorPopUp, setShowErrorPopUp] = useState(false);
   const [showSuccessPopUp, setShowSuccessPopUp] = useState(false)
   const [showErrorModel, setShowErrorModel] = useState(false)
+  const [successTitle, setSuccessTitle] = useState('')
 
 
   const handleAllChange = (e) => {
@@ -101,13 +102,13 @@ export default function EditService({ id, type, showModel, setShowModel }) {
 
 
     const response = await updateServiceFor(token, id, data);
-    if (!response) {
+    if (!(response && response.success)) {
       setError("Please check your credentials again.");
       setLoading(false);
       setShowErrorModel(true);
     }
     else {
-      // setShowModel(false);
+      setSuccessTitle(response.message);
       setLoading(false);
       setShowSuccessPopUp(true)
 
@@ -211,7 +212,7 @@ export default function EditService({ id, type, showModel, setShowModel }) {
                         <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Update"
                     }
                   </button>
-                  <SuccessPopUp closeAction={()=>setShowModel(false)}  title={"Your Data is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+                  <SuccessPopUp closeAction={()=>setShowModel(false)}  title={successTitle} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
                   {/* error popup */}
                   <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 

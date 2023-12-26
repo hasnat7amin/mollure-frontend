@@ -79,9 +79,9 @@ export const ProfessionalContextProvider = ({ children }) => {
 
       if (response && response["success"]) {
         await getTemplateBio(token, id)
-        return true;
+        return response;
       } else {
-        return false;
+        return response;
       }
     } catch (error) {
       console.error("Error fetching user information:", error);
@@ -148,9 +148,9 @@ export const ProfessionalContextProvider = ({ children }) => {
 
       if (response && response["success"]) {
         await getServiceFor(token, id)
-        return true;
+        return response;
       } else {
-        return false;
+        return response;
       }
     } catch (error) {
 
@@ -184,9 +184,9 @@ export const ProfessionalContextProvider = ({ children }) => {
 
       if (response && response["success"]) {
         await getGeneralNote(token, id)
-        return true;
+        return response;
       } else {
-        return false;
+        return response;
       }
     } catch (error) {
 
@@ -485,10 +485,10 @@ export const ProfessionalContextProvider = ({ children }) => {
 
       if (response && response["success"]) {
         await getDesiredLocation(token);
-        return true;
+        return response;
       } else {
 
-        return false;
+        return response;
 
       }
     } catch (error) {

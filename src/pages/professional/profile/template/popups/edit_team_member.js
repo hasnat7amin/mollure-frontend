@@ -422,7 +422,7 @@ export default function EditTeamMember({ id, type, showModel, setShowModel, data
                         <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Save"
                     }
                   </button>
-                  <SuccessPopUp closeAction={() => setShowModel(false)} title={"Team Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+                  <SuccessPopUp closeAction={() => setShowModel(false)} title={"Team Member Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
                   {/* error popup */}
                   <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 

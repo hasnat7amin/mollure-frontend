@@ -203,10 +203,10 @@ export default function AddSubService({ categoryId, type, templateId, parentId, 
       if ((discount || currentDiscountSelected || fromselectedDate)) {
         data['discount_type'] = currentDiscountSelected?.value;
         data['discount_amount'] = parseFloat(discount);
-        data['discount_valid_from'] = new Date(fromselectedDate.toString().slice(1, -1));
+        data['discount_valid_from'] =  new Date((new Date(fromselectedDate)).toISOString());
       }
       if (toselectedDate) {
-        data['discount_valid_to'] = new Date(toselectedDate.toString().slice(1, -1));
+        data['discount_valid_to'] =  new Date((new Date(toselectedDate)).toISOString());
       } else {
         data['discount_valid_to'] = null;
       }

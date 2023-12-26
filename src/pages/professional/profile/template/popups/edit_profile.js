@@ -22,6 +22,7 @@ export default function EditProfile({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [showErrorModel, setShowErrorModel] = useState(false)
+  const [successTitle, setSuccessTitle] = useState("")
 
   const fileInputRef = useRef(null);
   const [formData, setFormData] = useState({
@@ -159,13 +160,14 @@ export default function EditProfile({
 
 
     const response = await updateTemplateBio(token, data, id);
-    if (!response) {
+    if (!(response&&response.success)) {
       setError("Please check your credentials again.");
       setLoading(false);
       setShowErrorModel(true);
       return;
     }
     else {
+      setSuccessTitle(response.message)
       setLoading(false);
       setShowSuccessPopUp(true)
       return
@@ -331,7 +333,7 @@ export default function EditProfile({
                       <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Save"
                   }
                 </button>
-                  <SuccessPopUp closeAction={()=>setShowEditProfieModel(false)} title={"Your Data is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+                  <SuccessPopUp closeAction={()=>setShowEditProfieModel(false)} title={successTitle} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
                   {/* error popup */}
                   <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 

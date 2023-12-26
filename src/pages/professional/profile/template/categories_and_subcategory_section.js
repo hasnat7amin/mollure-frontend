@@ -430,10 +430,11 @@ function Services({ data, templateId, categoryId }) {
                     }
                 </div>
                 {
-                    (data.discount_valid_from || data.discount_valid_to) &&
-                    <p className="text-[9px] h-2 p-0 m-0">
-                        {data.discount_valid_from && data.discount_valid_from.split("T")[0]}  {data.discount_valid_to && "- " + data.discount_valid_to.split("T")[0]}
-                    </p>
+                    (data.discount_valid_from || data.discount_valid_to) && (
+                        <p className="text-[9px] h-5 p-0 m-0 leading-0">
+                            {data.discount_valid_from && (new Date(data.discount_valid_from)).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} {data.discount_valid_to && " - " + (new Date(data.discount_valid_to)).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </p>
+                    )
                 }
 
             </div>
@@ -616,10 +617,11 @@ function SubServices({ data, templateId, categoryId, parentId, servicePrice, ser
                         </p>}
                     </div>
                     {
-                        (data.discount_valid_from || data.discount_valid_to) &&
-                        <p className="text-[9px] h-5 p-0 m-0 leading-0">
-                            {data.discount_valid_from && data.discount_valid_from.split("T")[0]}  {data.discount_valid_to && "- " + data.discount_valid_to.split("T")[0]}
-                        </p>
+                        (data.discount_valid_from || data.discount_valid_to) && (
+                            <p className="text-[9px] h-5 p-0 m-0 leading-0">
+                                {data.discount_valid_from && (new Date(data.discount_valid_from)).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} {data.discount_valid_to && " - " + (new Date(data.discount_valid_to)).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </p>
+                        )
                     }
                 </div>
             </div>

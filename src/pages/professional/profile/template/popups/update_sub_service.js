@@ -96,8 +96,8 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
             }
             console.log(data?.discount_valid_from)
             console.log(data?.discount_valid_to)
-            data?.discount_valid_from && setFromSelectedDate(data?.discount_valid_from)
-            data?.discount_valid_to && setToSelectedDate(data?.discount_valid_to)
+            data?.discount_valid_from && setFromSelectedDate(new Date(`${data?.discount_valid_from}`))
+            data?.discount_valid_to && setToSelectedDate(new Date(`${data?.discount_valid_to}`))
         }
     }
 
@@ -197,7 +197,7 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
                 }
 
             } else {
-                 if (!(fromDurationInMinutes >= serviceFromDurationInMinutes && toDurationInMinutes <= serviceToDurationInMinutes  )) {
+                if (!(fromDurationInMinutes >= serviceFromDurationInMinutes && toDurationInMinutes <= serviceToDurationInMinutes)) {
                     setError("SubService duration must be with in service duration.");
                     setLoading(false);
                     setShowErrorModel(true);
@@ -213,7 +213,7 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
                 return;
             }
 
-           if (parseFloat( price ) < parseFloat(servicePrice)) {
+            if (parseFloat(price) < parseFloat(servicePrice)) {
                 setError("SubService price must be greater than or equal to service price.");
                 setLoading(false);
                 setShowErrorModel(true);
@@ -254,14 +254,15 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
             if ((discount || currentDiscountSelected || fromselectedDate)) {
                 data['discount_type'] = currentDiscountSelected?.value;
                 data['discount_amount'] = parseFloat(discount);
-                data['discount_valid_from'] = new Date(fromselectedDate.toString().slice(1, -1));
+                data['discount_valid_from'] = new Date((new Date(fromselectedDate)).toISOString());
+
             } else {
                 data['discount_type'] = null;
                 data['discount_amount'] = 0;
                 data['discount_valid_from'] = null;
             }
             if (toselectedDate) {
-                data['discount_valid_to'] = new Date(toselectedDate.toString().slice(1, -1));
+                data['discount_valid_to'] = new Date((new Date(toselectedDate)).toISOString());
             } else {
                 data['discount_valid_to'] = null;
             }
@@ -513,7 +514,7 @@ export default function UpdateSubService({ categoryId, type, templateId, parentI
                                             <img src={spinner} alt="Loading" width={28} height={28} className="animate-spin " /> : "Save"
                                     }
                                 </button>
-                                <SuccessPopUp closeAction={() => setShowModel(false)} title={"Your Data is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
+                                <SuccessPopUp closeAction={() => setShowModel(false)} title={"Your Sub Service is Updated Successfully."} showModel={showSuccessPopUp} setShowModel={setShowSuccessPopUp} />
                                 {/* error popup */}
                                 <ErrorPopUp title={error} showModel={showErrorModel} setShowModel={setShowErrorModel} />
 
