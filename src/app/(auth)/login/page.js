@@ -57,7 +57,7 @@ export default function Login() {
 
     const response = await login(data);
     if (!(response && response["status"] === true)) {
-      setError(response["message"]);
+      setError(response.response.data.message.toString());
       setLoading(false);
       setShowErrorModel(true);
       return;
