@@ -22,7 +22,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { login, error, setError } = useAuthContext();
+  const { login } = useAuthContext();
+  const [error, setError] = useState(null);
   const [showErrorModel, setShowErrorModel] = useState(false)
 
 
@@ -54,7 +55,13 @@ export default function Login() {
       rememberMe: rememberMe
     }
 
-    await login(data);
+    const response = await login(data);
+    if (!(response && response["status"] === true)) {
+      setError(response["message"]);
+      setLoading(false);
+      setShowErrorModel(true);
+      return;
+    }
     setLoading(false);
 
     // Set user as logged in (you can replace this with actual login logic)

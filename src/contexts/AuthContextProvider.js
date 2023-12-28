@@ -8,7 +8,7 @@ const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
-  const [error, setError] = useState(null);
+ 
   const [token, setToken] = useState(null)
 
   const login = async (credentials, showCongratsPopup) => {
@@ -35,16 +35,20 @@ export const AuthContextProvider = ({ children }) => {
         setToken(response["token"]);
         setIsLoggedIn(true);
         setUserProfile(response["user"]);
-
+        return response;
         // window.location.href="/" ;
       } else {
         // console.log("error: ", response)
-        setError(response.response.data.message.toString());
+        return response;
+        // setError(response.response.data.message.toString());
       }
 
     } catch (error) {
+      return {
+        success: false,
+        message: "Please try again.Something went wrong.",
+      }
       
-      setError("Something went wrong.Please try again.")
     }
   };
 
@@ -237,10 +241,8 @@ export const AuthContextProvider = ({ children }) => {
         checkUser,
         getUserProfile,
         userProfile,
-        error,
         signUpProfessionalAndCompany,
         signUpIndividual,
-        setError,
         token,
         isLoggedIn,
         forgotPassword,
