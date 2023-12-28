@@ -278,6 +278,8 @@ export default function AddLocation({
                             if (event.value !== "selectProvince") {
                               console.log("Province", event);
                               setCurrentProvinceSelected(event);
+                              setCurrentMunicipalitySelected(null);
+
                             }
                           }}
                         />
