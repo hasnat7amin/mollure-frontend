@@ -124,10 +124,7 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
         setShowErrorModel(true);
         return;
       }
-      console.log("before coverting date",fromselectedDate)
-
-      console.log("after coverting date",new Date(Date.parse(fromselectedDate.toISOString().slice(1, -1))))
-
+    
       const data = {};
       // Log all the values
       data['service_name'] = serviceName;
@@ -236,13 +233,13 @@ export default function AddService({ categoryId, type, templateId, parentId, sho
                 {/* (sub)Service Name */}
                 <div>
                   <label className="block text-sm font-normal text-gray-500 pb-2">
-                    (sub)Service Name <span className="text-red-500">*</span>
+                    Service Name <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     value={serviceName}
                     onChange={(e) => setServiceName(e.target.value)}
-                    placeholder="(sub)Service Name"
+                    placeholder="Service Name"
                     className="w-full px-3 py-3  text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
                   />
                 </div>

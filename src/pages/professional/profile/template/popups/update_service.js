@@ -303,13 +303,13 @@ export default function UpdateService({ categoryId, type, templateId, parentId, 
                                 {/* (sub)Service Name */}
                                 <div>
                                     <label className="block text-sm font-normal text-gray-500 pb-2">
-                                        (sub)Service Name <span className="text-red-500">*</span>
+                                        Service Name <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
                                         value={serviceName}
                                         onChange={(e) => setServiceName(e.target.value)}
-                                        placeholder="(sub)Service Name"
+                                        placeholder="Service Name"
                                         className="w-full px-3 py-3  text-base font-normal border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-green-400 focus:bg-white"
                                     />
                                 </div>
